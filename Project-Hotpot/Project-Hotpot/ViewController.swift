@@ -63,10 +63,10 @@ class ViewController: UIViewController {
     let stackView = UIStackView()
     let connectLabel = UILabel()
     let connectButton = UIButton(type: .system)
-    let imageView = UIImageView()
-    let trackLabel = UILabel()
-    let playPauseButton = UIButton(type: .system)
-    let signOutButton = UIButton(type: .system)
+//    let imageView = UIImageView()
+//    let trackLabel = UILabel()
+//    let playPauseButton = UIButton(type: .system)
+//    let signOutButton = UIButton(type: .system)
 
     // MARK: App Life Cycle
     override func viewDidLoad() {
@@ -81,38 +81,43 @@ class ViewController: UIViewController {
     }
 
     func update(playerState: SPTAppRemotePlayerState) {
-        if lastPlayerState?.track.uri != playerState.track.uri {
-            fetchArtwork(for: playerState.track)
-        }
-        lastPlayerState = playerState
-        trackLabel.text = playerState.track.name
-
-        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-        if playerState.isPaused {
-            playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
-        } else {
-            playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
-        }
+//        if lastPlayerState?.track.uri != playerState.track.uri {
+//            fetchArtwork(for: playerState.track)
+//        }
+//        lastPlayerState = playerState
+//        trackLabel.text = playerState.track.name
+//
+//        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
+//        if playerState.isPaused {
+//            playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+//        } else {
+//            playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
+//        }
     }
 
     // MARK: - Actions
-    @objc func didTapPauseOrPlay(_ button: UIButton) {
-        if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
-            appRemote.playerAPI?.resume(nil)
-        } else {
-            appRemote.playerAPI?.pause(nil)
-        }
-    }
-
-    @objc func didTapSignOut(_ button: UIButton) {
-        if appRemote.isConnected == true {
-            appRemote.disconnect()
-        }
-    }
+//    @objc func didTapPauseOrPlay(_ button: UIButton) {
+//        if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
+//            appRemote.playerAPI?.resume(nil)
+//        } else {
+//            appRemote.playerAPI?.pause(nil)
+//        }
+//    }
+//
+//    @objc func didTapSignOut(_ button: UIButton) {
+//        if appRemote.isConnected == true {
+//            appRemote.disconnect()
+//        }
+//    }
 
     @objc func didTapConnect(_ button: UIButton) {
         guard let sessionManager = sessionManager else { return }
         sessionManager.initiateSession(with: scopes, options: .clientOnly)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        self.view.window?.rootViewController = nextViewController
+//        self.present(nextViewController, animated:true, completion:nil)
+//        NSLog("finished initiating")
     }
 
     // MARK: - Private Helpers
@@ -145,30 +150,30 @@ extension ViewController {
         connectButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
         connectButton.addTarget(self, action: #selector(didTapConnect), for: .primaryActionTriggered)
 
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-
-        trackLabel.translatesAutoresizingMaskIntoConstraints = false
-        trackLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        trackLabel.textAlignment = .center
-
-        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        playPauseButton.addTarget(self, action: #selector(didTapPauseOrPlay), for: .primaryActionTriggered)
-
-        signOutButton.translatesAutoresizingMaskIntoConstraints = false
-        signOutButton.setTitle("Sign out", for: .normal)
-        signOutButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        signOutButton.addTarget(self, action: #selector(didTapSignOut(_:)), for: .touchUpInside)
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.contentMode = .scaleAspectFit
+//
+//        trackLabel.translatesAutoresizingMaskIntoConstraints = false
+//        trackLabel.font = UIFont.preferredFont(forTextStyle: .body)
+//        trackLabel.textAlignment = .center
+//
+//        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
+//        playPauseButton.addTarget(self, action: #selector(didTapPauseOrPlay), for: .primaryActionTriggered)
+//
+//        signOutButton.translatesAutoresizingMaskIntoConstraints = false
+//        signOutButton.setTitle("Sign out", for: .normal)
+//        signOutButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+//        signOutButton.addTarget(self, action: #selector(didTapSignOut(_:)), for: .touchUpInside)
     }
 
     func layout() {
 
         stackView.addArrangedSubview(connectLabel)
         stackView.addArrangedSubview(connectButton)
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(trackLabel)
-        stackView.addArrangedSubview(playPauseButton)
-        stackView.addArrangedSubview(signOutButton)
+//        stackView.addArrangedSubview(imageView)
+//        stackView.addArrangedSubview(trackLabel)
+//        stackView.addArrangedSubview(playPauseButton)
+//        stackView.addArrangedSubview(signOutButton)
 
         view.addSubview(stackView)
 
@@ -179,22 +184,22 @@ extension ViewController {
     }
 
     func updateViewBasedOnConnected() {
-        if appRemote.isConnected == true {
-            connectButton.isHidden = true
-            signOutButton.isHidden = false
-            connectLabel.isHidden = true
-            imageView.isHidden = false
-            trackLabel.isHidden = false
-            playPauseButton.isHidden = false
-        }
-        else { // show login
-            signOutButton.isHidden = true
-            connectButton.isHidden = false
-            connectLabel.isHidden = false
-            imageView.isHidden = true
-            trackLabel.isHidden = true
-            playPauseButton.isHidden = true
-        }
+//        if appRemote.isConnected == true {
+//            connectButton.isHidden = true
+//            signOutButton.isHidden = false
+//            connectLabel.isHidden = true
+//            imageView.isHidden = false
+//            trackLabel.isHidden = false
+//            playPauseButton.isHidden = false
+//        }
+//        else { // show login
+//            signOutButton.isHidden = true
+//            connectButton.isHidden = false
+//            connectLabel.isHidden = false
+//            imageView.isHidden = true
+//            trackLabel.isHidden = true
+//            playPauseButton.isHidden = true
+//        }
     }
 }
 
@@ -294,9 +299,10 @@ extension ViewController {
         appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
             if let error = error {
                 print("Error fetching track image: " + error.localizedDescription)
-            } else if let image = image as? UIImage {
-                self?.imageView.image = image
             }
+//                else if let image = image as? UIImage {
+//                self?.imageView.image = image
+//            }
         })
     }
 
@@ -308,5 +314,10 @@ extension ViewController {
                 self?.update(playerState: playerState)
             }
         })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+    
     }
 }
