@@ -87,6 +87,15 @@
                                     <outletCollection property="gestureRecognizers" destination="Oap-dn-mdW" appends="YES" id="SAR-ga-cKS"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgE-gM-IcB">
+                                <rect key="frame" x="174" y="713" width="67" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title=""/>
+                                <connections>
+                                    <action selector="didTapButton:" destination="Dhf-U1-TWR" eventType="touchUpInside" id="njf-EE-WVg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xzl-hM-i8m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -94,6 +103,7 @@
                     <navigationItem key="navigationItem" id="Ygn-HO-gJa"/>
                     <connections>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
+                        <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
                         <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>
                     </connections>
                 </viewController>
@@ -104,7 +114,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2581" y="131"/>
+            <point key="canvasLocation" x="2579.7101449275365" y="130.58035714285714"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ASv-H4-bP9">

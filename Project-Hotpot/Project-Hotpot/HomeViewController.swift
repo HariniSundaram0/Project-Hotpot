@@ -10,19 +10,51 @@ import UIKit
 class HomeViewController: UIViewController {
     var api_instance = APIManager.shared()
     @IBOutlet weak var card: UIView!
-        
+    
+    @IBOutlet weak var playButton: UIButton!
+    
     @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
         // currently hardcoding a song to play on opening of the app
-        let songURI = "spotify:track:20I6sIOMTCkB6w7ryavxtO"
-        let songContent = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
+        let songURI = getRandomSong()
+        _ = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
             
             if ((success) != nil){
                 self.api_instance.appRemote.playerAPI?.play(success as! SPTAppRemoteContentItem)
+                self.playSong()
                 self.songTitleLabel.text = self.api_instance.curr_song_label
             }
         })
-        NSLog(api_instance.curr_song_label ?? "nil sadness")
+    }
+    
+    @IBAction func didTapButton(_ sender: UIButton) {
+        
+        if (api_instance.lastPlayerState?.isPaused == true){
+            //if already paused, play the song
+            playSong()
+        }
+        else{
+            //if already playinh, pause the song
+            pauseSong()
+        }
+    }
+    
+
+    func playSong(){
+        //resume the audio
+        api_instance.appRemote.playerAPI?.resume()
+        //change the button image
+        let newIcon = UIImage(systemName: "pause.circle.fill")
+        self.playButton.setImage(newIcon, for:.normal)
+    }
+    
+    func pauseSong(){
+        //pause the audio
+        api_instance.appRemote.playerAPI?.pause()
+        //change the button image
+        let newIcon = UIImage(systemName: "play.circle.fill")
+        self.playButton.setImage(newIcon, for:.normal)
+        
     }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
