@@ -41,7 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
  * @param callback         On success `result` will be `YES`.
  *                         On error `result` will be `nil` and `error` set
  */
-- (void)play:(NSString *)entityIdentifier callback:(nullable SPTAppRemoteCallback)callback;
 
 /**
  * Asks the Spotify player to play the entity with the given identifier.

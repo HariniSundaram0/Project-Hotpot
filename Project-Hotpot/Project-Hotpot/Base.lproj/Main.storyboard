@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -33,6 +33,33 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="118.52678571428571"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="RE3-a4-eRT">
+            <objects>
+                <viewController id="wcu-yi-MMK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VcX-Nq-WZ0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWk-Xx-77t">
+                                <rect key="frame" x="120" y="350" width="175" height="108"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <segue destination="Dhf-U1-TWR" kind="show" id="kLS-Q2-BXA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="pt8-gT-Qk2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Gsv-lF-6QR"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ml9-XJ-vdh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1817.3913043478262" y="-593.30357142857144"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="ngI-k5-7h3">
@@ -64,8 +91,10 @@
                         <viewLayoutGuide key="safeArea" id="Xzl-hM-i8m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Ygn-HO-gJa"/>
                     <connections>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
+                        <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nVQ-Hc-ipT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -74,6 +103,24 @@
                         <action selector="panCard:" destination="Dhf-U1-TWR" id="PJN-BA-B7W"/>
                     </connections>
                 </panGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="2581" y="131"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ASv-H4-bP9">
+            <objects>
+                <navigationController storyboardIdentifier="HomeNavController" automaticallyAdjustsScrollViewInsets="NO" id="b85-5k-23U" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bat-Z4-FK6">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wcu-yi-MMK" kind="relationship" relationship="rootViewController" id="phL-9p-edv"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yWN-Qq-lAv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="956.52173913043487" y="130.58035714285714"/>
         </scene>

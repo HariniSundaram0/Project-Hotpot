@@ -8,12 +8,21 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    var api_instance = APIManager.shared()
     @IBOutlet weak var card: UIView!
-    
+        
+    @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        // currently hardcoding a song to play on opening of the app
+        let songURI = "spotify:track:20I6sIOMTCkB6w7ryavxtO"
+        let songContent = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
+            
+            if ((success) != nil){
+                self.api_instance.appRemote.playerAPI?.play(success as! SPTAppRemoteContentItem)
+                self.songTitleLabel.text = self.api_instance.curr_song_label
+            }
+        })
+        NSLog(api_instance.curr_song_label ?? "nil sadness")
     }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
@@ -41,9 +50,7 @@ class HomeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                     
                 })
-//                UIView.animate(withDuration: 1.0, delay: 1.0) {
 //
-//                }
                 UIView.animate(withDuration: 0.2, delay: 2.0) {
                     self.resetCard()
                 }
@@ -59,7 +66,6 @@ class HomeViewController: UIViewController {
     }
     
     func resetCard(){
-//        let card = sender.view!
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
             self.card.center = self.view.center
