@@ -1,0 +1,22 @@
+PODS:
+  - Bolts/Tasks (1.9.1)
+  - Parse (1.19.3):
+    - Parse/Core (= 1.19.3)
+  - Parse/Core (1.19.3):
+    - Bolts/Tasks (= 1.9.1)
+
+DEPENDENCIES:
+  - Parse
+
+SPEC REPOS:
+  trunk:
+    - Bolts
+    - Parse
+
+SPEC CHECKSUMS:
+  Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
+  Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
+
+PODFILE CHECKSUM: 83b64a9db917944b13e38da6c5d167a8cd7068fe
+
+COCOAPODS: 1.11.3

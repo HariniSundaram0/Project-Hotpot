@@ -2,42 +2,71 @@
 //  LoginViewController.swift
 //  Project-Hotpot
 //
-//  Created by Harini Sundaram on 7/8/22.
+//  Created by Harini Sundaram on 7/12/22.
 //
 
 import UIKit
-//import "APIManager.swift"
+import Parse
 
 class LoginViewController: UIViewController {
 
-   // MARK: - Subviews
-   let stackView = UIStackView()
-   let connectLabel = UILabel()
-   let connectButton = UIButton(type: .system)
+    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var usernameField: UITextField!
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-   var api_instance = APIManager.shared()
-    
-   // MARK: App Life Cycle
-   override func viewDidLoad() {
-       //initialize APIManager Object
-       
-       super.viewDidLoad()
-       style()
-       layout()
-   }
-    
-    @objc func didTapConnect(_ button: UIButton) {
-        guard let sessionManager = api_instance.sessionManager else { return }
-        sessionManager.initiateSession(with: scopes, options: .clientOnly)
-        
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeNavController") as! UINavigationController
-        NSLog("new controller time")
-//        super.fetchPlayerState()
-//        nextViewController.songTitleLabel.text = self.lastPlayerState?.track.name
-        self.view.window?.rootViewController = nextViewController
+        // Do any additional setup after loading the view.
     }
     
+    @IBAction func didTapRegister(_ sender: Any) {
+        registerUser()
+    }
+    
+    @IBAction func didTapLogin(_ sender: Any) {
+        
+        loginUser()
+    }
+    
+    func registerUser() {
+        // initialize a user object
+        let newUser = PFUser()
+        
+        // set user properties
+        newUser.username = usernameField.text
+        newUser.password = passwordField.text
+        
+        // call sign up function on the object
+        newUser.signUpInBackground { (success: Bool, error: Error?) in
+            if let error = error {
+                NSLog("fuck there was an error registering")
+                print(error.localizedDescription)
+            } else {
+                print("User Registered successfully")
+                self.display_view()
+                
+            }
+        }
+    }
+    func loginUser() {
+
+       let username = usernameField.text ?? ""
+       let password = passwordField.text ?? ""
+
+       PFUser.logInWithUsername(inBackground: username, password: password) { (user: PFUser?, error: Error?) in
+            if let error = error {
+              print("User log in failed: \(error.localizedDescription)")
+            } else {
+              print("User logged in successfully")
+                self.display_view()
+              // display view controller that needs to shown after successful login
+            }
+         }
+    }
+    func display_view(){
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+        self.view.window?.rootViewController = nextViewController
+    }
 
     /*
     // MARK: - Navigation
@@ -49,40 +78,4 @@ class LoginViewController: UIViewController {
     }
     */
 
-}
-extension LoginViewController {
-    func style() {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.alignment = .center
-
-        connectLabel.translatesAutoresizingMaskIntoConstraints = false
-        connectLabel.text = "Connect your Spotify account"
-        connectLabel.font = UIFont.preferredFont(forTextStyle: .title3)
-        connectLabel.textColor = .systemGreen
-
-        connectButton.translatesAutoresizingMaskIntoConstraints = false
-        connectButton.configuration = .filled()
-        connectButton.setTitle("Continue with Spotify", for: [])
-        connectButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
-        connectButton.addTarget(self, action: #selector(didTapConnect), for: .primaryActionTriggered)
-
-    }
-
-    func layout() {
-
-        stackView.addArrangedSubview(connectLabel)
-        stackView.addArrangedSubview(connectButton)
-
-        view.addSubview(stackView)
-
-        NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
-
-    func updateViewBasedOnConnected() {
-    }
 }
