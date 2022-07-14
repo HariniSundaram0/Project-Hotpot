@@ -27,6 +27,10 @@ class HomeViewController: UIViewController {
         })
     }
     
+//    func addToParseQueue(){
+//
+//    }
+    
     @IBAction func didTapButton(_ sender: UIButton) {
         
         if (api_instance.lastPlayerState?.isPaused == true){

@@ -64,7 +64,7 @@ class LoginViewController: UIViewController {
     }
     func display_view(){
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as UIViewController
         self.view.window?.rootViewController = nextViewController
     }
 
