@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     var api_instance = APIManager.shared()
-    @IBOutlet weak var card: UIView!
+        @IBOutlet weak var card: UIView!
     
     @IBOutlet weak var playButton: UIButton!
     
@@ -102,9 +102,20 @@ class HomeViewController: UIViewController {
     }
     
     func resetSong(){
+        
+        //get the current song that we are going to reset
+        if let curr_song = self.api_instance.lastPlayerState?.track{
+            //add it to the database
+            PFSong.saveSong(song: curr_song)
+        }
+        else{
+            NSLog("last player state wasn't updated properly, is nil")
+            }
+        
         // get URI from algorithm, which is hard coded for now
         let songURI = getRandomSong()
-        // conveert that to Spotify Song Object
+        
+        // convert that to Spotify Song Object
         _ = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
             
             if (error != nil) {
@@ -116,7 +127,6 @@ class HomeViewController: UIViewController {
                 self.api_instance.appRemote.playerAPI?.play(success)
             }
         })
-
     }
     
     /*
