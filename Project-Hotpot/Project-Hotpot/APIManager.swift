@@ -73,7 +73,7 @@ class APIManager: NSObject {
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
         // otherwise another app switch will be required
         // for now, leaving this line commented out purposefully
-        // configuration.playURI = ""
+         configuration.playURI = "spotify:track:7p5bQJB4XsZJEEn6Tb7EaL"
         // Set these url's to your backend which contains the secret to exchange for an access token
         // You can use the provided ruby script spotify_token_swap.rb for testing purposes
         configuration.tokenSwapURL = URL(string: "http://localhost:1234/swap")
