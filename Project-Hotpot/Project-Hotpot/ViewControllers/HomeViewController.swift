@@ -18,7 +18,6 @@ class HomeViewController: UIViewController {
         // currently hardcoding a song to play on opening of the app
         self.resetSong()
         self.resetCard()
-//        self.songTitleLabel.text = self.api_instance.curr_song_label
     }
     
     // MARK: - Actions
