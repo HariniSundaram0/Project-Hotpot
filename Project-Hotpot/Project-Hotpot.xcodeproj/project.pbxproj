@@ -106,6 +106,7 @@
 				5EFB17F52874F2D400ECC6B8 /* Constants.swift */,
 				5EFB17E52874F1D000ECC6B8 /* Assets.xcassets */,
 				5EFB17EA2874F1D000ECC6B8 /* Info.plist */,
+				5EFB17F02874F1F500ECC6B8 /* SpotifyiOS.framework */,
 			);
 			path = "Project-Hotpot";
 			sourceTree = "<group>";
@@ -114,7 +115,6 @@
 			isa = PBXGroup;
 			children = (
 				481A2A7A1757134276DEFFB1 /* Pods_Project_Hotpot.framework */,
-				5EFB17F02874F1F500ECC6B8 /* SpotifyiOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

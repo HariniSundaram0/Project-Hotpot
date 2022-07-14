@@ -38,7 +38,7 @@ class LoginViewController: UIViewController {
         // call sign up function on the object
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if let error = error {
-                NSLog("fuck there was an error registering")
+                NSLog(" there was an error registering")
                 print(error.localizedDescription)
             } else {
                 print("User Registered successfully")
@@ -64,7 +64,7 @@ class LoginViewController: UIViewController {
     }
     func display_view(){
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeViewController")
         self.view.window?.rootViewController = nextViewController
     }
 

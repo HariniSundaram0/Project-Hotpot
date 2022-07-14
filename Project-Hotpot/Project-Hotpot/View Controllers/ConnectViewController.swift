@@ -32,7 +32,7 @@ class ConnectViewController: UIViewController {
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
          let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeNavController") as! UINavigationController
-//        NSLog("new controller time")
+        NSLog("new controller time")
 //        super.fetchPlayerState()
 //        nextViewController.songTitleLabel.text = self.lastPlayerState?.track.name
         self.view.window?.rootViewController = nextViewController
