@@ -8,28 +8,23 @@
 import Foundation
 import Parse
 
-var previous_array: [PFSong] = []
-
 func getRandomSong() -> String{
     return "spotify:track:20I6sIOMTCkB6w7ryavxtO"
 }
 
 //this is a testing function, to make sure that I can query like I want to going forward
 
-func getPreviousSongs() {
-    
+func getPreviousSongs () -> [PFSong] {
+//    let var
+    var result: [PFSong] = []
     let query = PFQuery(className:PFSong.parseClassName())
     query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) -> Void in
         if error != nil {
-            print(error?.localizedDescription)
+            print(error?.localizedDescription ?? "error happened while fetching from parse")
         } else if let objects = objects as? [PFSong]{
-            //I'm making sure I am able to access the PFSong objects
-            for obj in objects{
-                NSLog(obj.name)
-            }
-
+            result = objects
         }
- 
     }
+    return result
 }
 
