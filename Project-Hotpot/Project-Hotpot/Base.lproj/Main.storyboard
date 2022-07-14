@@ -113,10 +113,10 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgE-gM-IcB">
-                                <rect key="frame" x="174" y="713" width="67" height="52"/>
+                                <rect key="frame" x="165" y="699" width="67" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title=""/>
+                                <buttonConfiguration key="configuration" style="plain" image="pause.circle.fill" catalog="system" title=""/>
                                 <connections>
                                     <action selector="didTapButton:" destination="Dhf-U1-TWR" eventType="touchUpInside" id="njf-EE-WVg"/>
                                 </connections>
@@ -161,6 +161,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="pause.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
