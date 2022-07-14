@@ -32,8 +32,16 @@ class PFSong: PFObject, PFSubclassing {
         newSong.album = song.album.name
         
        // Save object (following function will save the object in Parse asynchronously)
-        newSong.saveInBackground()
-    
+        newSong.saveInBackground(block: { (success, error) in
+            if (success) {
+             // The object has been saved.
+                NSLog("Song was saved successfully")
+           } else {
+               // There was a problem, check error.description
+               let error_description = error?.localizedDescription
+               NSLog(error_description ?? "error occured while saving")
+           }
+         })
     }
 }
 
