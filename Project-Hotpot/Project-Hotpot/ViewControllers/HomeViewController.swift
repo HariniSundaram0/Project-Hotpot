@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    var api_instance = APIManager.shared()
+    var api_instance = SpotifyManager.shared()
         @IBOutlet weak var card: UIView!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")

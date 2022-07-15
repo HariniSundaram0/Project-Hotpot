@@ -6,8 +6,6 @@
 //
 
 import UIKit
-//import "APIManager.swift"
-
 class ConnectViewController: UIViewController {
 
    // MARK: - Subviews
@@ -19,7 +17,7 @@ class ConnectViewController: UIViewController {
     
    // MARK: App Life Cycle
    override func viewDidLoad() {
-       //initialize APIManager Object
+       //initialize SpotifyManager Object
        
        super.viewDidLoad()
        style()
