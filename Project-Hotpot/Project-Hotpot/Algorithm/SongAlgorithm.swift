@@ -57,21 +57,20 @@ class songAlgorithm{
     }
     
     //this is a testing function, to make sure that I can query like I want to going forward
-    
-    func getPreviousSongs () -> [PFSong] {
-        var result: [PFSong] = []
+    //use completion function in order to access objects!
+    func getPreviousSongs (completion: @escaping([PFObject]?, Error?) -> Void){
         let query = PFQuery(className:PFSong.parseClassName())
         //we only want data from the current user
         query.whereKey("user", equalTo: PFUser.current())
-        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) -> Void in
+        query.findObjectsInBackground {(objects: [PFObject]?, error: Error?) -> Void in
             if error != nil {
                 NSLog(error?.localizedDescription ?? "error happened while fetching from parse")
+                completion(nil, error)
             } else if let objects = objects as? [PFSong]{
-                result = objects
                 NSLog("found %i number of queries", objects.count)
+                completion(objects, nil)
             }
         }
-        return result
     }
     func print_songs(songs: [PFSong]) -> Void{
         NSLog("printing now")
