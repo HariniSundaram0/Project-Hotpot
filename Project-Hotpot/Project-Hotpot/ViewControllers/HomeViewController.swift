@@ -49,6 +49,8 @@ class HomeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
 
                 })
+                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 2 methods in both clauses of if statement
+                self.resetSong()
                 self.resetCard()
                 return
             }
