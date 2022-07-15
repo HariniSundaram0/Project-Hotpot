@@ -67,11 +67,9 @@ class SpotifyManager: NSObject {
     
     lazy var configuration: SPTConfiguration = {
         let configuration = SPTConfiguration(clientID: spotifyClientId, redirectURL: redirectUri)
-        //
-        
+
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
         // otherwise another app switch will be required
-        // for now, leaving this line commented out purposefully
         configuration.playURI = "spotify:track:7p5bQJB4XsZJEEn6Tb7EaL"
         // Set these url's to your backend which contains the secret to exchange for an access token
         // You can use the provided ruby script spotify_token_swap.rb for testing purposes
@@ -79,9 +77,6 @@ class SpotifyManager: NSObject {
         configuration.tokenRefreshURL = URL(string: "http://localhost:1234/refresh")
         return configuration
     }()
-    
-    //    static let spotifyPlayer = SPTAudioStreamingController(clientId: spotifyClientId)
-    
     lazy var sessionManager: SPTSessionManager? = {
         let manager = SPTSessionManager(configuration: configuration, delegate: self)
         return manager
@@ -93,8 +88,6 @@ class SpotifyManager: NSObject {
         self.curr_song_label = playerState.track.name
     }
 }
-
-
 
 // MARK: - SPTAppRemoteDelegate
 extension SpotifyManager: SPTAppRemoteDelegate {

@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     var api_instance = SpotifyManager.shared()
-        @IBOutlet weak var card: UIView!
+    @IBOutlet weak var card: UIView!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
@@ -24,7 +24,7 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - Actions
-
+    
     @IBAction func didTapButton(_ sender: UIButton) {
         
         if (api_instance.lastPlayerState?.isPaused == true){
@@ -38,13 +38,13 @@ class HomeViewController: UIViewController {
     }
     
     func presentAlertController(title: String, message: String, buttonTitle: String) {
-            DispatchQueue.main.async {
-                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                let action = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
-                controller.addAction(action)
-                self.present(controller, animated: true)
-            }
+        DispatchQueue.main.async {
+            let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let action = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
+            controller.addAction(action)
+            self.present(controller, animated: true)
         }
+    }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         let card = sender.view!
@@ -55,11 +55,11 @@ class HomeViewController: UIViewController {
         if sender.state == UIGestureRecognizer.State.ended{
             
             if card.center.x < 75{
-            // move off to left
+                // move off to left
                 NSLog("moving to left")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
-
+                    
                 })
                 //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 2 methods in both clauses of if statement
                 self.resetSong()
@@ -73,12 +73,12 @@ class HomeViewController: UIViewController {
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
-//
+                //
                 UIView.animate(withDuration: 0.2, delay: 2.0) {
                     self.resetSong()
                     self.resetCard()
                 }
-
+                
                 return
                 //move off to right
             }
@@ -87,7 +87,7 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - helper functions
-    func resetCard(){
+    func resetCard() {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
             self.card.center = self.view.center
@@ -95,14 +95,14 @@ class HomeViewController: UIViewController {
         })
     }
     
-    func playSong(){
+    func playSong() {
         //resume the audio
         api_instance.appRemote.playerAPI?.resume()
         //change the button image
         self.playButton.setImage(pauseButtonImage, for:.normal)
     }
     
-    func pauseSong(){
+    func pauseSong() {
         //pause the audio
         api_instance.appRemote.playerAPI?.pause()
         //change the button image
@@ -110,16 +110,16 @@ class HomeViewController: UIViewController {
         
     }
     
-    func resetSong(){
+    func resetSong() {
         
         //get the current song that we are going to reset
         if let curr_song = self.api_instance.lastPlayerState?.track{
             //add it to the database
-            PFSong.saveSong(song: curr_song)
+            PFSong.saveSongInBackground(song: curr_song)
         }
         else{
             NSLog("last player state wasn't updated properly, is nil")
-            }
+        }
         // get URI from algorithm, which is hard coded for now
         let alg_instance = songAlgorithm()
         let songURI = alg_instance.getRandomSong()
