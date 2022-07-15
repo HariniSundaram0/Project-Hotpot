@@ -31,11 +31,9 @@ class ConnectViewController: UIViewController {
         sessionManager.initiateSession(with: scopes, options: .clientOnly)
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "HomeNavController") as! UINavigationController
-//        NSLog("new controller time")
-//        super.fetchPlayerState()
-//        nextViewController.songTitleLabel.text = self.lastPlayerState?.track.name
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "LoginViewController")
         self.view.window?.rootViewController = nextViewController
+        
     }
     
 

@@ -37,7 +37,7 @@
         <!--Login View Controller-->
         <scene sceneID="RE3-a4-eRT">
             <objects>
-                <viewController id="wcu-yi-MMK" customClass="LoginViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="wcu-yi-MMK" customClass="LoginViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VcX-Nq-WZ0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

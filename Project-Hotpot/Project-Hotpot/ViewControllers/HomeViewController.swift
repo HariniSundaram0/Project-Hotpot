@@ -120,7 +120,8 @@ class HomeViewController: UIViewController {
             NSLog("last player state wasn't updated properly, is nil")
             }
         // get URI from algorithm, which is hard coded for now
-        let songURI = getRandomSong()
+        let alg_instance = songAlgorithm()
+        let songURI = alg_instance.getRandomSong()
         // convert that to Spotify Song Object
         _ = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
             
