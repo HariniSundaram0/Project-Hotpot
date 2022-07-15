@@ -8,6 +8,10 @@
 import Foundation
 import Parse
 
+class SongAlgortithm {
+    
+
+
 func getRandomSong() -> String{
     return "spotify:track:20I6sIOMTCkB6w7ryavxtO"
 }
@@ -43,3 +47,4 @@ func print_songs(songs: [PFSong]){
     }
 }
 
+}

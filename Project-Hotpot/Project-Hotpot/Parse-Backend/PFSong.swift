@@ -12,7 +12,7 @@ import Parse
 class PFSong: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String
-    @NSManaged var URI: String
+    @NSManaged var uri: String
     @NSManaged var duration: UInt
     @NSManaged var artist: String
     @NSManaged var album: String
