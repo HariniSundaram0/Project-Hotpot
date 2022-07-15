@@ -19,7 +19,8 @@ func getRandomSong() -> String{
         else{
             NSLog("success :)")
             //for now printing dictionary for sake of testing, in next commit will swap out to access the track uri and return that instead of hardcoding
-            print(dictionary)
+//            print(dictionary)
+            
         }
     }
     return "spotify:track:20I6sIOMTCkB6w7ryavxtO"

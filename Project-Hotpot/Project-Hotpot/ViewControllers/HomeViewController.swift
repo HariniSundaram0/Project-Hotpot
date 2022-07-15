@@ -34,6 +34,15 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func presentAlertController(title: String, message: String, buttonTitle: String) {
+            DispatchQueue.main.async {
+                let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let action = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
+                controller.addAction(action)
+                self.present(controller, animated: true)
+            }
+        }
+    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         let card = sender.view!
         let point = sender.translation(in: view)
@@ -56,6 +65,8 @@ class HomeViewController: UIViewController {
             }
             else if card.center.x > (width - 75){
                 NSLog("moving to right")
+                
+                presentAlertController(title: "Liked Song", message: "Added to Playlist: PLAYLIST", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
