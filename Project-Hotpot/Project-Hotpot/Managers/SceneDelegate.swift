@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
             api_instance.accessToken = access_token
         } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
-            print("No access token error =", error_description)
+            NSLog("No access token error =", error_description)
         }
     }
 

@@ -39,9 +39,9 @@ class LoginViewController: UIViewController {
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if let error = error {
                 NSLog(" there was an error registering")
-                print(error.localizedDescription)
+                NSLog(error.localizedDescription)
             } else {
-                print("User Registered successfully")
+                NSLog("User Registered successfully")
                 self.display_view()
                 
             }
@@ -54,9 +54,9 @@ class LoginViewController: UIViewController {
 
        PFUser.logInWithUsername(inBackground: username, password: password) { (user: PFUser?, error: Error?) in
             if let error = error {
-              print("User log in failed: \(error.localizedDescription)")
+                NSLog("User log in failed: \(error.localizedDescription)")
             } else {
-              print("User logged in successfully")
+                NSLog("User logged in successfully")
                 self.display_view()
               // display view controller that needs to shown after successful login
             }

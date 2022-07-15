@@ -15,7 +15,7 @@ func getRandomSong() -> String{
     
     fetchSong { (dictionary, error) in
         if let error = error {
-            print("Fetching token request error \(error)")
+            NSLog("Fetching token request error \(error)")
             return
         }
         else{
@@ -48,7 +48,7 @@ func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
               let response = response as? HTTPURLResponse,  // is there HTTP response
               (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
               error == nil else {                           // was there no error, otherwise ...
-                  print("Error fetching token \(error?.localizedDescription ?? "")")
+                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
                   return completion(nil, error)
               }
         let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
@@ -66,7 +66,7 @@ func getPreviousSongs () -> [PFSong] {
     query.whereKey("user", equalTo: PFUser.current())
     query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) -> Void in
         if error != nil {
-            print(error?.localizedDescription ?? "error happened while fetching from parse")
+            NSLog(error?.localizedDescription ?? "error happened while fetching from parse")
         } else if let objects = objects as? [PFSong]{
             result = objects
             NSLog("found %i number of queries", objects.count)

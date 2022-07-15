@@ -40,7 +40,7 @@ class APIManager: NSObject {
         didSet {
             fetchAccessToken { (dictionary, error) in
                 if let error = error {
-                    print("Fetching token request error \(error)")
+                    NSLog("Fetching token request error \(error)")
                     return
                 }
                 let accessToken = dictionary!["access_token"] as! String
@@ -103,7 +103,7 @@ extension APIManager: SPTAppRemoteDelegate {
         appRemote.playerAPI?.delegate = self
         appRemote.playerAPI?.subscribe(toPlayerState: { (success, error) in
             if let error = error {
-                print("Error subscribing to player state:" + error.localizedDescription)
+                NSLog("Error subscribing to player state:" + error.localizedDescription)
             }
         })
         fetchPlayerState()
@@ -131,7 +131,7 @@ extension APIManager: SPTAppRemotePlayerStateDelegate {
  extension APIManager: SPTSessionManagerDelegate {
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
         if error.localizedDescription == "The operation couldn’t be completed. (com.spotify.sdk.login error 1.)" {
-            print("AUTHENTICATE with WEBAPI")
+            NSLog("AUTHENTICATE with WEBAPI")
         }
     }
 
@@ -175,11 +175,11 @@ extension APIManager {
                   let response = response as? HTTPURLResponse,  // is there HTTP response
                   (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
                   error == nil else {                           // was there no error, otherwise ...
-                      print("Error fetching token \(error?.localizedDescription ?? "")")
+                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
                       return completion(nil, error)
                   }
             let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            print("Access Token Dictionary=", responseObject ?? "")
+            NSLog("Access Token Dictionary=", responseObject ?? "")
             completion(responseObject, nil)
         }
         task.resume()
@@ -188,16 +188,15 @@ extension APIManager {
     func fetchArtwork(for track: SPTAppRemoteTrack) {
         appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
             if let error = error {
-                print("Error fetching track image: " + error.localizedDescription)
+                NSLog("Error fetching track image: " + error.localizedDescription)
             }
         })
     }
 
     func fetchPlayerState() {
-        NSLog("in fetch player")
         appRemote.playerAPI?.getPlayerState({ [weak self] (playerState, error) in
             if let error = error {
-                print("Error getting player state:" + error.localizedDescription)
+                NSLog("Error getting player state:" + error.localizedDescription)
             } else if let playerState = playerState as? SPTAppRemotePlayerState {
                 self?.update(playerState: playerState)
 
