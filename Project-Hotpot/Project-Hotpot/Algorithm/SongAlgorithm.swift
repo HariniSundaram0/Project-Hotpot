@@ -58,7 +58,7 @@ class songAlgorithm{
     
     //this is a testing function, to make sure that I can query like I want to going forward
     //use completion function in order to access objects!
-    func getPreviousSongs (completion: @escaping([PFObject]?, Error?) -> Void){
+    func getPreviousSongs (completion: @escaping([PFSong]?, Error?) -> Void){
         let query = PFQuery(className:PFSong.parseClassName())
         //we only want data from the current user
         query.whereKey("user", equalTo: PFUser.current())

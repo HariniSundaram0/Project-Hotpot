@@ -9,30 +9,9 @@ import Foundation
 import UIKit
 
 class SpotifyManager: NSObject {
-    //    @IBOutlet weak var songTitle: UILabel!
+    
+    //MARK: - Variables
     var curr_song_label:String?
-    
-    //    class NetworkManager {
-    
-    // MARK: - Properties
-    
-    private static var sharedSpotifyManager: SpotifyManager = {
-        let SpotifyManager = SpotifyManager()
-        return SpotifyManager
-    }()
-    
-    // MARK: - Initializers
-    //doing this way so that only 1 instance can be created
-    override private init() {
-        NSLog("API Manager Initialized")
-    }
-    
-    // MARK: - Accessors
-    class func shared() -> SpotifyManager {
-        return sharedSpotifyManager
-    }
-    
-    
     var lastPlayerState: SPTAppRemotePlayerState?
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -67,7 +46,7 @@ class SpotifyManager: NSObject {
     
     lazy var configuration: SPTConfiguration = {
         let configuration = SPTConfiguration(clientID: spotifyClientId, redirectURL: redirectUri)
-
+        
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
         // otherwise another app switch will be required
         configuration.playURI = "spotify:track:7p5bQJB4XsZJEEn6Tb7EaL"
@@ -82,6 +61,23 @@ class SpotifyManager: NSObject {
         return manager
     }()
     
+    private static var sharedSpotifyManager: SpotifyManager = {
+        let SpotifyManager = SpotifyManager()
+        return SpotifyManager
+    }()
+    
+    // MARK: - Initializers
+    //doing this way so that only 1 instance can be created
+    override private init() {
+        NSLog("API Manager Initialized")
+    }
+    
+    // MARK: - Accessors
+    class func shared() -> SpotifyManager {
+        return sharedSpotifyManager
+    }
+    
+    // MARK: - Properties
     func update(playerState: SPTAppRemotePlayerState) {
         NSLog("updated!")
         self.lastPlayerState = playerState
