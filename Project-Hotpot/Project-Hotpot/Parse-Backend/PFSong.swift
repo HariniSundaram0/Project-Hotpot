@@ -20,12 +20,12 @@ class PFSong: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "PastSongs"
     }
+   
+    
     
     class func saveSong(song:SPTAppRemoteTrack) {
        // use subclass approach
        let newSong = PFSong()
-       
-        // Add relevant fields to the object
         
         //TODO: Lookup other ways to prevent forced unwrapping
         if let current_user = PFUser.current()
@@ -46,13 +46,15 @@ class PFSong: PFObject, PFSubclassing {
         newSong.saveInBackground(block: { (success, error) in
             if (success) {
              // The object has been saved.
-                NSLog("Song was saved successfully")
+                NSLog("Song was saved successfully for user")
            } else {
                // There was a problem, check error.description
                let error_description = error?.localizedDescription
                NSLog(error_description ?? "error occured while saving")
            }
          })
+//        uncomment line below to view print messages
+//        getPreviousSongs()
     }
 }
 
