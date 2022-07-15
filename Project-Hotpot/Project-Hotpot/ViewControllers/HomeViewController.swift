@@ -11,6 +11,9 @@ class HomeViewController: UIViewController {
     var api_instance = APIManager.shared()
         @IBOutlet weak var card: UIView!
     
+    let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
+    let playButtomImage = UIImage(systemName: "play.circle.fill")
+    
     @IBOutlet weak var playButton: UIButton!
     
     @IBOutlet weak var songTitleLabel: UILabel!
@@ -96,16 +99,14 @@ class HomeViewController: UIViewController {
         //resume the audio
         api_instance.appRemote.playerAPI?.resume()
         //change the button image
-        let newIcon = UIImage(systemName: "pause.circle.fill")
-        self.playButton.setImage(newIcon, for:.normal)
+        self.playButton.setImage(pauseButtonImage, for:.normal)
     }
     
     func pauseSong(){
         //pause the audio
         api_instance.appRemote.playerAPI?.pause()
         //change the button image
-        let newIcon = UIImage(systemName: "play.circle.fill")
-        self.playButton.setImage(newIcon, for:.normal)
+        self.playButton.setImage(playButtomImage, for:.normal)
         
     }
     
@@ -135,15 +136,4 @@ class HomeViewController: UIViewController {
             }
         })
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
