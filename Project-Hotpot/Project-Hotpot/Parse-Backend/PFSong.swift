@@ -21,8 +21,6 @@ class PFSong: PFObject, PFSubclassing {
         return "PastSongs"
     }
    
-    
-    
     class func saveSong(song:SPTAppRemoteTrack) {
        // use subclass approach
        let newSong = PFSong()
@@ -35,7 +33,6 @@ class PFSong: PFObject, PFSubclassing {
         else{
             NSLog("current user is nil")
         }
-        
         newSong.name = song.name
         newSong.URI = song.uri
         newSong.duration = song.duration
@@ -53,8 +50,6 @@ class PFSong: PFObject, PFSubclassing {
                NSLog(error_description ?? "error occured while saving")
            }
          })
-//        uncomment line below to view print messages
-//        getPreviousSongs()
     }
 }
 

@@ -9,6 +9,8 @@ import Foundation
 import Parse
 import AFNetworking
 
+class songAlgorithm{
+    
 func getRandomSong() -> String{
     
     fetchSong { (dictionary, error) in
@@ -19,7 +21,7 @@ func getRandomSong() -> String{
         else{
             NSLog("success :)")
             //for now printing dictionary for sake of testing, in next commit will swap out to access the track uri and return that instead of hardcoding
-//            print(dictionary)
+            print(dictionary)
             
         }
     }
@@ -62,25 +64,21 @@ func getPreviousSongs () -> [PFSong] {
     let query = PFQuery(className:PFSong.parseClassName())
     //we only want data from the current user
     query.whereKey("user", equalTo: PFUser.current())
-    
     query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) -> Void in
         if error != nil {
             print(error?.localizedDescription ?? "error happened while fetching from parse")
         } else if let objects = objects as? [PFSong]{
             result = objects
             NSLog("found %i number of queries", objects.count)
-        
-            //uncomment if you want to print out all of the song names
-            //print_songs(songs: objects)
         }
     }
     return result
 }
-
 func print_songs(songs: [PFSong]) -> Void{
     NSLog("printing now")
     for song in songs{
         NSLog(song.name)
+    }
     }
 }
 

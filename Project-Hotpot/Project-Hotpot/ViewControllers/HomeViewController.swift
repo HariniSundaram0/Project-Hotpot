@@ -79,21 +79,16 @@ class HomeViewController: UIViewController {
                 return
                 //move off to right
             }
-            
             resetCard()
-            
-            
         }
     }
     
     // MARK: - helper functions
-    
     func resetCard(){
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
             self.card.center = self.view.center
             self.songTitleLabel.text = self.api_instance.curr_song_label
-            
         })
     }
     
@@ -124,10 +119,8 @@ class HomeViewController: UIViewController {
         else{
             NSLog("last player state wasn't updated properly, is nil")
             }
-        
         // get URI from algorithm, which is hard coded for now
         let songURI = getRandomSong()
-        
         // convert that to Spotify Song Object
         _ = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
             
