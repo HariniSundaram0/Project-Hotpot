@@ -12,7 +12,7 @@ import Parse
 class PFSong: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String
-    @NSManaged var URI: String
+    @NSManaged var uri: String
     @NSManaged var duration: UInt
     @NSManaged var artist: String
     @NSManaged var album: String
@@ -34,7 +34,7 @@ class PFSong: PFObject, PFSubclassing {
             NSLog("current user is nil")
         }
         newSong.name = song.name
-        newSong.URI = song.uri
+        newSong.uri = song.uri
         newSong.duration = song.duration
         newSong.artist = song.artist.name
         newSong.album = song.album.name

@@ -18,7 +18,6 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
-        // currently hardcoding a song to play on opening of the app
         self.resetSong()
         self.resetCard()
     }
@@ -73,16 +72,14 @@ class HomeViewController: UIViewController {
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
-                //
                 UIView.animate(withDuration: 0.2, delay: 2.0) {
                     self.resetSong()
                     self.resetCard()
                 }
-                
                 return
-                //move off to right
             }
-            resetCard()
+//            self.resetSong()
+            self.resetCard()
         }
     }
     
@@ -111,7 +108,6 @@ class HomeViewController: UIViewController {
     }
     
     func resetSong() {
-        
         //get the current song that we are going to reset
         if let curr_song = self.api_instance.lastPlayerState?.track{
             //add it to the database
@@ -120,20 +116,28 @@ class HomeViewController: UIViewController {
         else{
             NSLog("last player state wasn't updated properly, is nil")
         }
-        // get URI from algorithm, which is hard coded for now
+        // get URI from algorithm
         let alg_instance = songAlgorithm()
-        let songURI = alg_instance.getRandomSong()
-        // convert that to Spotify Song Object
-        _ = self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI, callback: {success, error in
-            
-            if (error != nil) {
-                NSLog(error?.localizedDescription ?? "error fetching song")
+        alg_instance.getRandomSong {uri, error in
+            if error == nil, let uri = uri as? String?{
+                let songURI = uri
+                NSLog(uri ?? "nil uri call")
+                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {success, error in
+
+                    if (error != nil) {
+                        NSLog(error?.localizedDescription ?? "error fetching song")
+                    }
+                    else if let success = success as? SPTAppRemoteContentItem
+                    {
+                        //play if no errors
+                        self.api_instance.appRemote.playerAPI?.play(success)                    }
+                })
             }
-            else if let success = success as? SPTAppRemoteContentItem
-            {
-                //play if no errors
-                self.api_instance.appRemote.playerAPI?.play(success)
+            else{
+                NSLog("parse failed")
             }
-        })
+        }
+        //TODO: add completion block to resetcard -> have to manually move card a little to re-reset card.
+        self.resetCard()
     }
 }

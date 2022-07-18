@@ -10,37 +10,46 @@ import Parse
 import AFNetworking
 
 class songAlgorithm{
+    var defaultSong: String = "spotify:album:3RQQmkQEvNCY4prGKE6oc5"
     
-    func getRandomSong() -> String{
+    //TODO: CRASHES WHEN TOO MANY SONG REQUESTS, FOUND STACKOVERFLOW ALREADY
+    func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
         fetchSong { (dictionary, error) in
             if let error = error {
                 NSLog("Fetching token request error \(error)")
-                return
+                return completion(nil, error)
             }
             else{
-                NSLog("success :)")
-                //for now printing dictionary for sake of testing, in next commit will swap out to access the track uri and return that instead of hardcoding
-                print(dictionary)
-                
+                //beginning of series of conditional downcasting to parse
+                guard let tracks = dictionary?["tracks"] as? [String:Any]?,
+                      let items = tracks?["items"] as? [[String:Any]?],
+                      let randomSong = items.randomElement(),
+                      let randomURI = randomSong?["uri"]
+                else{
+                    NSLog("failed parse")
+                    return completion(nil, error)
+                }
+                return completion(randomURI, error)
             }
         }
-        return "spotify:track:20I6sIOMTCkB6w7ryavxtO"
     }
     
     //TODO: SPLIT INTO SMALLER HELPER FUNCTIONS FOR SAKE OF REUSE. CONSIDER MOVING PARTS OF THIS INTO API MANAGER
     func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
         let api_instance = SpotifyManager.shared()
         //    I in the future will switch out this endpoint to access different search features
-        let url = URL(string: "https://api.spotify.com/v1/me/tracks")!
+        // currently just gets queries for 50 songs that contain an A
+        let url = URL(string: "https://api.spotify.com/v1/search?q=a&type=track&limit=50")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         if api_instance.appRemote.connectionParameters.accessToken == nil {
             NSLog("access token is nil")
         }
-        //using force unwrap because I am sure that the accesstoken is not nil, otherwise this function wouldn't be called
+        //using force unwrap because function called only when accessToken exists
         var new_string = "Bearer " + api_instance.appRemote.connectionParameters.accessToken!
         request.allHTTPHeaderFields = ["Authorization": new_string,
-                                       "Content-Type": "application/json"]
+                                       "Content-Type": "application/json",
+                                       "Accept": "application/json"]
         //create task
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,                              // is there data
@@ -70,12 +79,6 @@ class songAlgorithm{
                 NSLog("found %i number of queries", objects.count)
                 completion(objects, nil)
             }
-        }
-    }
-    func print_songs(songs: [PFSong]) -> Void{
-        NSLog("printing now")
-        for song in songs{
-            NSLog(song.name)
         }
     }
 }
