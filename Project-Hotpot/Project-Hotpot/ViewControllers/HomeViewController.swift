@@ -36,7 +36,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func presentAlertController(title: String, message: String, buttonTitle: String) {
+    func presentAlert(title: String, message: String, buttonTitle: String) {
         DispatchQueue.main.async {
             let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
             let action = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
@@ -68,7 +68,7 @@ class HomeViewController: UIViewController {
             else if card.center.x > (width - 75){
                 NSLog("moving to right")
                 
-                presentAlertController(title: "Liked Song", message: "Added to Playlist: PLAYLIST", buttonTitle: "Ok")
+                presentAlert(title: "Liked Song", message: "Added to Playlist: PLAYLIST", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
@@ -78,7 +78,6 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-//            self.resetSong()
             self.resetCard()
         }
     }
@@ -117,20 +116,20 @@ class HomeViewController: UIViewController {
             NSLog("last player state wasn't updated properly, is nil")
         }
         // get URI from algorithm
-        let alg_instance = songAlgorithm()
+        let alg_instance = SongAlgorithm()
         alg_instance.getRandomSong {uri, error in
             if error == nil, let uri = uri as? String?{
                 let songURI = uri
                 NSLog(uri ?? "nil uri call")
-                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {success, error in
+                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {songContent, error in
 
                     if (error != nil) {
                         NSLog(error?.localizedDescription ?? "error fetching song")
                     }
-                    else if let success = success as? SPTAppRemoteContentItem
+                    else if let songContent = songContent as? SPTAppRemoteContentItem
                     {
                         //play if no errors
-                        self.api_instance.appRemote.playerAPI?.play(success)                    }
+                        self.api_instance.appRemote.playerAPI?.play(songContent)                    }
                 })
             }
             else{

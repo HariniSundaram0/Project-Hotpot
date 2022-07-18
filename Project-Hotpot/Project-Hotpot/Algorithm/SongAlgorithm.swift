@@ -9,7 +9,7 @@ import Foundation
 import Parse
 import AFNetworking
 
-class songAlgorithm{    
+class SongAlgorithm{    
     //TODO: CRASHES WHEN TOO MANY SONG REQUESTS, FOUND STACKOVERFLOW ALREADY
     func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
         fetchSong { (dictionary, error) in
@@ -44,7 +44,7 @@ class songAlgorithm{
             NSLog("access token is nil")
         }
         //using force unwrap because function called only when accessToken exists
-        var new_string = "Bearer " + api_instance.appRemote.connectionParameters.accessToken!
+        let new_string = "Bearer " + api_instance.appRemote.connectionParameters.accessToken!
         request.allHTTPHeaderFields = ["Authorization": new_string,
                                        "Content-Type": "application/json",
                                        "Accept": "application/json"]
