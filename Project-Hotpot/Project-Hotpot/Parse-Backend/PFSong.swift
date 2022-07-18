@@ -21,7 +21,7 @@ class PFSong: PFObject, PFSubclassing {
         return "PastSongs"
     }
     
-    class func saveSongInBackground(song:SPTAppRemoteTrack) {
+    class func saveSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (PFSong?, Error?)-> (Void)) {
         // use subclass approach
         let newSong = PFSong()
         
@@ -44,10 +44,12 @@ class PFSong: PFObject, PFSubclassing {
             if (success) {
                 // The object has been saved.
                 NSLog("Song was saved successfully for user")
+                completion(newSong, nil)
             } else {
                 // There was a problem, check error.description
                 let error_description = error?.localizedDescription
                 NSLog(error_description ?? "error occured while saving")
+                completion(nil, error)
             }
         })
     }

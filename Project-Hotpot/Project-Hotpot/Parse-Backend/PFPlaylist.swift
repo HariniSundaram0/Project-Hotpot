@@ -12,7 +12,7 @@ import AFNetworking
 class PFPlaylist: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String?
-    @NSManaged var songArray : [PFSong]?
+    @NSManaged var songArray : [String]?
     
     static func parseClassName() -> String {
         return "Playlist"
@@ -29,7 +29,7 @@ class PFPlaylist: PFObject, PFSubclassing {
         newPlaylist.songArray = []
         
         //save asynchronously
-        newPlaylist.saveInBackground(block: {isSuccessful, error in
+        newPlaylist.saveInBackground(block: { isSuccessful, error in
             if (isSuccessful){
                 completion(true)
             }
@@ -40,8 +40,37 @@ class PFPlaylist: PFObject, PFSubclassing {
             
         })
     }
+    
+    class func addSongToPlaylistInBackground(song: PFSong,
+                                             playlist: PFPlaylist,
+                                             completion: @escaping((Bool, Error?) -> Void)) {
+        let songID = song.objectId!
+        //TODO: consider switching from array of SongID's to relational table
+        playlist.songArray?.append(songID)
+        playlist.saveInBackground {success, error in
+            if success == true {
+                completion(true, nil)
+            }
+            else{
+                completion(false, error)
+            }
+        }
+    }
+    
+    //TODO: change to getting ALL playlists instead of just first.
+    class func getPlaylistInBackground(completion: @escaping(PFPlaylist?, Error?) -> Void) {
+        let query = PFQuery(className:PFPlaylist.parseClassName())
+        //we only want data from the current user
+        query.whereKey("user", equalTo: PFUser.current())
+        query.getFirstObjectInBackground {playlistObject,error in
+            if let playlistObject = playlistObject as? PFPlaylist {
+                completion(playlistObject, nil)
+            }
+            else{
+                completion(nil, error)
+            }
+        }
+    }
 }
-    
-    
-    
-    
+
+

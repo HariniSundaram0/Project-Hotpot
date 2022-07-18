@@ -9,6 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     var api_instance = SpotifyManager.shared()
+    var currPlaylistName: String = ""
     @IBOutlet weak var card: UIView!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
@@ -60,15 +61,15 @@ class HomeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
                     
                 })
-                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 2 methods in both clauses of if statement
+                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
+                self.saveCurrentSong()
                 self.resetSong()
                 self.resetCard()
                 return
             }
             else if card.center.x > (width - 75){
-                NSLog("moving to right")
-                
-                presentAlert(title: "Liked Song", message: "Added to Playlist: PLAYLIST", buttonTitle: "Ok")
+                self.addToPlaylist()
+                presentAlert(title: "Liked Song", message: "Added to Playlist: \(currPlaylistName)", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
@@ -83,6 +84,41 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - helper functions
+    func addToPlaylist(){
+        //extract pfsong object
+        //TODO: consider using optional completion blocks maybe to avoid using repeat code?
+        //TODO: Ask Toby for style advice on this function especially -> nested functions with completion handlers?
+        if let curr_song = self.api_instance.lastPlayerState?.track{
+            //add it to the database
+            PFPlaylist.getPlaylistInBackground { currPlaylist, playlistError in
+                if playlistError == nil, let currPlaylist = currPlaylist {
+                    // extracted PFPlaylist object successfully
+                    PFSong.saveSongInBackground(song: curr_song) {songObject, error in
+                        if error == nil, let songObject = songObject{
+                            //extracted PFSong Object successfully
+                            PFPlaylist.addSongToPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
+                                if (error == nil){
+                                    //TODO: Fix weird optional wrapping text when printed
+                                    NSLog("add to playlist: \(currPlaylist.name) successful")
+                                    self.currPlaylistName = currPlaylist.name ?? "playlist_name"
+                                }
+                                else{
+                                    NSLog("failed adding to playlist")
+                                }
+                            }
+                        }
+                        else{
+                            NSLog("song wasn't saved properly")
+                        }
+                    }
+                }
+                else{
+                    NSLog("playlist not fetched properly")
+                }
+            }
+        }
+    }
+    
     func resetCard() {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
@@ -106,15 +142,21 @@ class HomeViewController: UIViewController {
         
     }
     
-    func resetSong() {
-        //get the current song that we are going to reset
+    func saveCurrentSong(){
         if let curr_song = self.api_instance.lastPlayerState?.track{
             //add it to the database
-            PFSong.saveSongInBackground(song: curr_song)
+            PFSong.saveSongInBackground(song: curr_song) {_, error in
+                if error == nil {
+                    NSLog("song saved ")
+                }
+                else{
+                    NSLog("song wasn't saved properly")
+                }
+            }
         }
-        else{
-            NSLog("last player state wasn't updated properly, is nil")
-        }
+    }
+    
+    func resetSong() {
         // get URI from algorithm
         let alg_instance = SongAlgorithm()
         alg_instance.getRandomSong {uri, error in
@@ -122,7 +164,6 @@ class HomeViewController: UIViewController {
                 let songURI = uri
                 NSLog(uri ?? "nil uri call")
                 self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {songContent, error in
-
                     if (error != nil) {
                         NSLog(error?.localizedDescription ?? "error fetching song")
                     }
