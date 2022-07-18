@@ -14,8 +14,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func didTapRegister(_ sender: Any) {
@@ -23,7 +21,6 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func didTapLogin(_ sender: Any) {
-        
         loginUser()
     }
     
@@ -43,15 +40,14 @@ class LoginViewController: UIViewController {
             } else {
                 NSLog("User Registered successfully")
                 self.display_view()
-                
             }
         }
     }
     func loginUser() {
-        
+        //extract username and password fields
         let username = usernameField.text ?? ""
         let password = passwordField.text ?? ""
-        
+        //send to server in background thread
         PFUser.logInWithUsername(inBackground: username, password: password) { (user: PFUser?, error: Error?) in
             if let error = error {
                 NSLog("User log in failed: \(error.localizedDescription)")
