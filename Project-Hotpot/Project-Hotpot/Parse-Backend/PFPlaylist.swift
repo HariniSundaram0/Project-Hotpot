@@ -18,7 +18,7 @@ class PFPlaylist: PFObject, PFSubclassing {
         return "Playlist"
     }
     
-    class func createPlaylist(name:String, completion: (Bool) -> Void){
+    class func createPlaylistInBackground(name:String, completion: @escaping (Bool) -> Void){
         let newPlaylist = PFPlaylist()
         if(PFUser.current() == nil){
             NSLog("current user is nil")
@@ -28,17 +28,20 @@ class PFPlaylist: PFObject, PFSubclassing {
         newPlaylist.name = name
         newPlaylist.songArray = []
         
-        do {
-            //save synchronously, since creation will most likely be followed by edits to the playlist
-            //TODO: Feedback on synchronous creation or async? If synchronous, is completion necessary?
-            try newPlaylist.save()
-        }
-        catch{
-            NSLog("Error saving new playlist: \(error)")
-            completion(false)
-        }
-        completion(true)
+        //save asynchronously
+        newPlaylist.saveInBackground(block: {isSuccessful, error in
+            if (isSuccessful){
+                completion(true)
+            }
+            else{
+                NSLog("Error saving new playlist: \(error)")
+                completion(false)
+            }
+            
+        })
     }
-
 }
-
+    
+    
+    
+    

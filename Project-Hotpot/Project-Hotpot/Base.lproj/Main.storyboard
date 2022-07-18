@@ -86,7 +86,7 @@
             </objects>
             <point key="canvasLocation" x="1817.3913043478262" y="-593.30357142857144"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Explore-->
         <scene sceneID="ngI-k5-7h3">
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" id="Dhf-U1-TWR" customClass="HomeViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
@@ -125,6 +125,7 @@
                         <viewLayoutGuide key="safeArea" id="Xzl-hM-i8m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Explore" id="JT9-CQ-8xo"/>
                     <navigationItem key="navigationItem" id="Ygn-HO-gJa"/>
                     <connections>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
@@ -139,7 +140,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2579.7101449275365" y="130.58035714285714"/>
+            <point key="canvasLocation" x="3489.8550724637685" y="130.58035714285714"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ASv-H4-bP9">
@@ -158,6 +159,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yWN-Qq-lAv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="956.52173913043487" y="130.58035714285714"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Djp-ST-K6N">
+            <objects>
+                <tabBarController storyboardIdentifier="tabBarController" automaticallyAdjustsScrollViewInsets="NO" id="G3Z-KR-Sl6" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y6h-FY-JBU">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Dhf-U1-TWR" kind="relationship" relationship="viewControllers" id="xYO-rI-bmj"/>
+                        <segue destination="9G6-CW-cEl" kind="relationship" relationship="viewControllers" id="pTb-z3-Cf2"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tPh-e5-8mY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2579.7101449275365" y="130.58035714285714"/>
+        </scene>
+        <!--Library-->
+        <scene sceneID="Yg3-41-nsr">
+            <objects>
+                <viewController id="9G6-CW-cEl" customClass="PlaylistViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ayN-Rv-E1o">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fBs-cE-Cn8">
+                                <rect key="frame" x="52" y="272" width="311" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Create New Playlist"/>
+                                <connections>
+                                    <action selector="didTapCreate:" destination="9G6-CW-cEl" eventType="touchUpInside" id="EUm-sw-ZOK"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Playlist Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yGf-wF-lIl">
+                                <rect key="frame" x="52" y="213" width="311" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jBI-rc-6h6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Library" id="tRg-Jk-PAg"/>
+                    <connections>
+                        <outlet property="playlistNameField" destination="yGf-wF-lIl" id="KG3-uN-b8X"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EfA-lZ-FsK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2579.7101449275365" y="875.89285714285711"/>
         </scene>
     </scenes>
     <resources>
