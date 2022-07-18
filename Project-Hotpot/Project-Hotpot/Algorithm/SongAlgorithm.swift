@@ -9,9 +9,7 @@ import Foundation
 import Parse
 import AFNetworking
 
-class songAlgorithm{
-    var defaultSong: String = "spotify:album:3RQQmkQEvNCY4prGKE6oc5"
-    
+class songAlgorithm{    
     //TODO: CRASHES WHEN TOO MANY SONG REQUESTS, FOUND STACKOVERFLOW ALREADY
     func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
         fetchSong { (dictionary, error) in
