@@ -19,7 +19,7 @@ class PFSong: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "Songs"
     }
-    
+    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added. 
     class func saveSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (PFSong?, Error?)-> (Void)) {
         // use subclass approach
         let newSong = PFSong()

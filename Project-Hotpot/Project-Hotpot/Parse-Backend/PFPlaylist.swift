@@ -12,8 +12,6 @@ import AFNetworking
 class PFPlaylist: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String?
-    @NSManaged var songArray : [String]? // TODO: switch to relation
-    
     static func parseClassName() -> String {
         return "Playlist"
     }
@@ -22,7 +20,6 @@ class PFPlaylist: PFObject, PFSubclassing {
         let newPlaylist = PFPlaylist()
         newPlaylist.user = user
         newPlaylist.name = name
-        newPlaylist.songArray = []
         
         //save asynchronously
         newPlaylist.saveInBackground(block: { isSuccessful, error in
@@ -39,9 +36,8 @@ class PFPlaylist: PFObject, PFSubclassing {
     class func addSongToPlaylistInBackground(song: PFSong,
                                              playlist: PFPlaylist,
                                              completion: @escaping((Bool, Error?) -> Void)) {
-        let songID = song.objectId!
-        //TODO: consider switching from array of SongID's to relational table
-        playlist.songArray?.append(songID)
+        let relation = playlist.relation(forKey: "songs")
+        relation.add(song)
         playlist.saveInBackground {success, error in
             if success == true {
                 completion(true, nil)

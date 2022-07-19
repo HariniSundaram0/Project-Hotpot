@@ -48,7 +48,7 @@ class LoginViewController: UIViewController {
             if let playlist = playlist{
                 //store playlist object in new user (1 to 1 cardinality)
                 newUser.setObject(playlist, forKey: "history")
-                //saveInBackground
+                //save in background
                 newUser.saveInBackground { isSaved, error in
                     if let error = error {
                         NSLog("unable to save history object \(error)")
@@ -73,8 +73,8 @@ class LoginViewController: UIViewController {
                 NSLog("User log in failed: \(error.localizedDescription)")
             } else {
                 NSLog("User logged in successfully")
-                self.displayNextViewController()
                 // display view controller that needs to shown after successful login
+                self.displayNextViewController()
             }
         }
     }
