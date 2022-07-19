@@ -36,7 +36,7 @@ class SongAlgorithm{
     func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
         let api_instance = SpotifyManager.shared()
         //    I in the future will switch out this endpoint to access different search features
-        // currently just gets queries for 50 songs that contain an A
+        // currently just gets queries for 50 songs from a search of 'a'
         let url = URL(string: "https://api.spotify.com/v1/search?q=a&type=track&limit=50")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -61,23 +61,6 @@ class SongAlgorithm{
             completion(responseObject, nil)
         }
         task.resume()
-    }
-    
-    //this is a testing function, to make sure that I can query like I want to going forward
-    //use completion function in order to access objects!
-    func getPreviousSongs (completion: @escaping([PFSong]?, Error?) -> Void){
-        let query = PFQuery(className:PFSong.parseClassName())
-        //we only want data from the current user
-        query.whereKey("user", equalTo: PFUser.current())
-        query.findObjectsInBackground {(objects: [PFObject]?, error: Error?) -> Void in
-            if error != nil {
-                NSLog(error?.localizedDescription ?? "error happened while fetching from parse")
-                completion(nil, error)
-            } else if let objects = objects as? [PFSong]{
-                NSLog("found %i number of queries", objects.count)
-                completion(objects, nil)
-            }
-        }
     }
 }
 

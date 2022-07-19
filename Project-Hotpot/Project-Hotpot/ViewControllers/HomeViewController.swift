@@ -84,33 +84,15 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - helper functions
+    //wrapper function for saveSongToPlaylist function.
     func addToPlaylist(){
         //extract pfsong object
-        //TODO: consider using optional completion blocks maybe to avoid using repeat code?
-        //TODO: Ask Toby for style advice on this function especially -> nested functions with completion handlers?
-        if let curr_song = self.api_instance.lastPlayerState?.track{
+        if let currSong = self.api_instance.lastPlayerState?.track{
             //add it to the database
-            PFPlaylist.getPlaylistInBackground { currPlaylist, playlistError in
+            PFPlaylist.getPlaylistInBackground {currPlaylist, playlistError in
                 if playlistError == nil, let currPlaylist = currPlaylist {
                     // extracted PFPlaylist object successfully
-                    PFSong.saveSongInBackground(song: curr_song) {songObject, error in
-                        if error == nil, let songObject = songObject{
-                            //extracted PFSong Object successfully
-                            PFPlaylist.addSongToPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
-                                if (error == nil){
-                                    //TODO: Fix weird optional wrapping text when printed
-                                    NSLog("add to playlist: \(currPlaylist.name) successful")
-                                    self.currPlaylistName = currPlaylist.name ?? "playlist_name"
-                                }
-                                else{
-                                    NSLog("failed adding to playlist")
-                                }
-                            }
-                        }
-                        else{
-                            NSLog("song wasn't saved properly")
-                        }
-                    }
+                    self.saveSongToPlaylist(currSong:currSong, currPlaylist: currPlaylist)
                 }
                 else{
                     NSLog("playlist not fetched properly")
@@ -118,7 +100,26 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+    func saveSongToPlaylist(currSong: SPTAppRemoteTrack, currPlaylist:PFPlaylist){
+        PFSong.saveSongInBackground(song: currSong) {songObject, error in
+            if error == nil, let songObject = songObject{
+                //extracted PFSong Object successfully
+                PFPlaylist.addSongToPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
+                    if (error == nil){
+                        //TODO: Fix weird optional wrapping text when printed
+                        NSLog("add to playlist: \(currPlaylist.name) successful")
+                        self.currPlaylistName = currPlaylist.name ?? "playlist_name"
+                    }
+                    else{
+                        NSLog("failed adding to playlist")
+                    }
+                }
+            }
+            else{
+                NSLog("song wasn't saved properly")
+            }
+        }
+    }
     func resetCard() {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
@@ -143,9 +144,9 @@ class HomeViewController: UIViewController {
     }
     
     func saveCurrentSong(){
-        if let curr_song = self.api_instance.lastPlayerState?.track{
+        if let currentSong = self.api_instance.lastPlayerState?.track{
             //add it to the database
-            PFSong.saveSongInBackground(song: curr_song) {_, error in
+            PFSong.saveSongInBackground(song: currentSong) {_, error in
                 if error == nil {
                     NSLog("song saved ")
                 }

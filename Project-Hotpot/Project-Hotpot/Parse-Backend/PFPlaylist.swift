@@ -12,32 +12,27 @@ import AFNetworking
 class PFPlaylist: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String?
-    @NSManaged var songArray : [String]?
+    @NSManaged var songArray : [String]? // TODO: switch to relation
     
     static func parseClassName() -> String {
         return "Playlist"
     }
     
-    class func createPlaylistInBackground(name:String, completion: @escaping (Bool) -> Void){
+    class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (PFPlaylist?) -> Void){
         let newPlaylist = PFPlaylist()
-        if(PFUser.current() == nil){
-            NSLog("current user is nil")
-            completion(false)
-        }
-        newPlaylist.user = PFUser.current()!
+        newPlaylist.user = user
         newPlaylist.name = name
         newPlaylist.songArray = []
         
         //save asynchronously
         newPlaylist.saveInBackground(block: { isSuccessful, error in
             if (isSuccessful){
-                completion(true)
+                completion(newPlaylist)
             }
             else{
                 NSLog("Error saving new playlist: \(error)")
-                completion(false)
+                completion(nil)
             }
-            
         })
     }
     

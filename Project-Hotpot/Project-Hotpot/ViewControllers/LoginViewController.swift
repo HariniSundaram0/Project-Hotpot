@@ -27,21 +27,41 @@ class LoginViewController: UIViewController {
     func registerUser() {
         // initialize a user object
         let newUser = PFUser()
-        
         // set user properties
         newUser.username = usernameField.text
         newUser.password = passwordField.text
-        
-        // call sign up function on the object
+        //save base user
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if let error = error {
-                NSLog(" there was an error registering")
+                NSLog("there was an error registering")
                 NSLog(error.localizedDescription)
             } else {
-                NSLog("User Registered successfully")
-                self.display_view()
+                NSLog("base user object Registered successfully")
+                //create history 'playlist' object to keep track of all listened to songs
+                self.initializeNewHistoryQueue(newUser: newUser)
             }
         }
+    }
+    //wrapper function for intialize history playlist object of a new user
+    func initializeNewHistoryQueue(newUser: PFUser){
+        PFPlaylist.createPlaylistInBackground(user: newUser, name: "history", completion: {playlist in
+            if let playlist = playlist{
+                //store playlist object in new user (1 to 1 cardinality)
+                newUser.setObject(playlist, forKey: "history")
+                //saveInBackground
+                newUser.saveInBackground { isSaved, error in
+                    if let error = error {
+                        NSLog("unable to save history object \(error)")
+                    }
+                    else{
+                        self.displayNextViewController()
+                    }
+                }
+            }
+            else{
+                NSLog("new user history creation failed")
+            }
+        })
     }
     func loginUser() {
         //extract username and password fields
@@ -53,12 +73,12 @@ class LoginViewController: UIViewController {
                 NSLog("User log in failed: \(error.localizedDescription)")
             } else {
                 NSLog("User logged in successfully")
-                self.display_view()
+                self.displayNextViewController()
                 // display view controller that needs to shown after successful login
             }
         }
     }
-    func display_view(){
+    func displayNextViewController(){
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as UIViewController
         self.view.window?.rootViewController = nextViewController

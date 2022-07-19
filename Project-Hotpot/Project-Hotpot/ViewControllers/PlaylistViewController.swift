@@ -18,8 +18,8 @@ class PlaylistViewController: UIViewController {
     
     @IBAction func didTapCreate(_ sender: Any) {
         //TODO: create edge case checks: empty text fields, etc.
-        PFPlaylist.createPlaylistInBackground(name: playlistNameField.text ?? "test123") {createdPlaylist in
-            if (createdPlaylist == true){
+        PFPlaylist.createPlaylistInBackground(user: PFUser.current()!, name: playlistNameField.text ?? "test123") {playlist in
+            if let playlist = playlist {
                 NSLog("success")
             }
             else{
