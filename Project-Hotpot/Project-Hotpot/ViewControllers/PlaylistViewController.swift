@@ -10,11 +10,13 @@ import UIKit
 class PlaylistViewController: UIViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
+    var playlistArray: [PFPlaylist]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.retrievePlaylists()
     }
+    
     
     @IBAction func didTapCreate(_ sender: Any) {
         //TODO: create edge case checks: empty text fields, etc.
@@ -24,6 +26,16 @@ class PlaylistViewController: UIViewController {
             }
             else{
                 NSLog("playlist creation failed")
+            }
+        }
+    }
+    
+    //retrieve playlist objects from parse
+    func retrievePlaylists() {
+        PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
+            if playlistError == nil, let playlistArray = playlistArray {
+                self.playlistArray = playlistArray
+                // extracted PFPlaylist object successfully
             }
         }
     }

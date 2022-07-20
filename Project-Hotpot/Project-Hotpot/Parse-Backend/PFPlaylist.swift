@@ -12,6 +12,7 @@ import AFNetworking
 class PFPlaylist: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var name : String?
+    
     static func parseClassName() -> String {
         return "Playlist"
     }
@@ -33,34 +34,66 @@ class PFPlaylist: PFObject, PFSubclassing {
         })
     }
     
-    class func addSongToPlaylistInBackground(song: PFSong,
-                                             playlist: PFPlaylist,
-                                             completion: @escaping((Bool, Error?) -> Void)) {
-        let relation = playlist.relation(forKey: "songs")
-        relation.add(song)
-        playlist.saveInBackground {success, error in
-            if success == true {
+    
+    class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping ((Bool, Error?)-> Void)){
+        // create an entry in the Follow table
+        let joinTable = PFObject(className: "SongJoinTable")
+        joinTable.setObject(song, forKey: "Song")
+        joinTable.setObject(playlist, forKey: "Playlist")
+        
+        let currentDate = NSDate()
+        joinTable.setObject(currentDate, forKey: "AddedAt")
+        joinTable.setObject(currentDate, forKey: "LastPlayed")
+        
+        joinTable.saveInBackground { saved, error in
+            if saved {
+                NSLog("song saved successfully")
                 completion(true, nil)
             }
-            else{
+            else {
+                NSLog("failed to save song to playlist")
                 completion(false, error)
             }
         }
     }
     
-    //TODO: change to getting ALL playlists instead of just first.
-    class func getPlaylistInBackground(completion: @escaping(PFPlaylist?, Error?) -> Void) {
+    class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping ([PFSong]?, Error?)->Void){
+        let query = PFQuery(className: "SongJoinTable")
+        var songArray: [PFSong]? = []
+        //playlist is a pointer to playlist object
+        query.includeKey("Song")
+        query.whereKey("Playlist", equalTo: playlist)
+        query.order(byAscending: "AddedAt")
+        query.findObjectsInBackground { objects, error in
+            //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
+            if let objects = objects{
+                for o in objects{
+                    if let songObject = o.object(forKey: "Song") as? PFSong{
+                        songArray?.append(songObject)
+                    }
+                }
+                completion(songArray, nil)
+            }
+            else{
+                completion(nil, error)
+                NSLog("didn't find anything")
+            }
+        }
+    }
+    
+    class func getAllPlaylistsInBackground(completion: @escaping([PFPlaylist]?, Error?) -> Void) {
         let query = PFQuery(className:PFPlaylist.parseClassName())
+        query.order(byDescending: "createdAt")
         //we only want data from the current user
         query.whereKey("user", equalTo: PFUser.current())
-        query.getFirstObjectInBackground {playlistObject,error in
-            if let playlistObject = playlistObject as? PFPlaylist {
-                completion(playlistObject, nil)
+        query.findObjectsInBackground(block: {playlistObjects, error in
+            if let playlistObjects = playlistObjects as? [PFPlaylist] {
+                completion(playlistObjects, nil)
             }
             else{
                 completion(nil, error)
             }
-        }
+        })
     }
 }
 

@@ -62,12 +62,16 @@ class HomeViewController: UIViewController {
                     
                 })
                 //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
+                //add to history
                 self.saveCurrentSong()
+                //change the song
                 self.resetSong()
+                //change the card
                 self.resetCard()
                 return
             }
             else if card.center.x > (width - 75){
+                self.saveCurrentSong()
                 self.addToPlaylist()
                 presentAlert(title: "Liked Song", message: "Added to Playlist: \(currPlaylistName)", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
@@ -89,9 +93,11 @@ class HomeViewController: UIViewController {
         //extract pfsong object
         if let currSong = self.api_instance.lastPlayerState?.track{
             //add it to the database
-            PFPlaylist.getPlaylistInBackground {currPlaylist, playlistError in
-                if playlistError == nil, let currPlaylist = currPlaylist {
+            PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
+                if playlistError == nil, let playlistArray = playlistArray {
                     // extracted PFPlaylist object successfully
+                    // get last created playlist
+                    let currPlaylist = playlistArray[0]
                     self.saveSongToPlaylist(currSong:currSong, currPlaylist: currPlaylist)
                 }
                 else{
@@ -104,7 +110,7 @@ class HomeViewController: UIViewController {
         PFSong.saveSongInBackground(song: currSong) {songObject, error in
             if error == nil, let songObject = songObject{
                 //extracted PFSong Object successfully
-                PFPlaylist.addSongToPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
+                PFPlaylist.addSongtoPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
                     if (error == nil){
                         //TODO: Fix weird optional wrapping text when printed
                         NSLog("add to playlist: \(currPlaylist.name) successful")
@@ -120,6 +126,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
     func resetCard() {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
