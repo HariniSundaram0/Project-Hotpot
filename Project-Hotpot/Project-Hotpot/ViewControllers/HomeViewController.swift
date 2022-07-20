@@ -9,7 +9,6 @@ import UIKit
 
 class HomeViewController: UIViewController {
     var api_instance = SpotifyManager.shared()
-    var currPlaylistName: String = ""
     @IBOutlet weak var card: UIView!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
@@ -53,7 +52,6 @@ class HomeViewController: UIViewController {
         let width = view.frame.width
         
         if sender.state == UIGestureRecognizer.State.ended{
-            
             if card.center.x < 75{
                 // move off to left
                 NSLog("moving to left")
@@ -63,17 +61,22 @@ class HomeViewController: UIViewController {
                 })
                 //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
                 //add to history
-                self.saveCurrentSong()
+                let currentSpotifySong = api_instance.lastPlayerState?.track
+                PFHistory.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
                 //change the song
                 self.resetSong()
                 //change the card
                 self.resetCard()
                 return
             }
-            else if card.center.x > (width - 75){
-                self.saveCurrentSong()
-                self.addToPlaylist()
-                presentAlert(title: "Liked Song", message: "Added to Playlist: \(currPlaylistName)", buttonTitle: "Ok")
+            else if card.center.x > (width - 75) {
+                //add to history, get PFObject that was created
+                PFHistory.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) {songObject, error in
+                    if let songObject = songObject {
+                        PFPlaylist.addPFSongToLastPlaylist(song:songObject)
+                    }
+                }
+                presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
@@ -83,50 +86,12 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
+            
             self.resetCard()
         }
     }
     
     // MARK: - helper functions
-    //wrapper function for saveSongToPlaylist function.
-    func addToPlaylist(){
-        //extract pfsong object
-        if let currSong = self.api_instance.lastPlayerState?.track{
-            //add it to the database
-            PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
-                if playlistError == nil, let playlistArray = playlistArray {
-                    // extracted PFPlaylist object successfully
-                    // get last created playlist
-                    let currPlaylist = playlistArray[0]
-                    self.saveSongToPlaylist(currSong:currSong, currPlaylist: currPlaylist)
-                }
-                else{
-                    NSLog("playlist not fetched properly")
-                }
-            }
-        }
-    }
-    func saveSongToPlaylist(currSong: SPTAppRemoteTrack, currPlaylist:PFPlaylist){
-        PFSong.saveSongInBackground(song: currSong) {songObject, error in
-            if error == nil, let songObject = songObject{
-                //extracted PFSong Object successfully
-                PFPlaylist.addSongtoPlaylistInBackground(song: songObject, playlist: currPlaylist) {success, error in
-                    if (error == nil){
-                        //TODO: Fix weird optional wrapping text when printed
-                        NSLog("add to playlist: \(currPlaylist.name) successful")
-                        self.currPlaylistName = currPlaylist.name ?? "playlist_name"
-                    }
-                    else{
-                        NSLog("failed adding to playlist")
-                    }
-                }
-            }
-            else{
-                NSLog("song wasn't saved properly")
-            }
-        }
-    }
-    
     func resetCard() {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
@@ -148,20 +113,6 @@ class HomeViewController: UIViewController {
         //change the button image
         self.playButton.setImage(playButtomImage, for:.normal)
         
-    }
-    
-    func saveCurrentSong(){
-        if let currentSong = self.api_instance.lastPlayerState?.track{
-            //add it to the database
-            PFSong.saveSongInBackground(song: currentSong) {_, error in
-                if error == nil {
-                    NSLog("song saved ")
-                }
-                else{
-                    NSLog("song wasn't saved properly")
-                }
-            }
-        }
     }
     
     func resetSong() {

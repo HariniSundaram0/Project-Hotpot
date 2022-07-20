@@ -10,13 +10,13 @@ import UIKit
 class PlaylistViewController: UIViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
+    //will be used for table view of playlists
     var playlistArray: [PFPlaylist]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.retrievePlaylists()
     }
-    
     
     @IBAction func didTapCreate(_ sender: Any) {
         //TODO: create edge case checks: empty text fields, etc.
@@ -29,8 +29,7 @@ class PlaylistViewController: UIViewController {
             }
         }
     }
-    
-    //retrieve playlist objects from parse
+    //retrieve playlist objects from parse, was used to test playlist and history functions
     func retrievePlaylists() {
         PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
             if playlistError == nil, let playlistArray = playlistArray {
@@ -39,15 +38,4 @@ class PlaylistViewController: UIViewController {
             }
         }
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

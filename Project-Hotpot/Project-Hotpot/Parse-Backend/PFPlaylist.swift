@@ -23,7 +23,7 @@ class PFPlaylist: PFObject, PFSubclassing {
         newPlaylist.name = name
         
         //save asynchronously
-        newPlaylist.saveInBackground(block: { isSuccessful, error in
+        newPlaylist.saveInBackground(block: {isSuccessful, error in
             if (isSuccessful){
                 completion(newPlaylist)
             }
@@ -38,12 +38,12 @@ class PFPlaylist: PFObject, PFSubclassing {
     class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping ((Bool, Error?)-> Void)){
         // create an entry in the Follow table
         let joinTable = PFObject(className: "SongJoinTable")
-        joinTable.setObject(song, forKey: "Song")
-        joinTable.setObject(playlist, forKey: "Playlist")
+        joinTable.setObject(song, forKey: "song")
+        joinTable.setObject(playlist, forKey: "playlist")
         
         let currentDate = NSDate()
-        joinTable.setObject(currentDate, forKey: "AddedAt")
-        joinTable.setObject(currentDate, forKey: "LastPlayed")
+        joinTable.setObject(currentDate, forKey: "addedAt")
+        joinTable.setObject(currentDate, forKey: "lastPlayed")
         
         joinTable.saveInBackground { saved, error in
             if saved {
@@ -57,18 +57,61 @@ class PFPlaylist: PFObject, PFSubclassing {
         }
     }
     
+    class func addPFSongToLastPlaylist(song:PFSong){
+        PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
+            if playlistError == nil, let playlistArray = playlistArray {
+                // extracted PFPlaylist object successfully
+                // get last created playlist
+                let currPlaylist = playlistArray[0]
+                addPFSongToPlaylist(song:song, currPlaylist: currPlaylist)
+            }
+            else{
+                NSLog("playlist not fetched properly")
+            }
+        }
+    }
+    
+    class func addSpotifySongToPlaylist(currSong: SPTAppRemoteTrack, playlist:PFPlaylist,
+                                        completion: ((PFSong?, Error?)->Void)?) {
+        PFSong.createPFSongInBackground(song: currSong) {songObject, error in
+            if error == nil, let songObject = songObject{
+                //extracted PFSong Object successfully
+                addPFSongToPlaylist(song: songObject, currPlaylist: playlist)
+                if let completion = completion {
+                    //pass newly created PFSongObject
+                    completion(songObject, nil)
+                }
+            }
+            else{
+                NSLog("song wasn't saved properly")
+            }
+        }
+    }
+    
+    class func addPFSongToPlaylist(song: PFSong, currPlaylist:PFPlaylist){
+        PFPlaylist.addSongtoPlaylistInBackground(song: song, playlist: currPlaylist) {success, error in
+            if (error == nil){
+                //TODO: Fix weird optional wrapping text when printed
+                NSLog("added to playlist: \(currPlaylist.name)")
+            }
+            else{
+                NSLog("failed adding to playlist")
+            }
+        }
+    }
+    
     class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping ([PFSong]?, Error?)->Void){
         let query = PFQuery(className: "SongJoinTable")
         var songArray: [PFSong]? = []
         //playlist is a pointer to playlist object
-        query.includeKey("Song")
-        query.whereKey("Playlist", equalTo: playlist)
-        query.order(byAscending: "AddedAt")
+        query.includeKey("song")
+        query.whereKey("playlist", equalTo: playlist)
+        query.order(byAscending: "addedAt")
         query.findObjectsInBackground { objects, error in
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             if let objects = objects{
                 for o in objects{
-                    if let songObject = o.object(forKey: "Song") as? PFSong{
+                    if let songObject = o.object(forKey: "song") as? PFSong{
                         songArray?.append(songObject)
                     }
                 }

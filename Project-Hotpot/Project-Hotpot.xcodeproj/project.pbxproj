@@ -10,6 +10,7 @@
 		5E18ACFC288539F400059545 /* Pods_Project_Hotpot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 481A2A7A1757134276DEFFB1 /* Pods_Project_Hotpot.framework */; };
 		5EAAC8D42885D9FD00BD2064 /* PFPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */; };
 		5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */; };
+		5EAAC8DE2888871A00BD2064 /* PFHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8DD2888871A00BD2064 /* PFHistory.swift */; };
 		5EAD87802876412A008497D0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD877F2876412A008497D0 /* HomeViewController.swift */; };
 		5EAD87862878D2C3008497D0 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD87852878D2C3008497D0 /* ConnectViewController.swift */; };
 		5EAD8788287C9626008497D0 /* SpotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD8787287C9626008497D0 /* SpotifyManager.swift */; };
@@ -43,6 +44,7 @@
 		481A2A7A1757134276DEFFB1 /* Pods_Project_Hotpot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Hotpot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFPlaylist.swift; sourceTree = "<group>"; };
 		5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
+		5EAAC8DD2888871A00BD2064 /* PFHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFHistory.swift; sourceTree = "<group>"; };
 		5EAD877F2876412A008497D0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5EAD87852878D2C3008497D0 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		5EAD8787287C9626008497D0 /* SpotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyManager.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				5EAD87912880833E008497D0 /* PFSong.swift */,
 				5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */,
+				5EAAC8DD2888871A00BD2064 /* PFHistory.swift */,
 			);
 			path = "Parse-Backend";
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */,
 				5EAAC8D42885D9FD00BD2064 /* PFPlaylist.swift in Sources */,
 				5EFB17DF2874F1D000ECC6B8 /* SceneDelegate.swift in Sources */,
+				5EAAC8DE2888871A00BD2064 /* PFHistory.swift in Sources */,
 				5EFB17F62874F2D400ECC6B8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
