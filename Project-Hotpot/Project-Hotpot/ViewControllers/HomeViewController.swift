@@ -52,7 +52,6 @@ class HomeViewController: UIViewController {
         let width = view.frame.width
         
         if sender.state == UIGestureRecognizer.State.ended{
-            
             if card.center.x < 75{
                 // move off to left
                 NSLog("moving to left")
@@ -60,15 +59,24 @@ class HomeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
                     
                 })
-                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 2 methods in both clauses of if statement
+                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
+                //add to history
+                let currentSpotifySong = api_instance.lastPlayerState?.track
+                PFHistory.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
+                //change the song
                 self.resetSong()
+                //change the card
                 self.resetCard()
                 return
             }
-            else if card.center.x > (width - 75){
-                NSLog("moving to right")
-                
-                presentAlert(title: "Liked Song", message: "Added to Playlist: PLAYLIST", buttonTitle: "Ok")
+            else if card.center.x > (width - 75) {
+                //add to history, get PFObject that was created
+                PFHistory.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) {songObject, error in
+                    if let songObject = songObject {
+                        PFPlaylist.addPFSongToLastPlaylist(song:songObject)
+                    }
+                }
+                presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
@@ -78,6 +86,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
+            
             self.resetCard()
         }
     }
@@ -107,14 +116,6 @@ class HomeViewController: UIViewController {
     }
     
     func resetSong() {
-        //get the current song that we are going to reset
-        if let curr_song = self.api_instance.lastPlayerState?.track{
-            //add it to the database
-            PFSong.saveSongInBackground(song: curr_song)
-        }
-        else{
-            NSLog("last player state wasn't updated properly, is nil")
-        }
         // get URI from algorithm
         let alg_instance = SongAlgorithm()
         alg_instance.getRandomSong {uri, error in
@@ -122,7 +123,6 @@ class HomeViewController: UIViewController {
                 let songURI = uri
                 NSLog(uri ?? "nil uri call")
                 self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {songContent, error in
-
                     if (error != nil) {
                         NSLog(error?.localizedDescription ?? "error fetching song")
                     }

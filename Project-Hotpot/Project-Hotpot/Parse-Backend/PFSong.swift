@@ -10,7 +10,6 @@ import Parse
 
 //will store Songs as PFSong objects
 class PFSong: PFObject, PFSubclassing {
-    @NSManaged var user : PFUser
     @NSManaged var name : String
     @NSManaged var uri: String
     @NSManaged var duration: UInt
@@ -18,21 +17,14 @@ class PFSong: PFObject, PFSubclassing {
     @NSManaged var album: String
     
     static func parseClassName() -> String {
-        return "PastSongs"
+        return "Songs"
     }
-    
-    class func saveSongInBackground(song:SPTAppRemoteTrack) {
+    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added. 
+    class func createPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (PFSong?, Error?)-> (Void)) {
         // use subclass approach
         let newSong = PFSong()
         
         //TODO: Lookup other ways to prevent forced unwrapping
-        if let current_user = PFUser.current()
-        {
-            newSong.user = current_user
-        }
-        else{
-            NSLog("current user is nil")
-        }
         newSong.name = song.name
         newSong.uri = song.uri
         newSong.duration = song.duration
@@ -44,13 +36,14 @@ class PFSong: PFObject, PFSubclassing {
             if (success) {
                 // The object has been saved.
                 NSLog("Song was saved successfully for user")
+                completion(newSong, nil)
             } else {
                 // There was a problem, check error.description
                 let error_description = error?.localizedDescription
                 NSLog(error_description ?? "error occured while saving")
+                completion(nil, error)
             }
         })
     }
 }
-
 
