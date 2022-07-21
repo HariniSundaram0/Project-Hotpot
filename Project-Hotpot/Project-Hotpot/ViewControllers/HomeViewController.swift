@@ -63,9 +63,7 @@ class HomeViewController: UIViewController {
                 //add to history
                 let currentSpotifySong = api_instance.lastPlayerState?.track
                 PFHistory.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
-                //change the song
                 self.resetSong()
-                //change the card
                 self.resetCard()
                 return
             }
