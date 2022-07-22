@@ -10,7 +10,7 @@ import UIKit
 class CreatePlaylistViewController: UIViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -21,7 +21,7 @@ class CreatePlaylistViewController: UIViewController {
               let playlistName = playlistNameField.text
         else { return }
         PFPlaylist.createPlaylistInBackground(user: user, name: playlistName) { playlist in
-            if let playlist = playlist {
+            if playlist != nil {
                 NSLog("created new playlist")
                 //close popup
                 self.dismiss(animated: true)

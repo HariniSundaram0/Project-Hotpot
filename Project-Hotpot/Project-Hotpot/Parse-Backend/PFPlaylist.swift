@@ -17,7 +17,7 @@ class PFPlaylist: PFObject, PFSubclassing {
         return "Playlist"
     }
     
-    class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (PFPlaylist?) -> Void){
+    class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (PFPlaylist?) -> Void) {
         let newPlaylist = PFPlaylist()
         newPlaylist.user = user
         newPlaylist.name = name
@@ -35,7 +35,7 @@ class PFPlaylist: PFObject, PFSubclassing {
     }
     
     
-    class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping ((Bool, Error?)-> Void)){
+    class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping ((Bool, Error?)-> Void)) {
         // create an entry in the Follow table
         let joinTable = PFObject(className: "SongJoinTable")
         joinTable.setObject(song, forKey: "song")
@@ -57,8 +57,8 @@ class PFPlaylist: PFObject, PFSubclassing {
         }
     }
     
-    class func addPFSongToLastPlaylist(song:PFSong){
-        PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
+    class func addPFSongToLastPlaylist(song:PFSong) {
+        PFPlaylist.getNPlaylistsInBackground(limit: 1, completion: {playlistArray, playlistError in
             if playlistError == nil, let playlistArray = playlistArray {
                 // extracted PFPlaylist object successfully
                 // get last created playlist
@@ -68,27 +68,12 @@ class PFPlaylist: PFObject, PFSubclassing {
             else{
                 NSLog("playlist not fetched properly")
             }
-        }
+        })
     }
     
-    class func addSpotifySongToPlaylist(currSong: SPTAppRemoteTrack, playlist:PFPlaylist,
-                                        completion: ((PFSong?, Error?)->Void)?) {
-        PFSong.createPFSongInBackground(song: currSong) {songObject, error in
-            if error == nil, let songObject = songObject{
-                //extracted PFSong Object successfully
-                addPFSongToPlaylist(song: songObject, currPlaylist: playlist)
-                if let completion = completion {
-                    //pass newly created PFSongObject
-                    completion(songObject, nil)
-                }
-            }
-            else{
-                NSLog("song wasn't saved properly")
-            }
-        }
-    }
     
-    class func addPFSongToPlaylist(song: PFSong, currPlaylist:PFPlaylist){
+    
+    class func addPFSongToPlaylist(song: PFSong, currPlaylist:PFPlaylist) {
         PFPlaylist.addSongtoPlaylistInBackground(song: song, playlist: currPlaylist) {success, error in
             if (error == nil){
                 //TODO: Fix weird optional wrapping text when printed
@@ -100,33 +85,40 @@ class PFPlaylist: PFObject, PFSubclassing {
         }
     }
     
-    class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping ([PFSong]?, Error?)->Void){
+    class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping ([PFSong]?, Error?)->Void) {
         let query = PFQuery(className: "SongJoinTable")
-        var songArray: [PFSong]? = []
-        //playlist is a pointer to playlist object
         query.includeKey("song")
         query.whereKey("playlist", equalTo: playlist)
         query.order(byAscending: "addedAt")
         query.findObjectsInBackground { objects, error in
+            var songArray: [PFSong] = []
+            if let error = error{
+                completion(nil, error)
+                NSLog("error occured: \(error)")
+                return
+            }
+            else if (objects?.isEmpty == true) {
+                NSLog("No results found")
+            }
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
-            if let objects = objects{
-                for o in objects{
+            else if let objects = objects {
+                //TODO: switch to inbuilt function such as filter or map
+                for o in objects {
                     if let songObject = o.object(forKey: "song") as? PFSong{
-                        songArray?.append(songObject)
+                        songArray.append(songObject)
                     }
                 }
                 completion(songArray, nil)
             }
-            else{
-                completion(nil, error)
-                NSLog("didn't find anything")
-            }
         }
     }
     
-    class func getAllPlaylistsInBackground(completion: @escaping([PFPlaylist]?, Error?) -> Void) {
+    class func getNPlaylistsInBackground(limit: Int?, completion: @escaping([PFPlaylist]?, Error?) -> Void) {
         let query = PFQuery(className:PFPlaylist.parseClassName())
         query.order(byDescending: "createdAt")
+        if let limit = limit {
+            query.limit = limit
+        }
         //we only want data from the current user
         query.whereKey("user", equalTo: PFUser.current())
         query.findObjectsInBackground(block: {playlistObjects, error in

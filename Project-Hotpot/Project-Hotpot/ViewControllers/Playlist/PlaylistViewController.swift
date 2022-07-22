@@ -39,11 +39,24 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     //retrieve playlist objects from parse
     func retrievePlaylists() {
-        PFPlaylist.getAllPlaylistsInBackground {playlistArray, playlistError in
+        PFPlaylist.getNPlaylistsInBackground (limit:nil, completion: {playlistArray, playlistError in
             if playlistError == nil, let playlistArray = playlistArray {
                 self.playlistArray = playlistArray
                 self.tableView.reloadData()
             }
+        })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let newSender = sender as? UITableViewCell,
+              let indexPath = self.tableView.indexPath(for: newSender),
+              let playlistArray = playlistArray,
+              let nextController = segue.destination as? PlaylistDetailsViewController
+        else
+        {
+            return
         }
+        let playlistToPass = playlistArray[indexPath.row]
+        nextController.currentPlaylist = playlistToPass
     }
 }

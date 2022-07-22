@@ -37,7 +37,7 @@ class PFHistory: PFObject, PFSubclassing {
         query.whereKey("user", equalTo: user)
         query.order(byDescending: "playTimeStamp")
         
-        query.findObjectsInBackground {historyObjects, error in
+        query.findObjectsInBackground { historyObjects, error in
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             if let historyObjects = historyObjects as? [PFHistory] {
                 NSLog("obtained history")
@@ -54,26 +54,14 @@ class PFHistory: PFObject, PFSubclassing {
             }
         }
     }
-    //returns PFSong object via completion block to prevent unneccessary object creation
-    class func addSpotifySongToHistory (spotifySong: SPTAppRemoteTrack?, completion: ((PFSong?, Error?) -> Void)?) {
-        //null check
-        if let spotifySong = spotifySong {
-            //create PFSong from spotify track object
-            PFSong.createPFSongInBackground(song: spotifySong) {songObject, error in
-                if error == nil, let songObject = songObject{
-                    //extracted PFSong Object successfully
-                    self.addPFSongToHistory(song:songObject)
-                    if let completion = completion {
-                        //pass object to completion block
-                        completion(songObject, nil)
-                    }
-                }
-            }
-        }
-    }
+    
     
     class func addPFSongToHistory(song:PFSong){
-        let currentUser = PFUser.current()!
+        guard let currentUser = PFUser.current()
+        else {
+            NSLog("Current User is nil")
+            return
+        }
         PFHistory.addSongToHistoryInBackground(user: currentUser, song: song, completion: nil)
     }
 }

@@ -229,6 +229,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="playlistName" destination="txk-T3-yCr" id="JHp-Zn-EXS"/>
+                                            <segue destination="sbZ-Hm-2bj" kind="showDetail" id="jxt-8k-Fuy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -252,6 +253,66 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EfA-lZ-FsK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2579.7101449275365" y="875.89285714285711"/>
+        </scene>
+        <!--Playlist Details View Controller-->
+        <scene sceneID="gdu-Tj-rAK">
+            <objects>
+                <viewController id="sbZ-Hm-2bj" customClass="PlaylistDetailsViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="P54-HZ-7Bz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xOz-H5-Plm">
+                                <rect key="frame" x="0.0" y="79" width="414" height="817"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="101.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="101.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
+                                                    <rect key="frame" x="8" y="13" width="398" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="leading" secondItem="dbe-qf-Wt9" secondAttribute="leading" constant="8" id="cW4-5R-lfb"/>
+                                                <constraint firstAttribute="trailing" secondItem="nwj-ug-CXp" secondAttribute="trailing" constant="8" id="dmm-so-1th"/>
+                                                <constraint firstAttribute="bottom" secondItem="nwj-ug-CXp" secondAttribute="bottom" constant="67.5" id="gDk-ms-467"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="top" secondItem="dbe-qf-Wt9" secondAttribute="top" constant="13" id="tdH-8H-fZy"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="songTitleLabel" destination="nwj-ug-CXp" id="3t4-ms-uJw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Playlist Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzk-1E-VLG">
+                                <rect key="frame" x="20" y="20" width="374" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="43"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="RZk-7M-Cmb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="playlistName" destination="Bzk-1E-VLG" id="rJ8-p9-u6S"/>
+                        <outlet property="tableView" destination="xOz-H5-Plm" id="Eo6-8d-1Xe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HA7-ht-2kn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2579.7101449275365" y="1575"/>
         </scene>
         <!--Create Playlist View Controller-->
         <scene sceneID="YT0-h1-JDk">
