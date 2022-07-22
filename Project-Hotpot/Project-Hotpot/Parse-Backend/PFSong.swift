@@ -24,7 +24,6 @@ class PFSong: PFObject, PFSubclassing {
         // use subclass approach
         let newSong = PFSong()
         
-        //TODO: Lookup other ways to prevent forced unwrapping
         newSong.name = song.name
         newSong.uri = song.uri
         newSong.duration = song.duration
@@ -34,7 +33,6 @@ class PFSong: PFObject, PFSubclassing {
         // Save object (following function will save the object in Parse asynchronously)
         newSong.saveInBackground(block: { (success, error) in
             if (success) {
-                // The object has been saved.
                 NSLog("Song was saved successfully for user")
                 completion(newSong, nil)
             } else {

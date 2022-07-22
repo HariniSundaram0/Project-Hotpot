@@ -21,7 +21,10 @@ class SpotifyManager: NSObject {
                     NSLog("Fetching token request error \(error)")
                     return
                 }
-                let accessToken = dictionary!["access_token"] as! String
+                guard let accessToken = dictionary?["access_token"] as? String
+                else {
+                    return
+                }
                 DispatchQueue.main.async {
                     self.appRemote.connectionParameters.accessToken = accessToken
                     self.appRemote.connect()
@@ -29,7 +32,6 @@ class SpotifyManager: NSObject {
             }
         }
     }
-    
     lazy var appRemote: SPTAppRemote = {
         let appRemote = SPTAppRemote(configuration: configuration, logLevel: .debug)
         appRemote.connectionParameters.accessToken = self.accessToken
@@ -46,9 +48,8 @@ class SpotifyManager: NSObject {
     
     lazy var configuration: SPTConfiguration = {
         let configuration = SPTConfiguration(clientID: spotifyClientId, redirectURL: redirectUri)
-        
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
-        // otherwise another app switch will be required
+        // otherwise another app switch will be required, currently plays a 'silent track'
         configuration.playURI = "spotify:track:7p5bQJB4XsZJEEn6Tb7EaL"
         // Set these url's to your backend which contains the secret to exchange for an access token
         // You can use the provided ruby script spotify_token_swap.rb for testing purposes
@@ -79,7 +80,6 @@ class SpotifyManager: NSObject {
     
     // MARK: - Properties
     func update(playerState: SPTAppRemotePlayerState) {
-        NSLog("updated!")
         self.lastPlayerState = playerState
         self.curr_song_label = playerState.track.name
     }
@@ -99,7 +99,6 @@ extension SpotifyManager: SPTAppRemoteDelegate {
     
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
         lastPlayerState = nil
-        
     }
     
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
@@ -137,7 +136,7 @@ extension SpotifyManager: SPTSessionManagerDelegate {
 extension SpotifyManager {
     
     func fetchAccessToken(completion: @escaping ([String: Any]?, Error?) -> Void) {
-        let url = URL(string: "https://accounts.spotify.com/api/token")!
+        guard let url = URL(string: "https://accounts.spotify.com/api/token") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let spotifyAuthKey = "Basic \((spotifyClientId + ":" + spotifyClientSecretKey).data(using: .utf8)!.base64EncodedString())"

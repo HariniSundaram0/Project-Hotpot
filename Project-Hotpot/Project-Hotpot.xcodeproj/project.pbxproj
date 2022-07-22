@@ -12,6 +12,10 @@
 		5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */; };
 		5EAAC8DE2888871A00BD2064 /* PFHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8DD2888871A00BD2064 /* PFHistory.swift */; };
 		5EAAC8E02888BF2200BD2064 /* CreatePlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8DF2888BF2200BD2064 /* CreatePlaylistViewController.swift */; };
+		5EAAC8E62888C44800BD2064 /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8E52888C44700BD2064 /* PlaylistTableViewCell.swift */; };
+		5EAAC8E92889CC5300BD2064 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8E82889CC5300BD2064 /* SongTableViewCell.swift */; };
+		5EAAC8EB2889CCB700BD2064 /* PlaylistDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8EA2889CCB700BD2064 /* PlaylistDetailsViewController.swift */; };
+		5EAAC8EF288A16F000BD2064 /* SongManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8EE288A16F000BD2064 /* SongManager.swift */; };
 		5EAD87802876412A008497D0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD877F2876412A008497D0 /* HomeViewController.swift */; };
 		5EAD87862878D2C3008497D0 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD87852878D2C3008497D0 /* ConnectViewController.swift */; };
 		5EAD8788287C9626008497D0 /* SpotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD8787287C9626008497D0 /* SpotifyManager.swift */; };
@@ -47,6 +51,10 @@
 		5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		5EAAC8DD2888871A00BD2064 /* PFHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFHistory.swift; sourceTree = "<group>"; };
 		5EAAC8DF2888BF2200BD2064 /* CreatePlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatePlaylistViewController.swift; path = "Project-Hotpot/CreatePlaylistViewController.swift"; sourceTree = SOURCE_ROOT; };
+		5EAAC8E52888C44700BD2064 /* PlaylistTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTableViewCell.swift; sourceTree = "<group>"; };
+		5EAAC8E82889CC5300BD2064 /* SongTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SongTableViewCell.swift; path = "Project-Hotpot/SongTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		5EAAC8EA2889CCB700BD2064 /* PlaylistDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailsViewController.swift; sourceTree = "<group>"; };
+		5EAAC8EE288A16F000BD2064 /* SongManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SongManager.swift; path = "Project-Hotpot/Algorithm/SongManager.swift"; sourceTree = SOURCE_ROOT; };
 		5EAD877F2876412A008497D0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5EAD87852878D2C3008497D0 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		5EAD8787287C9626008497D0 /* SpotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyManager.swift; sourceTree = "<group>"; };
@@ -79,9 +87,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EAAC8E72888C45700BD2064 /* Playlist */ = {
+			isa = PBXGroup;
+			children = (
+				5EAAC8E82889CC5300BD2064 /* SongTableViewCell.swift */,
+				5EAAC8EA2889CCB700BD2064 /* PlaylistDetailsViewController.swift */,
+				5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */,
+				5EAAC8E52888C44700BD2064 /* PlaylistTableViewCell.swift */,
+				5EAD87852878D2C3008497D0 /* ConnectViewController.swift */,
+			);
+			path = Playlist;
+			sourceTree = "<group>";
+		};
 		5EAD879328809A01008497D0 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				5EAAC8EE288A16F000BD2064 /* SongManager.swift */,
 				5EFB17DC2874F1D000ECC6B8 /* AppDelegate.swift */,
 				5EFB17DE2874F1D000ECC6B8 /* SceneDelegate.swift */,
 				5EAD8787287C9626008497D0 /* SpotifyManager.swift */,
@@ -95,8 +116,7 @@
 				5EAAC8DF2888BF2200BD2064 /* CreatePlaylistViewController.swift */,
 				5EAD878B287DF27A008497D0 /* LoginViewController.swift */,
 				5EAD877F2876412A008497D0 /* HomeViewController.swift */,
-				5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */,
-				5EAD87852878D2C3008497D0 /* ConnectViewController.swift */,
+				5EAAC8E72888C45700BD2064 /* Playlist */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -298,9 +318,13 @@
 				5EAD878A287CE327008497D0 /* SongAlgorithm.swift in Sources */,
 				5EFB17DD2874F1D000ECC6B8 /* AppDelegate.swift in Sources */,
 				5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */,
+				5EAAC8E62888C44800BD2064 /* PlaylistTableViewCell.swift in Sources */,
 				5EAAC8D42885D9FD00BD2064 /* PFPlaylist.swift in Sources */,
 				5EFB17DF2874F1D000ECC6B8 /* SceneDelegate.swift in Sources */,
+				5EAAC8E92889CC5300BD2064 /* SongTableViewCell.swift in Sources */,
+				5EAAC8EB2889CCB700BD2064 /* PlaylistDetailsViewController.swift in Sources */,
 				5EAAC8DE2888871A00BD2064 /* PFHistory.swift in Sources */,
+				5EAAC8EF288A16F000BD2064 /* SongManager.swift in Sources */,
 				5EFB17F62874F2D400ECC6B8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

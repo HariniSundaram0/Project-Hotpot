@@ -10,11 +10,10 @@ import UIKit
 class HomeViewController: UIViewController {
     var api_instance = SpotifyManager.shared()
     @IBOutlet weak var card: UIView!
+    @IBOutlet weak var playButton: UIButton!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
-    
-    @IBOutlet weak var playButton: UIButton!
     
     @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
@@ -46,7 +45,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
-        let card = sender.view!
+        guard let card = sender.view else { return }
         let point = sender.translation(in: view)
         card.center = CGPoint(x:view.center.x + point.x, y:view.center.y + point.y)
         let width = view.frame.width
@@ -62,16 +61,14 @@ class HomeViewController: UIViewController {
                 //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
                 //add to history
                 let currentSpotifySong = api_instance.lastPlayerState?.track
-                PFHistory.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
-                //change the song
+                SongManager.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
                 self.resetSong()
-                //change the card
                 self.resetCard()
                 return
             }
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
-                PFHistory.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) {songObject, error in
+                SongManager.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) {songObject, error in
                     if let songObject = songObject {
                         PFPlaylist.addPFSongToLastPlaylist(song:songObject)
                     }
@@ -119,10 +116,8 @@ class HomeViewController: UIViewController {
         // get URI from algorithm
         let alg_instance = SongAlgorithm()
         alg_instance.getRandomSong {uri, error in
-            if error == nil, let uri = uri as? String?{
-                let songURI = uri
-                NSLog(uri ?? "nil uri call")
-                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: songURI!, callback: {songContent, error in
+            if error == nil, let uri = uri as? String{
+                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: {songContent, error in
                     if (error != nil) {
                         NSLog(error?.localizedDescription ?? "error fetching song")
                     }
