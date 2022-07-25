@@ -37,32 +37,10 @@ class LoginViewController: UIViewController {
                 NSLog(error.localizedDescription)
             } else {
                 NSLog("base user object Registered successfully")
-                //create history 'playlist' object to keep track of all listened to songs
-                self.initializeNewHistoryQueue(newUser: newUser)
             }
         }
     }
-    //wrapper function for intialize history playlist object of a new user
-    func initializeNewHistoryQueue(newUser: PFUser){
-        PFPlaylist.createPlaylistInBackground(user: newUser, name: "history", completion: {playlist in
-            if let playlist = playlist{
-                //store playlist object in new user (1 to 1 cardinality)
-                newUser.setObject(playlist, forKey: "history")
-                //save in background
-                newUser.saveInBackground { isSaved, error in
-                    if let error = error {
-                        NSLog("unable to save history object \(error)")
-                    }
-                    else{
-                        self.displayNextViewController()
-                    }
-                }
-            }
-            else{
-                NSLog("new user history creation failed")
-            }
-        })
-    }
+    
     func loginUser() {
         //extract username and password fields
         let username = usernameField.text ?? ""
