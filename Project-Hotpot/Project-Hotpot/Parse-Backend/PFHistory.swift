@@ -31,7 +31,7 @@ class PFHistory: PFObject, PFSubclassing {
         })
     }
     
-    class func getHistoryInBackground(user:PFUser, completion: (([PFHistory]?, Error?)->Void)?){
+    class func getHistoryInBackground(user:PFUser, completion: (([PFHistory]?, Error?)->Void)?) {
         let query = PFQuery(className: PFHistory.parseClassName())
         query.includeKey("song")
         query.whereKey("user", equalTo: user)
@@ -54,7 +54,6 @@ class PFHistory: PFObject, PFSubclassing {
             }
         }
     }
-    
     
     class func addPFSongToHistory(song:PFSong){
         guard let currentUser = PFUser.current()

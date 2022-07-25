@@ -20,18 +20,20 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         self.retrievePlaylists()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.retrievePlaylists()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "PlaylistTableViewCell", for: indexPath) as? PlaylistTableViewCell,
               let playlistArray = playlistArray
         else{
-    //TODO: since this function requires a UITableViewCell, should I return a generic table view cell?
             return UITableViewCell()
         }
         let currentPlaylist = playlistArray[indexPath.row]
         cell.playlistName.text = currentPlaylist.name
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return playlistArray?.count ?? 0
@@ -42,7 +44,9 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         PFPlaylist.getNPlaylistsInBackground (limit:nil, completion: {playlistArray, playlistError in
             if playlistError == nil, let playlistArray = playlistArray {
                 self.playlistArray = playlistArray
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
         })
     }

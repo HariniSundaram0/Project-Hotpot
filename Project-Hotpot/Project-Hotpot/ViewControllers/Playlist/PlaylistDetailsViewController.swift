@@ -16,7 +16,6 @@ class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSLog("in details view")
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.playlistName.text = currentPlaylist?.name
@@ -32,11 +31,14 @@ class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITa
             else{
                 //songArray may be empty
                 self.songArray = songArray
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 NSLog("length of song Array :\(songArray?.count)")
             }
         })
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "SongTableViewCell", for: indexPath) as? SongTableViewCell,
