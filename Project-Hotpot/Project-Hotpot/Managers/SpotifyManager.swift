@@ -11,7 +11,8 @@ import UIKit
 class SpotifyManager: NSObject {
     
     //MARK: - Variables
-    var curr_song_label:String?
+    var currentSongLabel:String?
+    var genreSeedArray: [String]
     var lastPlayerState: SPTAppRemotePlayerState?
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -32,6 +33,7 @@ class SpotifyManager: NSObject {
             }
         }
     }
+    
     lazy var appRemote: SPTAppRemote = {
         let appRemote = SPTAppRemote(configuration: configuration, logLevel: .debug)
         appRemote.connectionParameters.accessToken = self.accessToken
@@ -70,6 +72,7 @@ class SpotifyManager: NSObject {
     // MARK: - Initializers
     //doing this way so that only 1 instance can be created
     override private init() {
+        self.genreSeedArray = []
         NSLog("API Manager Initialized")
     }
     
@@ -81,7 +84,7 @@ class SpotifyManager: NSObject {
     // MARK: - Properties
     func update(playerState: SPTAppRemotePlayerState) {
         self.lastPlayerState = playerState
-        self.curr_song_label = playerState.track.name
+        self.currentSongLabel = playerState.track.name
     }
 }
 
@@ -92,6 +95,15 @@ extension SpotifyManager: SPTAppRemoteDelegate {
         appRemote.playerAPI?.subscribe(toPlayerState: { (success, error) in
             if let error = error {
                 NSLog("Error subscribing to player state:" + error.localizedDescription)
+            }
+            //initialize genre list, once accessToken has been validated
+            self.fetchGenreSeeds { genreArray, error in
+                if let error = error {
+                    NSLog("failed to fetch genre array")
+                }
+                if let newGenreArray = genreArray?["genres"] as? [String]{
+                    self.genreSeedArray = newGenreArray
+                }
             }
         })
         fetchPlayerState()
@@ -134,6 +146,33 @@ extension SpotifyManager: SPTSessionManagerDelegate {
 
 // MARK: - Networking
 extension SpotifyManager {
+    func fetchGenreSeeds(completion: @escaping ([String: Any]?, Error?) -> Void){
+        guard let url = URL(string: "https://api.spotify.com/v1/recommendations/available-genre-seeds"),
+              let accessToken = self.appRemote.connectionParameters.accessToken
+        else {
+            NSLog("accessToken is nil, returning early")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let bearer_string = "Bearer " + accessToken
+        request.allHTTPHeaderFields = ["Authorization": bearer_string,
+                                       "Content-Type": "application/json",
+                                       "Accept": "application/json"]
+        //create task
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data,                              // is there data
+                  let response = response as? HTTPURLResponse,  // is there HTTP response
+                  (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
+                  error == nil else {                           // was there no error, otherwise ...
+                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
+                return completion(nil, error)
+            }
+            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            completion(responseObject, nil)
+        }
+        task.resume()
+    }
     
     func fetchAccessToken(completion: @escaping ([String: Any]?, Error?) -> Void) {
         guard let url = URL(string: "https://accounts.spotify.com/api/token") else { return }
@@ -172,13 +211,18 @@ extension SpotifyManager {
         task.resume()
     }
     
-    func fetchArtwork(for track: SPTAppRemoteTrack) {
+    func fetchArtwork(for track: SPTAppRemoteTrack, completion:@escaping((UIImage?) -> Void)) {
         appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
             if let error = error {
                 NSLog("Error fetching track image: " + error.localizedDescription)
             }
+            else if let image = image as? UIImage {
+                completion(image)
+            }
+            
         })
     }
+    
     
     func fetchPlayerState() {
         appRemote.playerAPI?.getPlayerState({ [weak self] (playerState, error) in

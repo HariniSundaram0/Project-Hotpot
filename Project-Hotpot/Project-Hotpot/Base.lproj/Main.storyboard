@@ -99,13 +99,10 @@
                                 <rect key="frame" x="70" y="248" width="280" height="354"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song title :)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="okj-WR-fQN">
-                                        <rect key="frame" x="70" y="63" width="157" height="21"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hWu-ky-VCG">
+                                        <rect key="frame" x="1" y="1" width="279" height="353"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="secondaryLabelColor"/>
                                 <gestureRecognizers/>
@@ -122,6 +119,13 @@
                                     <action selector="didTapButton:" destination="Dhf-U1-TWR" eventType="touchUpInside" id="njf-EE-WVg"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song title :)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="okj-WR-fQN">
+                                <rect key="frame" x="132" y="619" width="157" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xzl-hM-i8m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -131,6 +135,7 @@
                     <connections>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
                         <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
+                        <outlet property="songImage" destination="hWu-ky-VCG" id="pcy-rR-HYX"/>
                         <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>
                     </connections>
                 </viewController>

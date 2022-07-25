@@ -10,6 +10,7 @@ import UIKit
 class HomeViewController: UIViewController {
     var api_instance = SpotifyManager.shared()
     @IBOutlet weak var card: UIView!
+    @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
     
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
@@ -18,6 +19,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
         self.resetSong()
+        self.resetCard()
+    }
+    override func viewDidAppear(_ animated: Bool) {
         self.resetCard()
     }
     
@@ -93,7 +97,14 @@ class HomeViewController: UIViewController {
         NSLog("resetting")
         UIView.animate(withDuration: 0.2, animations: {
             self.card.center = self.view.center
-            self.songTitleLabel.text = self.api_instance.curr_song_label
+            self.songTitleLabel.text = self.api_instance.currentSongLabel
+            if let track = self.api_instance.lastPlayerState?.track{
+                self.api_instance.fetchArtwork(for:track ) { image in
+                    if let image = image {
+                        self.songImage.image = image
+                    }
+                }
+            }
         })
     }
     
@@ -128,7 +139,7 @@ class HomeViewController: UIViewController {
                 })
             }
             else{
-                NSLog("parse failed")
+                NSLog("couldn't get a random song")
             }
         }
         //TODO: add completion block to resetcard -> have to manually move card a little to re-reset card.
