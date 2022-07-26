@@ -16,10 +16,7 @@ This project aims to utilize a "Tinder-like" design feature for users to explore
 - users can sign up locally via the app, log in, log out
 - Users can log into the spotify account, and allow access to their account. 
 #### P1: 
-- Users can adjust a few of the the  algorithm preferences/filters via the settings tab, such as: 
-  - language preferences  
-  - allowing explicit language or not
-  - Genre of music
+- Users can adjust a few of the the  algorithm preferences/filters via the settings tab (genre, region/language preferences, randomness level, etc)
 - Users can view their liked songs / playlists created within this app
 - The algorithm keeps track of the songs users listen to, to prevent repetitive songs.
 ## Optional Stories: 
