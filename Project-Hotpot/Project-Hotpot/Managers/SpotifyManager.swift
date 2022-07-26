@@ -12,7 +12,7 @@ class SpotifyManager: NSObject {
     
     //MARK: - Variables
     var currentSongLabel:String?
-    var genreSeedArray: [String]
+    var originalGenreSeeds: [String]
     var lastPlayerState: SPTAppRemotePlayerState?
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -71,7 +71,7 @@ class SpotifyManager: NSObject {
     // MARK: - Initializers
     //doing this way so that only 1 instance can be created
     override private init() {
-        self.genreSeedArray = []
+        self.originalGenreSeeds = []
         NSLog("API Manager Initialized")
     }
     
@@ -101,7 +101,7 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                     NSLog("failed to fetch genre array")
                 }
                 if let newGenreArray = genreArray?["genres"] as? [String]{
-                    self.genreSeedArray = newGenreArray
+                    self.originalGenreSeeds = newGenreArray
                 }
             }
         })
@@ -145,7 +145,6 @@ extension SpotifyManager: SPTSessionManagerDelegate {
 
 // MARK: - Networking
 extension SpotifyManager {
-    
     func makeSpotifyRequest (request: URLRequest, completion: @escaping ([String: Any]?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,                              // is there data

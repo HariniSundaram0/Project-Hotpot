@@ -8,8 +8,8 @@
 import Foundation
 import Parse
 
+//Deals with Spotify <--> Parse interaction
 class SongManager : NSObject {
-    
     //returns PFSong object via completion block to prevent unneccessary object creation
     class func addSpotifySongToHistory (spotifySong: SPTAppRemoteTrack?, completion: ((PFSong?, Error?) -> Void)?) {
         if let spotifySong = spotifySong {

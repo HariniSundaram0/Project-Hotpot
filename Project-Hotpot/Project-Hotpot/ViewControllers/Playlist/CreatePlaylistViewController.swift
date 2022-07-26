@@ -11,10 +11,6 @@ class CreatePlaylistViewController: ViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     @IBAction func didTapCreate(_ sender: Any) {
         if (playlistNameField.hasText == false){
             presentAlert(title: "Oops!", message: "Add a name for your playlist", buttonTitle: "Ok")

@@ -35,7 +35,8 @@ class SongAlgorithm{
     
     func getRandomGenre() -> String? {
         //returns nil if the genreArray is empty
-        guard let genre = api_instance.genreSeedArray.randomElement() else {
+        let genreSeeds = UserSettingsManager.shared().userGenres
+        guard let genre = genreSeeds.randomElement() else {
             return nil
         }
         return genre
