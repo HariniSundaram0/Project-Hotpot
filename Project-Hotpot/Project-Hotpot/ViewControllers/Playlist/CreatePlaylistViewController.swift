@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatePlaylistViewController: UIViewController {
+class CreatePlaylistViewController: ViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
     
@@ -16,14 +16,17 @@ class CreatePlaylistViewController: UIViewController {
     }
     
     @IBAction func didTapCreate(_ sender: Any) {
-        //TODO: create edge case checks: empty text fields, etc.
+        if (playlistNameField.hasText == false){
+            presentAlert(title: "Oops!", message: "Add a name for your playlist", buttonTitle: "Ok")
+            return
+        }
         guard let user = PFUser.current(),
-              let playlistName = playlistNameField.text
-        else { return }
+              let playlistName = playlistNameField.text else {
+            return
+        }
         PFPlaylist.createPlaylistInBackground(user: user, name: playlistName) { playlist in
             if playlist != nil {
                 NSLog("created new playlist")
-                //close popup
                 self.dismiss(animated: true)
             }
             else{

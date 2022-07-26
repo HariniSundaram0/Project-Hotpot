@@ -24,7 +24,9 @@ class ConnectViewController: UIViewController {
     }
     
     @objc func didTapConnect(_ button: UIButton) {
-        guard let sessionManager = api_instance.sessionManager else { return }
+        guard let sessionManager = api_instance.sessionManager else {
+            return
+        }
         sessionManager.initiateSession(with: scopes, options: .clientOnly)
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "LoginViewController")

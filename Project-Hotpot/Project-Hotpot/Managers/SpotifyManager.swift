@@ -22,8 +22,7 @@ class SpotifyManager: NSObject {
                     NSLog("Fetching token request error \(error)")
                     return
                 }
-                guard let accessToken = dictionary?["access_token"] as? String
-                else {
+                guard let accessToken = dictionary?["access_token"] as? String else {
                     return
                 }
                 DispatchQueue.main.async {
@@ -146,6 +145,40 @@ extension SpotifyManager: SPTSessionManagerDelegate {
 
 // MARK: - Networking
 extension SpotifyManager {
+    
+    func makeSpotifyRequest (request: URLRequest, completion: @escaping ([String: Any]?, Error?) -> Void) {
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data,                              // is there data
+                  let response = response as? HTTPURLResponse,  // is there HTTP response
+                  (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
+                  error == nil else {                           // was there no error, otherwise ...
+                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
+                return completion(nil, error)
+            }
+            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            completion(responseObject, nil)
+        }
+        task.resume()
+        
+    }
+    
+    func fetchSongsFromGenre(genre:String, offset: Int, completion: @escaping ([String: Any]?, Error?) -> Void) {
+        
+        guard let url = URL(string: "https://api.spotify.com/v1/search?q=" + "genre:" + genre + "&type=track&limit=50&offset=" + String(offset)),
+              let accessToken = self.appRemote.connectionParameters.accessToken
+        else {
+            NSLog("failed fetching song from genre, nil access token")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let authorizationValue = "Bearer " + accessToken
+        request.allHTTPHeaderFields = ["Authorization": authorizationValue,
+                                       "Content-Type": "application/json",
+                                       "Accept": "application/json"]
+        makeSpotifyRequest(request: request, completion: completion)
+    }
+    
     func fetchGenreSeeds(completion: @escaping ([String: Any]?, Error?) -> Void){
         guard let url = URL(string: "https://api.spotify.com/v1/recommendations/available-genre-seeds"),
               let accessToken = self.appRemote.connectionParameters.accessToken
@@ -159,23 +192,15 @@ extension SpotifyManager {
         request.allHTTPHeaderFields = ["Authorization": bearer_string,
                                        "Content-Type": "application/json",
                                        "Accept": "application/json"]
-        //create task
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,                              // is there data
-                  let response = response as? HTTPURLResponse,  // is there HTTP response
-                  (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
-                  error == nil else {                           // was there no error, otherwise ...
-                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
-                return completion(nil, error)
-            }
-            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(responseObject, nil)
-        }
-        task.resume()
+        
+        makeSpotifyRequest(request: request, completion: completion)
+       
     }
     
     func fetchAccessToken(completion: @escaping ([String: Any]?, Error?) -> Void) {
-        guard let url = URL(string: "https://accounts.spotify.com/api/token") else { return }
+        guard let url = URL(string: "https://accounts.spotify.com/api/token") else {
+            return
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let spotifyAuthKey = "Basic \((spotifyClientId + ":" + spotifyClientSecretKey).data(using: .utf8)!.base64EncodedString())"
@@ -195,20 +220,7 @@ extension SpotifyManager {
         ]
         
         request.httpBody = requestBodyComponents.query?.data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,                              // is there data
-                  let response = response as? HTTPURLResponse,  // is there HTTP response
-                  (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
-                  error == nil else {                           // was there no error, otherwise ...
-                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
-                return completion(nil, error)
-            }
-            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            NSLog("Access Token Dictionary=", responseObject ?? "")
-            completion(responseObject, nil)
-        }
-        task.resume()
+        makeSpotifyRequest(request: request, completion: completion)
     }
     
     func fetchArtwork(for track: SPTAppRemoteTrack, completion:@escaping((UIImage?) -> Void)) {

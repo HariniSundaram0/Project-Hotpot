@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: ViewController {
     var api_instance = SpotifyManager.shared()
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
@@ -39,17 +39,10 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func presentAlert(title: String, message: String, buttonTitle: String) {
-        DispatchQueue.main.async {
-            let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let action = UIAlertAction(title: buttonTitle, style: .default, handler: nil)
-            controller.addAction(action)
-            self.present(controller, animated: true)
-        }
-    }
-    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
-        guard let card = sender.view else { return }
+        guard let card = sender.view else {
+            return
+        }
         let point = sender.translation(in: view)
         card.center = CGPoint(x:view.center.x + point.x, y:view.center.y + point.y)
         let width = view.frame.width
@@ -124,7 +117,6 @@ class HomeViewController: UIViewController {
     }
     
     func resetSong() {
-        // get URI from algorithm
         let alg_instance = SongAlgorithm()
         alg_instance.getRandomSong {uri, error in
             if error == nil, let uri = uri as? String{
@@ -134,8 +126,11 @@ class HomeViewController: UIViewController {
                     }
                     else if let songContent = songContent as? SPTAppRemoteContentItem
                     {
-                        //play if no errors
-                        self.api_instance.appRemote.playerAPI?.play(songContent)                    }
+                        // Spotify API will crash if the play method isn't called on main thread
+                        DispatchQueue.main.async {
+                            self.api_instance.appRemote.playerAPI?.play(songContent)
+                        }
+                    }
                 })
             }
             else{

@@ -99,6 +99,7 @@ class PFPlaylist: PFObject, PFSubclassing {
             }
             else if (objects?.isEmpty == true) {
                 NSLog("No results found")
+                return
             }
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             else if let objects = objects {

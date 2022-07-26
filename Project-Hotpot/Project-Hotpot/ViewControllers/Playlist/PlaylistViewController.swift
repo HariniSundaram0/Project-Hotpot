@@ -55,9 +55,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         guard let newSender = sender as? UITableViewCell,
               let indexPath = self.tableView.indexPath(for: newSender),
               let playlistArray = playlistArray,
-              let nextController = segue.destination as? PlaylistDetailsViewController
-        else
-        {
+              let nextController = segue.destination as? PlaylistDetailsViewController else {
             return
         }
         let playlistToPass = playlistArray[indexPath.row]
