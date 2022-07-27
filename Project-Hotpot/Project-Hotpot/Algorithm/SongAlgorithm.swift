@@ -10,7 +10,9 @@ import Parse
 import AFNetworking
 
 class SongAlgorithm{
-    var api_instance = SpotifyManager.shared()
+    var apiInstance = SpotifyManager.shared()
+    var userPreferences = UserSettingsManager.shared()
+    var genreQueueManager = GenreQueueManager.shared()
     
     func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
         fetchSong { (dictionary, error) in
@@ -34,12 +36,19 @@ class SongAlgorithm{
     }
     
     func getRandomGenre() -> String? {
-        //returns nil if the genreArray is empty
-        let genreSeeds = UserSettingsManager.shared().userGenres
-        guard let genre = genreSeeds.randomElement() else {
+        //returns nil if the queue is empty
+        guard let genre = genreQueueManager.getGenre() else {
             return nil
         }
-        return genre
+        //edge case: user changes perferences after queue was initialized,
+        //instead of removing all genres and enqueuing just the preferred genres, just discard for now
+        if userPreferences.removedGenres.contains(genre.name){
+            NSLog("skipping \(genre.name) since not preferred")
+            return getRandomGenre()
+        }
+        else{
+            return genre.name
+        }
     }
     
     func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
@@ -51,7 +60,7 @@ class SongAlgorithm{
             return
         }
         NSLog("requesting randomOffset: \(randomOffset), genre: \(genre)")
-        api_instance.fetchSongsFromGenre(genre: genre, offset: randomOffset, completion: completion)
+        apiInstance.fetchSongsFromGenre(genre: genre, offset: randomOffset, completion: completion)
     }
 }
 

@@ -13,10 +13,8 @@ class SettingsViewController: UIViewController {
     
     //for now removes a random genre for testing purposes
     @IBAction func onClickRemoveRandomGenre(_ sender: Any) {
-        if let randomGenre = UserSettingsManager.shared().userGenres.randomElement() as? String{
+        if let randomGenre = UserSettingsManager.shared().userGenres.randomElement(){
             UserSettingsManager.shared().removeGenreFromPrefences(genre: randomGenre)
         }
     }
-    
-
 }

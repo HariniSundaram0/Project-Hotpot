@@ -19,6 +19,9 @@
 		5EAAC8F12890905400BD2064 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8F02890905400BD2064 /* ViewController.swift */; };
 		5EAAC8F4289093F300BD2064 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8F3289093F300BD2064 /* SettingsViewController.swift */; };
 		5EAAC8F628909A5100BD2064 /* UserSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8F528909A5100BD2064 /* UserSettingsManager.swift */; };
+		5EAAC8F82890B57100BD2064 /* GenreQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8F72890B57100BD2064 /* GenreQueue.swift */; };
+		5EAAC8FA2890B82D00BD2064 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8F92890B82D00BD2064 /* Genre.swift */; };
+		5EAAC8FC2890E26900BD2064 /* GenreQueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8FB2890E26900BD2064 /* GenreQueueManager.swift */; };
 		5EAD87802876412A008497D0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD877F2876412A008497D0 /* HomeViewController.swift */; };
 		5EAD87862878D2C3008497D0 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD87852878D2C3008497D0 /* ConnectViewController.swift */; };
 		5EAD8788287C9626008497D0 /* SpotifyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAD8787287C9626008497D0 /* SpotifyManager.swift */; };
@@ -61,6 +64,9 @@
 		5EAAC8F02890905400BD2064 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5EAAC8F3289093F300BD2064 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5EAAC8F528909A5100BD2064 /* UserSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsManager.swift; sourceTree = "<group>"; };
+		5EAAC8F72890B57100BD2064 /* GenreQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreQueue.swift; sourceTree = "<group>"; };
+		5EAAC8F92890B82D00BD2064 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
+		5EAAC8FB2890E26900BD2064 /* GenreQueueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreQueueManager.swift; sourceTree = "<group>"; };
 		5EAD877F2876412A008497D0 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		5EAD87852878D2C3008497D0 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		5EAD8787287C9626008497D0 /* SpotifyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyManager.swift; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 			children = (
 				5EAAC8EE288A16F000BD2064 /* SongManager.swift */,
 				5EAAC8F528909A5100BD2064 /* UserSettingsManager.swift */,
+				5EAAC8FB2890E26900BD2064 /* GenreQueueManager.swift */,
 				5EFB17DC2874F1D000ECC6B8 /* AppDelegate.swift */,
 				5EFB17DE2874F1D000ECC6B8 /* SceneDelegate.swift */,
 				5EAD8787287C9626008497D0 /* SpotifyManager.swift */,
@@ -152,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				5EAD8789287CE327008497D0 /* SongAlgorithm.swift */,
+				5EAAC8F72890B57100BD2064 /* GenreQueue.swift */,
+				5EAAC8F92890B82D00BD2064 /* Genre.swift */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
@@ -327,14 +336,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EAD878C287DF27A008497D0 /* LoginViewController.swift in Sources */,
+				5EAAC8FC2890E26900BD2064 /* GenreQueueManager.swift in Sources */,
 				5EAAC8E02888BF2200BD2064 /* CreatePlaylistViewController.swift in Sources */,
 				5EAD8788287C9626008497D0 /* SpotifyManager.swift in Sources */,
+				5EAAC8FA2890B82D00BD2064 /* Genre.swift in Sources */,
 				5EAAC8F628909A5100BD2064 /* UserSettingsManager.swift in Sources */,
 				5EAD87862878D2C3008497D0 /* ConnectViewController.swift in Sources */,
 				5EAD87922880833E008497D0 /* PFSong.swift in Sources */,
 				5EAAC8F4289093F300BD2064 /* SettingsViewController.swift in Sources */,
 				5EAD87802876412A008497D0 /* HomeViewController.swift in Sources */,
 				5EAD878A287CE327008497D0 /* SongAlgorithm.swift in Sources */,
+				5EAAC8F82890B57100BD2064 /* GenreQueue.swift in Sources */,
 				5EFB17DD2874F1D000ECC6B8 /* AppDelegate.swift in Sources */,
 				5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */,
 				5EAAC8E62888C44800BD2064 /* PlaylistTableViewCell.swift in Sources */,
