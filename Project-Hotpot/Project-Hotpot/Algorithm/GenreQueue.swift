@@ -10,7 +10,6 @@ import Foundation
 public struct GenreQueue {
     var head: Genre?
     var rear: Genre?
-        
     var isEmpty: Bool {
         return head == nil
     }
@@ -40,7 +39,7 @@ extension GenreQueue{
         return head
     }
     
-     mutating func enqueueFromList(genres: [String]){
+    mutating func enqueueFromList(genres: [String]){
         for genre in genres {
             enqueue(genre)
         }

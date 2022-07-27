@@ -55,19 +55,31 @@ class HomeViewController: ViewController {
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
                     
                 })
-                //TODO: CONSIDER STRUCTURE OF CODE, you repeate these 3 methods in both clauses of if statement
+                //TODO: After implementation of cache, this slightly repetitive code will be removed and restructured
                 //add to history
                 let currentSpotifySong = api_instance.lastPlayerState?.track
-                SongManager.addSpotifySongToHistory(spotifySong: currentSpotifySong, completion:nil)
+                SongManager.addSpotifySongToHistory(spotifySong: currentSpotifySong) { result in
+                    switch result {
+                    case .success(_):
+                        NSLog("added to history")
+                    case .failure(let error):
+                        NSLog(error.localizedDescription)
+                        //unsure if I want to return/ break
+                    }
+                }
                 self.resetSong()
                 self.resetCard()
                 return
             }
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
-                SongManager.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) {songObject, error in
-                    if let songObject = songObject {
-                        PFPlaylist.addPFSongToLastPlaylist(song:songObject)
+                SongManager.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) { result in
+                    switch result {
+                    case .success(let parseSong):
+                        PFPlaylist.addPFSongToLastPlaylist(song:parseSong)
+                    case .failure(let error):
+                        NSLog(error.localizedDescription)
+                        //unsure if I want to return/ break
                     }
                 }
                 presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
@@ -92,9 +104,15 @@ class HomeViewController: ViewController {
             self.card.center = self.view.center
             self.songTitleLabel.text = self.api_instance.currentSongLabel
             if let track = self.api_instance.lastPlayerState?.track{
-                self.api_instance.fetchArtwork(for:track ) { image in
-                    if let image = image {
-                        self.songImage.image = image
+                self.api_instance.fetchArtwork(for: track) { result in
+                    switch result {
+                    case .failure(let error):
+                        NSLog(error.localizedDescription)
+                        
+                    case .success(let image):
+                        DispatchQueue.main.async {
+                            self.songImage.image = image
+                        }
                     }
                 }
             }
@@ -118,23 +136,23 @@ class HomeViewController: ViewController {
     
     func resetSong() {
         let alg_instance = SongAlgorithm()
-        alg_instance.getRandomSong {uri, error in
-            if error == nil, let uri = uri as? String{
-                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: {songContent, error in
-                    if (error != nil) {
-                        NSLog(error?.localizedDescription ?? "error fetching song")
+        alg_instance.getRandomSong { result in
+            switch result {
+            case .success(let uri):
+                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: {songContent, apiError in
+                    if let apiError = apiError{
+                        NSLog(apiError.localizedDescription)
                     }
                     else if let songContent = songContent as? SPTAppRemoteContentItem
                     {
-                        // Spotify API will crash if the play method isn't called on main thread
+                    // Spotify API will crash if the play method isn't called on main thread
                         DispatchQueue.main.async {
                             self.api_instance.appRemote.playerAPI?.play(songContent)
                         }
                     }
                 })
-            }
-            else{
-                NSLog("couldn't get a random song")
+            case .failure(let error):
+                NSLog(error.localizedDescription)
             }
         }
         //TODO: add completion block to resetcard -> have to manually move card a little to re-reset card.

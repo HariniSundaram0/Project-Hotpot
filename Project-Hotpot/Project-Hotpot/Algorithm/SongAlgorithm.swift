@@ -14,23 +14,22 @@ class SongAlgorithm{
     var userPreferences = UserSettingsManager.shared()
     var genreQueueManager = GenreQueueManager.shared()
     
-    func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
-        fetchSong { (dictionary, error) in
-            if let error = error {
-                NSLog("Fetching token request error \(error)")
-                return completion(nil, error)
-            }
-            else{
-                //beginning of series of conditional downcasting to parse
-                guard let tracks = dictionary?["tracks"] as? [String:Any]?,
+    
+    func getRandomSong(completion: @escaping (_ result: Result<String, Error>) -> Void){
+        fetchSong { result in
+            switch result {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(let dictionary):
+                guard let tracks = dictionary["tracks"] as? [String:Any]?,
                       let items = tracks?["items"] as? [[String:Any]?],
                       let randomSong = items.randomElement(),
-                      let randomURI = randomSong?["uri"]
+                      let randomURI = randomSong?["uri"] as? String
                 else{
                     NSLog("failed parsing random song dictionary response")
-                    return completion(nil, error)
+                    return completion(.failure(CustomError.failedResponseParsing))
                 }
-                return completion(randomURI, error)
+                return completion(.success(randomURI))
             }
         }
     }
@@ -51,7 +50,7 @@ class SongAlgorithm{
         }
     }
     
-    func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
+    func fetchSong(completion: @escaping (_ result: Result<[String:Any], Error>) -> Void){
         //TODO: add seed to increase randomness
         let randomOffset = Int.random(in: 1..<800)
         guard let genre = getRandomGenre()

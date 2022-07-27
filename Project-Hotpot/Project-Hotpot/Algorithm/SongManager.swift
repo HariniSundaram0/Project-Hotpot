@@ -8,25 +8,20 @@
 import Foundation
 import Parse
 
-//Deals with Spotify <--> Parse interaction
 class SongManager : NSObject {
     //returns PFSong object via completion block to prevent unneccessary object creation
-    class func addSpotifySongToHistory (spotifySong: SPTAppRemoteTrack?, completion: ((PFSong?, Error?) -> Void)?) {
+    class func addSpotifySongToHistory (spotifySong: SPTAppRemoteTrack?, completion: @escaping (_ result: Result<PFSong, Error>) -> Void) {
         if let spotifySong = spotifySong {
             //create PFSong from spotify track object
-            PFSong.createPFSongInBackground(song: spotifySong) {songObject, error in
-                if error == nil, let songObject = songObject{
-                    //extracted PFSong Object successfully
-                    PFHistory.addPFSongToHistory(song:songObject)
-                    if let completion = completion {
-                        completion(songObject, nil)
-                    }
-                }
-                else if let error = error, let completion = completion{
-                        completion(nil, error)
+            PFSong.createPFSongInBackground(song: spotifySong) { result in
+                switch result {
+                case .success(let parseSong):
+                    PFHistory.addPFSongToHistory(song: parseSong)
+                    return completion(.success(parseSong))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
             }
         }
     }
-    
 }

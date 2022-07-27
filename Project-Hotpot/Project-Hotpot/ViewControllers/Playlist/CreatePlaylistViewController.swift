@@ -20,13 +20,13 @@ class CreatePlaylistViewController: ViewController {
               let playlistName = playlistNameField.text else {
             return
         }
-        PFPlaylist.createPlaylistInBackground(user: user, name: playlistName) { playlist in
-            if playlist != nil {
-                NSLog("created new playlist")
+        
+        PFPlaylist.createPlaylistInBackground(user: user, name: playlistName) { result in
+            switch result {
+            case .success(_):
                 self.dismiss(animated: true)
-            }
-            else{
-                NSLog("playlist creation failed")
+            case .failure(let error):
+                NSLog(error.localizedDescription)
             }
         }
     }

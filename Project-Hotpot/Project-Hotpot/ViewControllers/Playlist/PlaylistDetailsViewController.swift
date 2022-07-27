@@ -24,19 +24,17 @@ class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITa
             NSLog("current playlist is nil")
             return
         }
-        PFPlaylist.getAllSongsFromPlaylist(playlist: currentPlaylist, completion: { songArray, error in
-            if let error = error {
-                NSLog("error occurred fetching songs: \(error)")
-            }
-            else{
-                //songArray may be empty
+        PFPlaylist.getAllSongsFromPlaylist(playlist: currentPlaylist) { result in
+            switch result {
+            case .failure(let error):
+                NSLog("error fetching songs: \(error.localizedDescription)")
+            case .success(let songArray):
                 self.songArray = songArray
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                NSLog("length of song Array :\(songArray?.count)")
             }
-        })
+        }
     }
     
     

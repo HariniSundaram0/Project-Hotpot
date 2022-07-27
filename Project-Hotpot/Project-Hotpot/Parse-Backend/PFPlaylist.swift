@@ -16,26 +16,26 @@ class PFPlaylist: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "Playlist"
     }
-    
-    class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (PFPlaylist?) -> Void) {
+
+    class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (_ result: Result<PFPlaylist, Error>) -> Void) {
         let newPlaylist = PFPlaylist()
         newPlaylist.user = user
         newPlaylist.name = name
         
-        //save asynchronously
+        //save asynchronously via parse function
         newPlaylist.saveInBackground(block: {isSuccessful, error in
-            if (isSuccessful){
-                completion(newPlaylist)
+            if (isSuccessful && error == nil){
+                completion(.success(newPlaylist))
             }
-            else{
+            else if let error = error{
                 NSLog("Error saving new playlist: \(error)")
-                completion(nil)
+                return completion(.failure(error))
             }
         })
     }
     
-    
-    class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping ((Bool, Error?)-> Void)) {
+
+    class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping (_ result: Result<Void, Error>) -> Void) {
         // create an entry in the Follow table
         let joinTable = PFObject(className: "SongJoinTable")
         joinTable.setObject(song, forKey: "song")
@@ -45,60 +45,52 @@ class PFPlaylist: PFObject, PFSubclassing {
         joinTable.setObject(currentDate, forKey: "addedAt")
         joinTable.setObject(currentDate, forKey: "lastPlayed")
         
-        joinTable.saveInBackground { saved, error in
-            if saved {
-                NSLog("song saved successfully")
-                completion(true, nil)
+        joinTable.saveInBackground {saveSuccessful, error in
+            if let error = error {
+                completion(.failure(error))
             }
             else {
-                NSLog("failed to save song to playlist")
-                completion(false, error)
+                NSLog("song saved successfully")
+                completion(.success(()))
             }
         }
     }
     
     class func addPFSongToLastPlaylist(song:PFSong) {
-        PFPlaylist.getNPlaylistsInBackground(limit: 1, completion: {playlistArray, playlistError in
-            if playlistError == nil, let playlistArray = playlistArray {
-                // extracted PFPlaylist object successfully
-                // get last created playlist
+        PFPlaylist.getLastNPlaylistsInBackground(limit: 1) { result in
+            switch result {
+            case .success(let playlistArray):
                 let currPlaylist = playlistArray[0]
-                addPFSongToPlaylist(song:song, currPlaylist: currPlaylist)
+                addPFSongToPlaylist(song: song, currPlaylist: currPlaylist)
+            case .failure(let error):
+                NSLog(error.localizedDescription)
             }
-            else{
-                NSLog("playlist not fetched properly")
-            }
-        })
+        }
     }
     
     
     
     class func addPFSongToPlaylist(song: PFSong, currPlaylist:PFPlaylist) {
-        PFPlaylist.addSongtoPlaylistInBackground(song: song, playlist: currPlaylist) {success, error in
-            if (error == nil){
-                //TODO: Fix weird optional wrapping text when printed
+        PFPlaylist.addSongtoPlaylistInBackground(song: song, playlist: currPlaylist) { result in
+            switch result{
+            case .success(_):
                 NSLog("added to playlist: \(currPlaylist.name)")
-            }
-            else{
-                NSLog("failed adding to playlist")
+                
+            case .failure(let error):
+                NSLog(error.localizedDescription)
             }
         }
     }
-    
-    class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping ([PFSong]?, Error?)->Void) {
+
+    class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping (_ result: Result<[PFSong], Error>) -> Void) {
         let query = PFQuery(className: "SongJoinTable")
         query.includeKey("song")
         query.whereKey("playlist", equalTo: playlist)
         query.order(byAscending: "addedAt")
         query.findObjectsInBackground { objects, error in
             var songArray: [PFSong] = []
-            if let error = error{
-                completion(nil, error)
-                NSLog("error occured: \(error)")
-                return
-            }
-            else if (objects?.isEmpty == true) {
-                NSLog("No results found")
+            if let error = error {
+                completion(.failure(error))
                 return
             }
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
@@ -109,12 +101,14 @@ class PFPlaylist: PFObject, PFSubclassing {
                         songArray.append(songObject)
                     }
                 }
-                completion(songArray, nil)
             }
+            //returns success if either no songs (empty array), or the songs if found.
+            completion(.success(songArray))
         }
     }
     
-    class func getNPlaylistsInBackground(limit: Int?, completion: @escaping([PFPlaylist]?, Error?) -> Void) {
+    
+    class func getLastNPlaylistsInBackground(limit: Int?, completion: @escaping (_ result: Result<[PFPlaylist], Error>) -> Void) {
         let query = PFQuery(className:PFPlaylist.parseClassName())
         query.order(byDescending: "createdAt")
         if let limit = limit {
@@ -122,12 +116,12 @@ class PFPlaylist: PFObject, PFSubclassing {
         }
         //we only want data from the current user
         query.whereKey("user", equalTo: PFUser.current())
-        query.findObjectsInBackground(block: {playlistObjects, error in
+        query.findObjectsInBackground(block: { playlistObjects, error in
             if let playlistObjects = playlistObjects as? [PFPlaylist] {
-                completion(playlistObjects, nil)
+                completion(.success(playlistObjects))
             }
-            else{
-                completion(nil, error)
+            else if let error = error{
+                completion(.failure(error))
             }
         })
     }

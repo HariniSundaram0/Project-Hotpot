@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class SpotifyManager: NSObject {
-    
     //MARK: - Variables
     var currentSongLabel:String?
     var originalGenreSeeds: [String]
@@ -17,17 +16,20 @@ class SpotifyManager: NSObject {
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
         didSet {
-            fetchAccessToken { (dictionary, error) in
-                if let error = error {
+            fetchAccessToken { result in
+                switch result {
+                case .success(let dictionary):
+                    guard let accessToken = dictionary["access_token"] as? String else {
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        self.appRemote.connectionParameters.accessToken = accessToken
+                        self.appRemote.connect()
+                    }
+                    
+                case .failure(let error):
                     NSLog("Fetching token request error \(error)")
                     return
-                }
-                guard let accessToken = dictionary?["access_token"] as? String else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.appRemote.connectionParameters.accessToken = accessToken
-                    self.appRemote.connect()
                 }
             }
         }
@@ -96,12 +98,14 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                 NSLog("Error subscribing to player state:" + error.localizedDescription)
             }
             //initialize genre list, once accessToken has been validated
-            self.fetchGenreSeeds { genreArray, error in
-                if let error = error {
-                    NSLog("failed to fetch genre array")
-                }
-                if let newGenreArray = genreArray?["genres"] as? [String]{
-                    self.originalGenreSeeds = newGenreArray
+            self.fetchGenreSeeds { result in
+                switch result{
+                case .success(let genreArray):
+                    if let newGenreArray = genreArray["genres"] as? [String]{
+                        self.originalGenreSeeds = newGenreArray
+                    }
+                case .failure(let error):
+                    NSLog(error.localizedDescription)
                 }
             }
         })
@@ -133,8 +137,7 @@ extension SpotifyManager: SPTSessionManagerDelegate {
         }
     }
     
-    func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
-    }
+    func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {}
     
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         appRemote.connectionParameters.accessToken = session.accessToken
@@ -145,29 +148,35 @@ extension SpotifyManager: SPTSessionManagerDelegate {
 
 // MARK: - Networking
 extension SpotifyManager {
-    func makeSpotifyRequest (request: URLRequest, completion: @escaping ([String: Any]?, Error?) -> Void) {
+    func makeSpotifyRequest (request: URLRequest, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,                              // is there data
                   let response = response as? HTTPURLResponse,  // is there HTTP response
                   (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
-                  error == nil else {                           // was there no error, otherwise ...
-                NSLog("Error fetching token \(error?.localizedDescription ?? "")")
-                return completion(nil, error)
+                  error == nil
+            else {// was there no error, otherwise ...
+                if let error = error {
+                    NSLog("Error fetching token \(error.localizedDescription)")
+                    return completion(.failure(error))
+                }
+                //if the error is nil, then technically another error could have happened
+                return completion(.failure(CustomError.unexpected))
             }
-            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(responseObject, nil)
+            if let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+                completion(.success(responseObject))
+            }
+            else {
+                completion(.failure(CustomError.nilNetworkResponse))
+            }
         }
         task.resume()
-        
     }
     
-    func fetchSongsFromGenre(genre:String, offset: Int, completion: @escaping ([String: Any]?, Error?) -> Void) {
-        
+    func fetchSongsFromGenre(genre:String, offset: Int, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
         guard let url = URL(string: "https://api.spotify.com/v1/search?q=" + "genre:" + genre + "&type=track&limit=50&offset=" + String(offset)),
               let accessToken = self.appRemote.connectionParameters.accessToken
         else {
-            NSLog("failed fetching song from genre, nil access token")
-            return
+            return completion(.failure(CustomError.nilAccessToken))
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -178,12 +187,12 @@ extension SpotifyManager {
         makeSpotifyRequest(request: request, completion: completion)
     }
     
-    func fetchGenreSeeds(completion: @escaping ([String: Any]?, Error?) -> Void){
+    func fetchGenreSeeds(completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
         guard let url = URL(string: "https://api.spotify.com/v1/recommendations/available-genre-seeds"),
               let accessToken = self.appRemote.connectionParameters.accessToken
         else {
-            NSLog("accessToken is nil, returning early")
-            return
+            NSLog("accessToken is nil")
+            return completion(.failure(CustomError.nilAccessToken))
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -193,12 +202,13 @@ extension SpotifyManager {
                                        "Accept": "application/json"]
         
         makeSpotifyRequest(request: request, completion: completion)
-       
+        
     }
     
-    func fetchAccessToken(completion: @escaping ([String: Any]?, Error?) -> Void) {
-        guard let url = URL(string: "https://accounts.spotify.com/api/token") else {
-            return
+    func fetchAccessToken(completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+        guard let url = URL(string: "https://accounts.spotify.com/api/token")
+        else {
+            return completion(.failure(CustomError.unexpected))
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -222,15 +232,15 @@ extension SpotifyManager {
         makeSpotifyRequest(request: request, completion: completion)
     }
     
-    func fetchArtwork(for track: SPTAppRemoteTrack, completion:@escaping((UIImage?) -> Void)) {
+    func fetchArtwork(for track: SPTAppRemoteTrack, completion: @escaping (_ result: Result<UIImage, Error>) -> Void) {
         appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
             if let error = error {
                 NSLog("Error fetching track image: " + error.localizedDescription)
+                completion(.failure(error))
             }
             else if let image = image as? UIImage {
-                completion(image)
+                completion(.success(image))
             }
-            
         })
     }
     
