@@ -10,67 +10,73 @@ import Parse
 import AFNetworking
 
 class SongAlgorithm{
-    var api_instance = SpotifyManager.shared()
+    var apiInstance = SpotifyManager.shared()
+    var userPreferences = UserSettingsManager.shared()
+    var genreQueueManager = GenreQueueManager.shared()
+    var cacheManager = CacheManager.shared()
+    var scoreManager = SongScoreManager.shared()
+    var songManager = SongManager()
     
-    //TODO: CRASHES WHEN TOO MANY SONG REQUESTS, FOUND STACKOVERFLOW ALREADY
-    func getRandomSong(completion: @escaping(Any?, Error?) -> Void){
-        fetchSong { (dictionary, error) in
-            if let error = error {
-                NSLog("Fetching token request error \(error)")
-                return completion(nil, error)
-            }
-            else{
-                //beginning of series of conditional downcasting to parse
-                guard let tracks = dictionary?["tracks"] as? [String:Any]?,
-                      let items = tracks?["items"] as? [[String:Any]?],
-                      let randomSong = items.randomElement(),
-                      let randomURI = randomSong?["uri"]
-                else{
-                    NSLog("failed parsing random song dictionary response")
-                    return completion(nil, error)
+    
+    func playNewSong(completion: @escaping (_ result: Result<Void, Error>) -> Void) {
+        getAlgorithmSong { result in
+            switch result {
+            case .success(let uri):
+            // Spotify API will crash if these 2 methods aren't called on main thread
+                DispatchQueue.main.async {
+                    self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
+                        if let apiError = apiError {
+                            completion(.failure(apiError))
+                        }
+                        else if let songContent = songContent as? SPTAppRemoteContentItem
+                        {
+                            self.apiInstance.appRemote.playerAPI?.play(songContent)
+                            completion(.success(()))
+                        }
+                    })
                 }
-                return completion(randomURI, error)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func getAlgorithmSong(completion: @escaping (_ result: Result<String, Error>) -> Void) {
+        guard let genre = getRandomGenre() else {
+            return completion(.failure(CustomError.invalidCacheKey))
+        }
+        NSLog("genre: \(genre)")
+        let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in
+            switch result {
+            case .success(let songs):
+                //TODO: next iteration switch to scoring metric
+                guard let song = self.scoreManager.findMaxSongScore(songs:songs) else {
+                    completion(.failure(CustomError.failedResponseParsing))
+                    return
+                }
+                //remove played song from cache to prevent repeat songs
+                self.cacheManager.removeSongFromCache(genre: genre, song: song)
+                completion(.success(song.uri))
+            case .failure(let error):
+                NSLog("error retreiving: \(error)")
+                completion(.failure(error))
             }
         }
     }
     
     func getRandomGenre() -> String? {
-        let genre = api_instance.genreSeedArray.randomElement()
-        return genre
-    }
-    
-    //TODO: SPLIT INTO SMALLER HELPER FUNCTIONS FOR SAKE OF REUSE. CONSIDER MOVING PARTS OF THIS INTO API MANAGER
-    func fetchSong(completion: @escaping ([String: Any]?, Error?) -> Void) {
-        // currently queries 50 songs from a random genre, with a random offset
-        
-        let randomOffset = String(Int.random(in: 1..<800))
-        NSLog("randomOffset: \(randomOffset)")
-        
-        guard let genre = getRandomGenre(),
-              let url = URL(string: "https://api.spotify.com/v1/search?q=" + "genre:" + genre + "&type=track&limit=50&offset=" + randomOffset),
-              let accessToken = api_instance.appRemote.connectionParameters.accessToken
-        else { return }
-        NSLog("genre: \(genre)")
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        let authorizationValue = "Bearer " + accessToken
-        request.allHTTPHeaderFields = ["Authorization": authorizationValue,
-                                       "Content-Type": "application/json",
-                                       "Accept": "application/json"]
-        //create task
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,                              // is there data
-                  let response = response as? HTTPURLResponse,  // is there HTTP response
-                  (200 ..< 300) ~= response.statusCode,         // is statusCode 2XX
-                  error == nil else {                           // was there no error, otherwise ...
-                NSLog("Error fetching song \(error?.localizedDescription ?? "")")
-                return completion(nil, error)
-            }
-            let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            completion(responseObject, nil)
+        //returns nil if the queue is empty
+        //TODO: consider instead of returning nil, throw error instead?
+        guard let genre = genreQueueManager.getGenre() else {
+            return nil
         }
-        task.resume()
+        if userPreferences.removedGenres.contains(genre.name) {
+            NSLog("skipping \(genre.name) since not preferred")
+            return getRandomGenre()
+        }
+        else {
+            return genre.name
+        }
     }
 }
 

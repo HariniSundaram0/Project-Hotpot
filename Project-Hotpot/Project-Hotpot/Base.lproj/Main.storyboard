@@ -130,7 +130,7 @@
                         <viewLayoutGuide key="safeArea" id="Xzl-hM-i8m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Explore" id="JT9-CQ-8xo"/>
+                    <tabBarItem key="tabBarItem" title="Explore" image="globe.americas.fill" catalog="system" id="JT9-CQ-8xo"/>
                     <navigationItem key="navigationItem" id="Ygn-HO-gJa"/>
                     <connections>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
@@ -147,6 +147,37 @@
                 </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3489.8550724637685" y="130.58035714285714"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="hdG-cL-3VP">
+            <objects>
+                <viewController title="Settings" id="FHg-TL-gIb" customClass="SettingsViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PDA-ea-KnR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsI-U1-F63">
+                                <rect key="frame" x="87" y="231" width="241" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Remove Random Genre From Feed"/>
+                                <connections>
+                                    <action selector="onClickRemoveRandomGenre:" destination="FHg-TL-gIb" eventType="touchUpInside" id="JTF-3t-Ohg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ke2-jq-FAJ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gearshape.fill" catalog="system" id="cPI-tu-JlV"/>
+                    <connections>
+                        <outlet property="genreButton" destination="jsI-U1-F63" id="Fbg-v5-4uv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xJ9-Va-aa5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3131.884057971015" y="900"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ASv-H4-bP9">
@@ -171,7 +202,7 @@
             <objects>
                 <tabBarController storyboardIdentifier="tabBarController" automaticallyAdjustsScrollViewInsets="NO" id="G3Z-KR-Sl6" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y6h-FY-JBU">
+                    <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="Settings" insetsLayoutMarginsFromSafeArea="NO" id="Y6h-FY-JBU">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -179,6 +210,7 @@
                     <connections>
                         <segue destination="Dhf-U1-TWR" kind="relationship" relationship="viewControllers" id="xYO-rI-bmj"/>
                         <segue destination="9G6-CW-cEl" kind="relationship" relationship="viewControllers" id="pTb-z3-Cf2"/>
+                        <segue destination="FHg-TL-gIb" kind="relationship" relationship="viewControllers" id="FFg-6i-dnV"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tPh-e5-8mY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -250,14 +282,14 @@
                         <viewLayoutGuide key="safeArea" id="jBI-rc-6h6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Library" id="tRg-Jk-PAg"/>
+                    <tabBarItem key="tabBarItem" title="Library" image="books.vertical.fill" catalog="system" id="tRg-Jk-PAg"/>
                     <connections>
                         <outlet property="tableView" destination="PcO-yO-kRf" id="1Wo-uX-Zki"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EfA-lZ-FsK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2579.7101449275365" y="875.89285714285711"/>
+            <point key="canvasLocation" x="1229" y="968"/>
         </scene>
         <!--Playlist Details View Controller-->
         <scene sceneID="gdu-Tj-rAK">
@@ -317,7 +349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HA7-ht-2kn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2579.7101449275365" y="1575"/>
+            <point key="canvasLocation" x="1394" y="1718"/>
         </scene>
         <!--Create Playlist View Controller-->
         <scene sceneID="YT0-h1-JDk">
@@ -364,10 +396,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sm7-ap-VFm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3371.0144927536235" y="887.94642857142856"/>
+            <point key="canvasLocation" x="319" y="1689"/>
         </scene>
     </scenes>
     <resources>
+        <image name="books.vertical.fill" catalog="system" width="128" height="109"/>
+        <image name="gearshape.fill" catalog="system" width="128" height="121"/>
+        <image name="globe.americas.fill" catalog="system" width="128" height="121"/>
         <image name="pause.circle.fill" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>

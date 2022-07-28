@@ -7,7 +7,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var rootViewController = ConnectViewController()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else {
+            return
+        }
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.makeKeyAndVisible()
         window!.windowScene = windowScene
@@ -16,8 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // For spotify authorization and authentication flow
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        guard let url = URLContexts.first?.url else { return }
-        
+        guard let url = URLContexts.first?.url else {
+            return
+        }
         let parameters = api_instance.appRemote.authorizationParameters(from: url)
         if let code = parameters?["code"] {
             api_instance.responseCode = code

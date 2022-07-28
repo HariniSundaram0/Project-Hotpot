@@ -19,8 +19,9 @@ class PFSong: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "Songs"
     }
-    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added. 
-    class func createPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (PFSong?, Error?)-> (Void)) {
+    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added.
+    class func createPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (_ result: Result<PFSong, Error>) -> Void) {
+        
         // use subclass approach
         let newSong = PFSong()
         
@@ -31,17 +32,28 @@ class PFSong: PFObject, PFSubclassing {
         newSong.album = song.album.name
         
         // Save object (following function will save the object in Parse asynchronously)
-        newSong.saveInBackground(block: { (success, error) in
+        newSong.saveInBackground(block: {(success, error) in
             if (success) {
                 NSLog("Song was saved successfully for user")
-                completion(newSong, nil)
-            } else {
-                // There was a problem, check error.description
-                let error_description = error?.localizedDescription
-                NSLog(error_description ?? "error occured while saving")
-                completion(nil, error)
+                completion(.success(newSong))
+            } else if let error = error{
+                NSLog(error.localizedDescription)
+                completion(.failure(error))
             }
         })
+    }
+    
+    class func getPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (_ result: Result<PFSong, Error>) -> Void) {
+        let query = PFQuery(className: PFSong.parseClassName())
+        query.whereKey("uri", equalTo: song.uri)
+        query.getFirstObjectInBackground { parseSong, error in
+            if let parseSong = parseSong as? PFSong{
+                completion(.success(parseSong))
+            }
+            else if let error = error{
+                completion(.failure(error))
+            }
+        }
     }
 }
 

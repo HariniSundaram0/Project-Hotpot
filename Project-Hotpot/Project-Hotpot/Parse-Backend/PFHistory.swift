@@ -12,26 +12,32 @@ class PFHistory: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var song : PFSong
     @NSManaged var playTimeStamp : NSDate
+    @NSManaged var uri : String
+    //TODO: add song id attribute for faster querying in the future
     //in future will include audio analysis features such as 'liked', 'disliked', genre, tags, etc
     
     static func parseClassName() -> String {
         return "History"
     }
     
-    class func addSongToHistoryInBackground(user: PFUser, song:PFSong, completion:((Bool) -> Void)?) {
+    class func addSongToHistoryInBackground(user: PFUser, song:PFSong, completion: @escaping (_ result: Result<Void, Error>) -> Void) {
         let newHistory = PFHistory()
         newHistory.user = user
         newHistory.song = song
         newHistory.playTimeStamp = NSDate()
+        newHistory.uri = song.uri
         //save asynchronously
         newHistory.saveInBackground(block: {isSuccessful, error in
-            if let completion = completion{
-                completion(isSuccessful)
+            if let error = error {
+                completion(.failure(error))
+            }
+            else if isSuccessful{
+                completion(.success(()))
             }
         })
     }
     
-    class func getHistoryInBackground(user:PFUser, completion: (([PFHistory]?, Error?)->Void)?) {
+    class func getHistoryInBackground(user:PFUser, completion: @escaping (_ result: Result<[PFHistory], Error>) -> Void) {
         let query = PFQuery(className: PFHistory.parseClassName())
         query.includeKey("song")
         query.whereKey("user", equalTo: user)
@@ -41,27 +47,21 @@ class PFHistory: PFObject, PFSubclassing {
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             if let historyObjects = historyObjects as? [PFHistory] {
                 NSLog("obtained history")
-                if let completion = completion {
-                    NSLog("passing into completion")
-                    completion(historyObjects, nil)
-                }
+                completion(.success(historyObjects))
             }
-            else{
-                if let completion = completion {
-                    completion(nil, error)
-                }
-                NSLog("didn't find anything")
+            else if let error = error {
+                completion(.failure(error))
             }
         }
     }
     
-    class func addPFSongToHistory(song:PFSong){
+    class func addPFSongToHistory(song:PFSong, completion:  @escaping (_ result: Result<Void, Error>) -> Void) {
         guard let currentUser = PFUser.current()
         else {
             NSLog("Current User is nil")
-            return
+            return completion(.failure(CustomError.nilPFUser))
         }
-        PFHistory.addSongToHistoryInBackground(user: currentUser, song: song, completion: nil)
+        PFHistory.addSongToHistoryInBackground(user: currentUser, song: song, completion: completion)
     }
 }
 

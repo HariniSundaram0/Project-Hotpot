@@ -8,7 +8,7 @@
 import UIKit
 import Parse
 
-class LoginViewController: UIViewController {
+class LoginViewController: ViewController {
     
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
@@ -34,7 +34,7 @@ class LoginViewController: UIViewController {
         newUser.signUpInBackground { (success: Bool, error: Error?) in
             if let error = error {
                 NSLog("there was an error registering")
-                NSLog(error.localizedDescription)
+                self.presentAlert(title: "Error Registering", message: error.localizedDescription, buttonTitle: "Try Again")
             } else {
                 NSLog("base user object Registered successfully")
                 self.displayNextViewController()
@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
         //send to server in background thread
         PFUser.logInWithUsername(inBackground: username, password: password) { (user: PFUser?, error: Error?) in
             if let error = error {
-                NSLog("User log in failed: \(error.localizedDescription)")
+                self.presentAlert(title: "Error Logging in", message: error.localizedDescription, buttonTitle: "Try Again")
             } else {
                 NSLog("User logged in successfully")
                 // display view controller that needs to shown after successful login
