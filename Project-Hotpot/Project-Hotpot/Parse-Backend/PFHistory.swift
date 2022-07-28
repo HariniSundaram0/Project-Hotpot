@@ -12,6 +12,7 @@ class PFHistory: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var song : PFSong
     @NSManaged var playTimeStamp : NSDate
+    @NSManaged var uri : String
     //TODO: add song id attribute for faster querying in the future
     //in future will include audio analysis features such as 'liked', 'disliked', genre, tags, etc
     
@@ -24,6 +25,7 @@ class PFHistory: PFObject, PFSubclassing {
         newHistory.user = user
         newHistory.song = song
         newHistory.playTimeStamp = NSDate()
+        newHistory.uri = song.uri
         //save asynchronously
         newHistory.saveInBackground(block: {isSuccessful, error in
             if let error = error {
@@ -53,19 +55,13 @@ class PFHistory: PFObject, PFSubclassing {
         }
     }
     
-    class func addPFSongToHistory(song:PFSong) {
+    class func addPFSongToHistory(song:PFSong, completion:  @escaping (_ result: Result<Void, Error>) -> Void) {
         guard let currentUser = PFUser.current()
         else {
             NSLog("Current User is nil")
-            return
+            return completion(.failure(CustomError.nilPFUser))
         }
-        PFHistory.addSongToHistoryInBackground(user: currentUser, song: song) { result in
-            switch result {
-            case .success(_): return
-            case .failure(let error):
-                NSLog(error.localizedDescription)
-            }
-        }
+        PFHistory.addSongToHistoryInBackground(user: currentUser, song: song, completion: completion)
     }
 }
 

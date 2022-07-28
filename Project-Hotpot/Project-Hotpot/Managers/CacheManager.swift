@@ -36,7 +36,7 @@ class CacheManager: NSObject {
         }
         else if let songDetailsArray = songDetailsArray {
             if songDetailsArray.count <= MIN_CACHE_LIMIT {
-                NSLog("Cache Miss")
+                NSLog("Cache Miss for genre :\(genre)")
                 refillCache(genre:genre) { result in
                     switch result {
                     case .success(let newSongDetailsArray):
@@ -81,16 +81,14 @@ class CacheManager: NSObject {
             }
         }
     }
-    
+    //TODO: Should the cache Manager be parsing? Consider moving to Spotify Manager?
     func spotifyIdToSongDetails(ids: [String], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
         SpotifyManager.shared().fetchAudioFeaturesFromTracks(for: ids) { result in
             switch result{
             case .success(let dictionary):
                 guard let features = dictionary["audio_features"] as? [[String:Any]]
                 else {
-                    NSLog("failed to extract features dictionary")
-                    return
-                    
+                    return completion(.failure(CustomError.failedResponseParsing))
                 }
                 let songDetailsArray:[SongDetails]? = features.compactMap { feature in
                     guard let featureDictionary = feature as? [String: Any],
@@ -102,19 +100,19 @@ class CacheManager: NSObject {
                           let key = featureDictionary["key"] as? NSNumber
                     else {
                         NSLog("failed parse of audio feature dictionary")
+                        //throws error later on
                         return nil
                     }
                     return SongDetails(uri: uri, id: id, danceability: danceability, energy: energy, tempo: tempo, key: key)
                 }
-                if let songDetailsArray = songDetailsArray{
-                    return completion(.success(songDetailsArray))
-                }
-                else {
+                
+                guard let songDetailsArray = songDetailsArray else {
                     return completion(.failure(CustomError.failedResponseParsing))
                 }
+                return completion(.success(songDetailsArray))
                 
             case .failure(let error):
-                NSLog("failed audio features: \(error)")
+                NSLog("failed creating audio song details object: \(error)")
                 completion(.failure(error))
             }
         }

@@ -21,6 +21,10 @@ public enum CustomError: Error {
     case invalidCacheKey
     //generic
     case unexpected
+    
+    case nilSpotifyState
+    
+    case nilPFUser
     //add more custom errors as seen fit
 }
 extension CustomError: LocalizedError {
@@ -43,6 +47,13 @@ extension CustomError: LocalizedError {
             
         case .invalidCacheKey:
             return NSLocalizedString("Cache does not contain this key", comment: "")
+            
+        case .nilSpotifyState:
+            return NSLocalizedString("Spotify last state wasn't updated correctly", comment: "")
+            
+        case .nilPFUser:
+            return NSLocalizedString("Unable to access current PFuser", comment: "")
+            
         }
     }
 }

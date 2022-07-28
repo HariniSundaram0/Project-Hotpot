@@ -19,9 +19,9 @@ class PFSong: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "Songs"
     }
-    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added. 
+    //TODO: instead of creating a new PFObject everytime, first query master set to see if already added.
     class func createPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (_ result: Result<PFSong, Error>) -> Void) {
-    
+        
         // use subclass approach
         let newSong = PFSong()
         
@@ -41,6 +41,19 @@ class PFSong: PFObject, PFSubclassing {
                 completion(.failure(error))
             }
         })
+    }
+    
+    class func getPFSongInBackground(song:SPTAppRemoteTrack, completion: @escaping (_ result: Result<PFSong, Error>) -> Void) {
+        let query = PFQuery(className: PFSong.parseClassName())
+        query.whereKey("uri", equalTo: song.uri)
+        query.getFirstObjectInBackground { parseSong, error in
+            if let parseSong = parseSong as? PFSong{
+                completion(.success(parseSong))
+            }
+            else if let error = error{
+                completion(.failure(error))
+            }
+        }
     }
 }
 

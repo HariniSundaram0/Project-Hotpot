@@ -8,29 +8,25 @@
 import Foundation
 
 class SongDetails: NSObject{
+    static public var numericalAttributes = ["danceability","energy","tempo","key"]
+    
     var uri: String
     var id: String
-    var danceability: NSNumber
-    var energy: NSNumber
-    var tempo: NSNumber
-    var key: NSNumber
+    var danceability: Float
+    var energy: Float
+    var tempo: Float
+    var key: Float
     
     init(uri: String, id: String, danceability: NSNumber, energy: NSNumber, tempo: NSNumber, key: NSNumber) {
         self.uri = uri
         self.id = id
-        self.danceability = danceability
-        self.energy = energy
-        self.tempo = tempo
-        self.key = key
-        NSLog("success!")
+        self.danceability = danceability.floatValue
+        self.energy = energy.floatValue
+        self.tempo = tempo.floatValue
+        self.key = key.floatValue
     }
-    
-    //store in cache
-    //once you choose a song to play -> add to history by getting storing the spt track -> saving normally
-    //also store the parse object in a variabl
-    
-    //add attribute object to attribute list for scoring metrics
-    
-    
-    //store last K songs attributes --> some object which contains PFSong
+    //for debugging
+    func printSong(){
+        NSLog("object with \(id), danceability: \(self.danceability) energy : \(self.energy)")
+    }
 }

@@ -8,23 +8,27 @@
 import UIKit
 
 class HomeViewController: ViewController {
+    enum swipe{
+        case left
+        case right
+    }
+    
     var api_instance = SpotifyManager.shared()
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
     
+    let songManager = SongManager()
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
     
     @IBOutlet weak var songTitleLabel: UILabel!
     override func viewDidLoad() {
-        self.resetSong()
-        self.resetCard()
+        self.didSwipe(direction: swipe.left, completion: self.createClosure())
     }
     override func viewDidAppear(_ animated: Bool) {
         self.resetCard()
     }
-    
     // MARK: - Actions
     
     @IBAction func didTapButton(_ sender: UIButton) {
@@ -39,6 +43,9 @@ class HomeViewController: ViewController {
         }
     }
     
+    
+    
+    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {
             return
@@ -50,52 +57,63 @@ class HomeViewController: ViewController {
         if sender.state == UIGestureRecognizer.State.ended{
             if card.center.x < 75{
                 // move off to left
-                NSLog("moving to left")
+                didSwipe(direction: swipe.left, completion: self.createClosure())
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
-                    
                 })
-                //TODO: After implementation of cache, this slightly repetitive code will be removed and restructured
-                //add to history
-                let currentSpotifySong = api_instance.lastPlayerState?.track
-                SongManager.addSpotifySongToHistory(spotifySong: currentSpotifySong) { result in
-                    switch result {
-                    case .success(_):
-                        NSLog("added to history")
-                    case .failure(let error):
-                        NSLog(error.localizedDescription)
-                        //unsure if I want to return/ break
-                    }
-                }
-                self.resetSong()
-                self.resetCard()
                 return
             }
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
-                SongManager.addSpotifySongToHistory(spotifySong: api_instance.lastPlayerState?.track) { result in
-                    switch result {
-                    case .success(let parseSong):
-                        PFPlaylist.addPFSongToLastPlaylist(song:parseSong)
-                    case .failure(let error):
-                        NSLog(error.localizedDescription)
-                    }
-                }
+                didSwipe(direction: swipe.right, completion: self.createClosure())
                 presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
                 })
-                UIView.animate(withDuration: 0.2, delay: 2.0) {
-                    self.resetSong()
-                    self.resetCard()
-                }
                 return
             }
-            
             self.resetCard()
         }
     }
     
+    func createClosure() -> ((Result<Void, Error>) -> Void) {
+        let resetSongAndCard: (Result<Void, Error>) -> Void = { result in
+            self.resetSong { result in
+                switch result {
+                case .success(_):
+                    self.resetCard()
+                case.failure(let error):
+                    NSLog("error: \(error)")
+                    //I want it to keep showing despite error
+                    self.resetCard()
+                }
+            }
+        }
+        return resetSongAndCard
+    }
+    // an attempt to limit repetitive code
+    func didSwipe(direction: swipe, completion: @escaping (_ result: Result<Void, Error>) -> Void){
+        guard let track = api_instance.lastPlayerState?.track else {
+            NSLog("Spotify is not playing any songs?")
+            return completion(.failure(CustomError.nilSpotifyState))
+        }
+        songManager.addSpotifySongToHistory(spotifySong: track) { result in
+            switch result {
+            case .success(let song):
+                NSLog("added to history")
+                switch direction {
+                case .left:
+                    completion(.success(()))
+                case .right:
+                    PFPlaylist.addPFSongToLastPlaylist(song: song)
+                    completion(.success(()))
+                }
+            case .failure(let error):
+                NSLog("error occured: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
     // MARK: - helper functions
     func resetCard() {
         NSLog("resetting")
@@ -122,38 +140,25 @@ class HomeViewController: ViewController {
         //resume the audio
         api_instance.appRemote.playerAPI?.resume()
         //change the button image
-        self.playButton.setImage(pauseButtonImage, for:.normal)
+        DispatchQueue.main.async {
+            self.playButton.setImage(self.pauseButtonImage, for:.normal)
+        }
     }
     
     func pauseSong() {
         //pause the audio
         api_instance.appRemote.playerAPI?.pause()
         //change the button image
-        self.playButton.setImage(playButtomImage, for:.normal)
-        
+        DispatchQueue.main.async {
+            self.playButton.setImage(self.playButtomImage, for:.normal)
+        }
     }
     
     //TODO: add completion block -> have to manually move card a little to re-reset card.
-    func resetSong() {
-        let alg_instance = SongAlgorithm()
-        alg_instance.getAlgorithmSong { result in
-            switch result {
-            case .success(let uri):
-                DispatchQueue.main.async {
-                    // Spotify API will crash if the method isn't called on main thread
-                    self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
-                        if let apiError = apiError{
-                            NSLog(apiError.localizedDescription)
-                        }
-                        else if let songContent = songContent as? SPTAppRemoteContentItem
-                        {
-                            self.api_instance.appRemote.playerAPI?.play(songContent)
-                        }
-                    })
-                }
-            case .failure(let error):
-                NSLog(error.localizedDescription)
-            }
+    func resetSong(completion: @escaping (_ result: Result<Void, Error>) -> Void) {
+        let algInstance = SongAlgorithm()
+        algInstance.playNewSong { result in
+            completion(result)
         }
     }
 }
