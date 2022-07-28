@@ -14,16 +14,20 @@ public enum CustomError: Error {
     
     case nilNetworkResponse
     
+    case invalidURL
+    
     case failedResponseParsing
+    
+    case invalidCacheKey
     //generic
     case unexpected
     //add more custom errors as seen fit
 }
 extension CustomError: LocalizedError {
     public var errorDescription: String? {
-    switch self {
+        switch self {
         case .nilAccessToken:
-        return NSLocalizedString("Access Token is nil", comment: "")
+            return NSLocalizedString("Access Token is nil", comment: "")
             
         case .unexpected:
             return NSLocalizedString("An unexpected error occurred.", comment: "")
@@ -33,6 +37,12 @@ extension CustomError: LocalizedError {
             
         case .failedResponseParsing:
             return NSLocalizedString("error occurred while parsing network response", comment: "")
+            
+        case .invalidURL:
+            return NSLocalizedString("couldn't create URL for network request", comment: "")
+            
+        case .invalidCacheKey:
+            return NSLocalizedString("Cache does not contain this key", comment: "")
         }
     }
 }

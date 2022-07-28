@@ -16,7 +16,7 @@ class PFPlaylist: PFObject, PFSubclassing {
     static func parseClassName() -> String {
         return "Playlist"
     }
-
+    
     class func createPlaylistInBackground(user: PFUser, name:String, completion: @escaping (_ result: Result<PFPlaylist, Error>) -> Void) {
         let newPlaylist = PFPlaylist()
         newPlaylist.user = user
@@ -34,7 +34,7 @@ class PFPlaylist: PFObject, PFSubclassing {
         })
     }
     
-
+    
     class func addSongtoPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping (_ result: Result<Void, Error>) -> Void) {
         // create an entry in the Follow table
         let joinTable = PFObject(className: "SongJoinTable")
@@ -81,29 +81,24 @@ class PFPlaylist: PFObject, PFSubclassing {
             }
         }
     }
-
+    
     class func getAllSongsFromPlaylist(playlist: PFPlaylist, completion: @escaping (_ result: Result<[PFSong], Error>) -> Void) {
         let query = PFQuery(className: "SongJoinTable")
         query.includeKey("song")
         query.whereKey("playlist", equalTo: playlist)
         query.order(byAscending: "addedAt")
         query.findObjectsInBackground { objects, error in
-            var songArray: [PFSong] = []
             if let error = error {
                 completion(.failure(error))
                 return
             }
             //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             else if let objects = objects {
-                //TODO: switch to inbuilt function such as filter or map
-                for o in objects {
-                    if let songObject = o.object(forKey: "song") as? PFSong{
-                        songArray.append(songObject)
-                    }
-                }
+                let songArray : [PFSong] = objects.compactMap{ obj in obj.object(forKey: "song") as? PFSong }
+                return completion(.success(songArray))
             }
             //returns success if either no songs (empty array), or the songs if found.
-            completion(.success(songArray))
+            completion(.success([]))
         }
     }
     

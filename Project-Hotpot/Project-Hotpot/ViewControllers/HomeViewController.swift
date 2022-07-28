@@ -79,7 +79,6 @@ class HomeViewController: ViewController {
                         PFPlaylist.addPFSongToLastPlaylist(song:parseSong)
                     case .failure(let error):
                         NSLog(error.localizedDescription)
-                        //unsure if I want to return/ break
                     }
                 }
                 presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
@@ -134,28 +133,27 @@ class HomeViewController: ViewController {
         
     }
     
+    //TODO: add completion block -> have to manually move card a little to re-reset card.
     func resetSong() {
         let alg_instance = SongAlgorithm()
-        alg_instance.getRandomSong { result in
+        alg_instance.getAlgorithmSong { result in
             switch result {
             case .success(let uri):
-                self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: {songContent, apiError in
-                    if let apiError = apiError{
-                        NSLog(apiError.localizedDescription)
-                    }
-                    else if let songContent = songContent as? SPTAppRemoteContentItem
-                    {
-                    // Spotify API will crash if the play method isn't called on main thread
-                        DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    // Spotify API will crash if the method isn't called on main thread
+                    self.api_instance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
+                        if let apiError = apiError{
+                            NSLog(apiError.localizedDescription)
+                        }
+                        else if let songContent = songContent as? SPTAppRemoteContentItem
+                        {
                             self.api_instance.appRemote.playerAPI?.play(songContent)
                         }
-                    }
-                })
+                    })
+                }
             case .failure(let error):
                 NSLog(error.localizedDescription)
             }
         }
-        //TODO: add completion block to resetcard -> have to manually move card a little to re-reset card.
-        self.resetCard()
     }
 }

@@ -172,26 +172,9 @@ extension SpotifyManager {
         task.resume()
     }
     
-    func fetchSongsFromGenre(genre:String, offset: Int, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
-        guard let url = URL(string: "https://api.spotify.com/v1/search?q=" + "genre:" + genre + "&type=track&limit=50&offset=" + String(offset)),
-              let accessToken = self.appRemote.connectionParameters.accessToken
+    func createRequest(url:URL, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+        guard let accessToken = self.appRemote.connectionParameters.accessToken
         else {
-            return completion(.failure(CustomError.nilAccessToken))
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        let authorizationValue = "Bearer " + accessToken
-        request.allHTTPHeaderFields = ["Authorization": authorizationValue,
-                                       "Content-Type": "application/json",
-                                       "Accept": "application/json"]
-        makeSpotifyRequest(request: request, completion: completion)
-    }
-    
-    func fetchGenreSeeds(completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
-        guard let url = URL(string: "https://api.spotify.com/v1/recommendations/available-genre-seeds"),
-              let accessToken = self.appRemote.connectionParameters.accessToken
-        else {
-            NSLog("accessToken is nil")
             return completion(.failure(CustomError.nilAccessToken))
         }
         var request = URLRequest(url: url)
@@ -203,6 +186,29 @@ extension SpotifyManager {
         
         makeSpotifyRequest(request: request, completion: completion)
         
+    }
+    
+    func fetchAudioFeaturesFromTracks (for trackIDs: [String], completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+        let trackIdsString = trackIDs.joined(separator: ",")
+        guard let url = URL(string: "https://api.spotify.com/v1/audio-features?ids=" + trackIdsString) else {
+            return completion(.failure(CustomError.invalidURL))
+        }
+        createRequest(url: url, completion: completion)
+    }
+    
+    func fetchNSongsFromGenre(limit: Int, genre:String, offset: Int, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+        //TODO: add check to make sure limit <= 50
+        guard let url = URL(string: "https://api.spotify.com/v1/search?q=" + "genre:" + genre + "&type=track&limit=" + String(limit) + "&offset=" + String(offset)) else {
+            return completion(.failure(CustomError.invalidURL))
+        }
+        createRequest(url: url, completion: completion)
+    }
+    
+    func fetchGenreSeeds(completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+        guard let url = URL(string: "https://api.spotify.com/v1/recommendations/available-genre-seeds") else {
+            return completion(.failure(CustomError.invalidURL))
+        }
+        createRequest(url: url, completion: completion)
     }
     
     func fetchAccessToken(completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {

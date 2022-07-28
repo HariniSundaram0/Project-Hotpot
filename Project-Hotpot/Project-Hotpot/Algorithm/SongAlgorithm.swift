@@ -13,53 +13,45 @@ class SongAlgorithm{
     var apiInstance = SpotifyManager.shared()
     var userPreferences = UserSettingsManager.shared()
     var genreQueueManager = GenreQueueManager.shared()
+    var cacheManager = CacheManager.shared()
     
-    
-    func getRandomSong(completion: @escaping (_ result: Result<String, Error>) -> Void){
-        fetchSong { result in
+    func getAlgorithmSong(completion: @escaping (_ result: Result<String, Error>) -> Void) {
+        guard let genre = getRandomGenre() else {
+            return completion(.failure(CustomError.invalidCacheKey))
+        }
+        NSLog("genre: \(genre)")
+        let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in
             switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let dictionary):
-                guard let tracks = dictionary["tracks"] as? [String:Any]?,
-                      let items = tracks?["items"] as? [[String:Any]?],
-                      let randomSong = items.randomElement(),
-                      let randomURI = randomSong?["uri"] as? String
-                else{
-                    NSLog("failed parsing random song dictionary response")
-                    return completion(.failure(CustomError.failedResponseParsing))
+            case .success(let songs):
+                //TODO: next iteration switch to scoring metric
+                guard let song = songs.randomElement() else {
+                    completion(.failure(CustomError.failedResponseParsing))
+                    return
                 }
-                return completion(.success(randomURI))
+                //remove played song from cache to prevent repeat songs
+                self.cacheManager.removeSongFromCache(genre: genre, song: song)
+                completion(.success(song.uri))
+            case .failure(let error):
+                NSLog("error retreiving: \(error)")
+                completion(.failure(error))
             }
         }
     }
     
     func getRandomGenre() -> String? {
         //returns nil if the queue is empty
+        //TODO: consider instead of returning nil, throw error instead?
         guard let genre = genreQueueManager.getGenre() else {
             return nil
         }
-        //edge case: user changes perferences after queue was initialized,
-        //instead of removing all genres and enqueuing just the preferred genres, just discard for now
+        
         if userPreferences.removedGenres.contains(genre.name){
             NSLog("skipping \(genre.name) since not preferred")
             return getRandomGenre()
         }
-        else{
+        else {
             return genre.name
         }
-    }
-    
-    func fetchSong(completion: @escaping (_ result: Result<[String:Any], Error>) -> Void){
-        //TODO: add seed to increase randomness
-        let randomOffset = Int.random(in: 1..<800)
-        guard let genre = getRandomGenre()
-        else {
-            NSLog("no genre's available")
-            return
-        }
-        NSLog("requesting randomOffset: \(randomOffset), genre: \(genre)")
-        apiInstance.fetchSongsFromGenre(genre: genre, offset: randomOffset, completion: completion)
     }
 }
 

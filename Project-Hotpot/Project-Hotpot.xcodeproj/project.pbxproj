@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5E18ACFC288539F400059545 /* Pods_Project_Hotpot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 481A2A7A1757134276DEFFB1 /* Pods_Project_Hotpot.framework */; };
+		5E2FA6EB2891EBA200EE769D /* SongDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FA6EA2891EBA200EE769D /* SongDetails.swift */; };
+		5E2FA6ED2891F74D00EE769D /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FA6EC2891F74D00EE769D /* Cache.swift */; };
+		5E2FA6EF2891F93C00EE769D /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FA6EE2891F93C00EE769D /* CacheManager.swift */; };
 		5EAAC8D42885D9FD00BD2064 /* PFPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */; };
 		5EAAC8D62885F4EF00BD2064 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */; };
 		5EAAC8DE2888871A00BD2064 /* PFHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAAC8DD2888871A00BD2064 /* PFHistory.swift */; };
@@ -54,6 +57,9 @@
 /* Begin PBXFileReference section */
 		12BA0DC0E3114D74420752E0 /* Pods-Project-Hotpot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project-Hotpot.debug.xcconfig"; path = "Target Support Files/Pods-Project-Hotpot/Pods-Project-Hotpot.debug.xcconfig"; sourceTree = "<group>"; };
 		481A2A7A1757134276DEFFB1 /* Pods_Project_Hotpot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Hotpot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E2FA6EA2891EBA200EE769D /* SongDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetails.swift; sourceTree = "<group>"; };
+		5E2FA6EC2891F74D00EE769D /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		5E2FA6EE2891F93C00EE769D /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFPlaylist.swift; sourceTree = "<group>"; };
 		5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		5EAAC8DD2888871A00BD2064 /* PFHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFHistory.swift; sourceTree = "<group>"; };
@@ -101,6 +107,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E2FA6F02891FA9800EE769D /* Data Structures */ = {
+			isa = PBXGroup;
+			children = (
+				5EAAC8F72890B57100BD2064 /* GenreQueue.swift */,
+				5E2FA6EA2891EBA200EE769D /* SongDetails.swift */,
+				5E2FA6EC2891F74D00EE769D /* Cache.swift */,
+				5EAAC8F92890B82D00BD2064 /* Genre.swift */,
+			);
+			path = "Data Structures";
+			sourceTree = "<group>";
+		};
 		5EAAC8E72888C45700BD2064 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +145,7 @@
 				5EAAC8EE288A16F000BD2064 /* SongManager.swift */,
 				5EAAC8F528909A5100BD2064 /* UserSettingsManager.swift */,
 				5EAAC8FB2890E26900BD2064 /* GenreQueueManager.swift */,
+				5E2FA6EE2891F93C00EE769D /* CacheManager.swift */,
 				5EFB17DC2874F1D000ECC6B8 /* AppDelegate.swift */,
 				5EFB17DE2874F1D000ECC6B8 /* SceneDelegate.swift */,
 				5EAD8787287C9626008497D0 /* SpotifyManager.swift */,
@@ -161,8 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				5EAD8789287CE327008497D0 /* SongAlgorithm.swift */,
-				5EAAC8F72890B57100BD2064 /* GenreQueue.swift */,
-				5EAAC8F92890B82D00BD2064 /* Genre.swift */,
+				5E2FA6F02891FA9800EE769D /* Data Structures */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
@@ -340,12 +357,15 @@
 			files = (
 				5EAD878C287DF27A008497D0 /* LoginViewController.swift in Sources */,
 				5EAAC8FC2890E26900BD2064 /* GenreQueueManager.swift in Sources */,
+				5E2FA6EB2891EBA200EE769D /* SongDetails.swift in Sources */,
 				5EAAC8E02888BF2200BD2064 /* CreatePlaylistViewController.swift in Sources */,
 				5EAD8788287C9626008497D0 /* SpotifyManager.swift in Sources */,
 				5EAAC8FE2891090000BD2064 /* Errors.swift in Sources */,
+				5E2FA6ED2891F74D00EE769D /* Cache.swift in Sources */,
 				5EAAC8FA2890B82D00BD2064 /* Genre.swift in Sources */,
 				5EAAC8F628909A5100BD2064 /* UserSettingsManager.swift in Sources */,
 				5EAD87862878D2C3008497D0 /* ConnectViewController.swift in Sources */,
+				5E2FA6EF2891F93C00EE769D /* CacheManager.swift in Sources */,
 				5EAD87922880833E008497D0 /* PFSong.swift in Sources */,
 				5EAAC8F4289093F300BD2064 /* SettingsViewController.swift in Sources */,
 				5EAD87802876412A008497D0 /* HomeViewController.swift in Sources */,

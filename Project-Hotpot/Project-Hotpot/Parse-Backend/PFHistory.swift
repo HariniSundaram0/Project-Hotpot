@@ -12,6 +12,7 @@ class PFHistory: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var song : PFSong
     @NSManaged var playTimeStamp : NSDate
+    //TODO: add song id attribute for faster querying in the future
     //in future will include audio analysis features such as 'liked', 'disliked', genre, tags, etc
     
     static func parseClassName() -> String {
