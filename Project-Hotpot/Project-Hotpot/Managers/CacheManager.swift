@@ -48,7 +48,7 @@ class CacheManager: NSObject {
                 }
             }
             else {
-                NSLog("Cache Hit")
+                NSLog("Cache Hit for \(genre)")
                 completion(.success(songDetailsArray))
             }
         }
@@ -103,7 +103,7 @@ class CacheManager: NSObject {
                         //throws error later on
                         return nil
                     }
-                    return SongDetails(uri: uri, id: id, danceability: danceability, energy: energy, tempo: tempo, key: key)
+                    return SongDetails(uri: uri, id: id, danceability: Float(danceability), energy: Float(energy), tempo: Float(tempo), key: Float(key))
                 }
                 
                 guard let songDetailsArray = songDetailsArray else {
@@ -123,4 +123,10 @@ class CacheManager: NSObject {
         NSLog("requesting randomOffset: \(randomOffset), genre: \(genre)")
         SpotifyManager.shared().fetchNSongsFromGenre(limit: limit, genre: genre, offset: randomOffset, completion: completion)
     }
+
+    func saveCache() {
+        self.cache.saveCache()
+    }
 }
+    
+

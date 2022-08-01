@@ -9,6 +9,8 @@ import Foundation
 class SongScoreManager: NSObject {
     //keep list of last K songs
     let K = 10
+    //count of the numerical attributes that will be used in calculations
+    let ATTRIBUTECOUNT = 4
     // TODO: removing head to maintain K may be inefficient, consider switching to linked list implementation?
     private var lastKSongDetails: [SongDetails] = []
     
@@ -62,7 +64,7 @@ class SongScoreManager: NSObject {
         
         attributeArray.append(self.calculatePercentDifference(num1: song.danceability, num2: movingAverages["key"] ?? 0))
         
-        return (attributeArray.reduce(0.0,+)) / Float(SongDetails.numericalAttributes.count)
+        return (attributeArray.reduce(0.0,+)) / Float(ATTRIBUTECOUNT)
         
     }
     //function that iterates through list of SongDetail Object to find max -> return songObject
@@ -74,7 +76,7 @@ class SongScoreManager: NSObject {
             let score = self.calculateSongScore(song: song)
             resultDictionary[song] = score
         }
-        print("song scores: \(resultDictionary)")
+        print("cache song scores: \(resultDictionary)")
         return resultDictionary
         
         
@@ -87,7 +89,7 @@ class SongScoreManager: NSObject {
         if let newSong = maxElement?.key {
             self.addSongToLastKSongDetails(newSong: newSong)
         }
-        NSLog("choosing song \(maxElement?.key) with score \(maxElement?.value)")
+        NSLog("choosing cache song \(maxElement?.key) with score \(maxElement?.value)")
         return maxElement?.key
         
         

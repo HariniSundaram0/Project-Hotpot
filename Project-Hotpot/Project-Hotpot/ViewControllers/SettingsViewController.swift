@@ -16,5 +16,6 @@ class SettingsViewController: UIViewController {
         if let randomGenre = UserSettingsManager.shared().userGenres.randomElement(){
             UserSettingsManager.shared().removeGenreFromPrefences(genre: randomGenre)
         }
+        print(UserSettingsManager.shared().removedGenres)
     }
 }

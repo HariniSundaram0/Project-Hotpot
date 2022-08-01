@@ -45,7 +45,6 @@ class SongAlgorithm{
         guard let genre = getRandomGenre() else {
             return completion(.failure(CustomError.invalidCacheKey))
         }
-        NSLog("genre: \(genre)")
         let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in
             switch result {
             case .success(let songs):

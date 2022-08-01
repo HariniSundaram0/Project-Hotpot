@@ -29,9 +29,8 @@ class GenreQueueManager: NSObject {
     }
     
     func reinitializeQueue () {
-        if(self.genreQueue.isEmpty) {
-            let userGenres = UserSettingsManager.shared().userGenres
-            self.genreQueue.enqueueFromList(genres: Array(userGenres).shuffled())
+        if (self.genreQueue.isEmpty) {
+            self.genreQueue.enqueueFromList(genres: Array(UserSettingsManager.shared().userGenres).shuffled())
         }
     }
     
