@@ -572,7 +572,7 @@
 		};
 		5EFB17EF2874F1D000ECC6B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12BA0DC0E3114D74420752E0 /* Pods-Project-Hotpot.debug.xcconfig */;
+			baseConfigurationReference = C94E2377FBE3B4DA4B523648 /* Pods-Project-Hotpot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
