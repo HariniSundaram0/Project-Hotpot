@@ -161,9 +161,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Remove Random Genre From Feed"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Remove Genres From Feed"/>
                                 <connections>
-                                    <action selector="onClickRemoveRandomGenre:" destination="FHg-TL-gIb" eventType="touchUpInside" id="JTF-3t-Ohg"/>
+                                    <action selector="onClickShowDropDown:" destination="FHg-TL-gIb" eventType="touchUpInside" id="RK2-de-jQA"/>
                                 </connections>
                             </button>
                         </subviews>

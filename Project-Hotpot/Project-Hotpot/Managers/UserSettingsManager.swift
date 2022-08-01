@@ -71,7 +71,14 @@ class UserSettingsManager: NSObject {
         }
         removedGenres.insert(genre)
         userGenres.remove(genre)
-        
+    }
+    
+    func removeMultipleGenresFromPreferences(genres: Set<String>) {
+        genres.map{ genre in removeGenreFromPrefences(genre: genre)}
+    }
+    
+    func addMultipleGenresFromPreferences(genres: Set<String>) {
+        genres.map{ genre in addGenreToPreferences(genre: genre)}
     }
     
     func savePreferences() {
