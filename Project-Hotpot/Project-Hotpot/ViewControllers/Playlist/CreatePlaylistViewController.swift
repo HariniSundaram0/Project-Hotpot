@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatePlaylistViewController: ViewController {
+class CreatePlaylistViewController: HotpotViewController {
     
     @IBOutlet weak var playlistNameField: UITextField!
     

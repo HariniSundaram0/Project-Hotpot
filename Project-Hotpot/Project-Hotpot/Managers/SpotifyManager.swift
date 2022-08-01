@@ -276,5 +276,3 @@ extension SpotifyManager{
         UserDefaults.standard.set(originalGenreSeeds, forKey: "originalGenres")
     }
 }
-
-

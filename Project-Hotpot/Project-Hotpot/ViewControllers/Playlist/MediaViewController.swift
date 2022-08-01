@@ -1,0 +1,59 @@
+//
+//  MediaViewController.swift
+//  Project-Hotpot
+//
+//  Created by Harini Sundaram on 8/1/22.
+//
+
+import UIKit
+
+class MediaViewController: HotpotViewController {
+    let apiInstance = SpotifyManager.shared()
+    let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
+    let playButtomImage = UIImage(systemName: "play.circle.fill")
+    
+    func resumeSong(button: UIButton) {
+        //resume the audio
+        apiInstance.appRemote.playerAPI?.resume()
+        //change the button image
+        DispatchQueue.main.async {
+            button.setImage(self.pauseButtonImage, for:.normal)
+        }
+    }
+    
+    func pauseSong(button: UIButton) {
+        //pause the audio
+        apiInstance.appRemote.playerAPI?.pause()
+        //change the button image
+        DispatchQueue.main.async {
+            button.setImage(self.playButtomImage, for:.normal)
+        }
+    }
+    
+    //TODO: add completion handler
+    func playNewSong(uri: String, button: UIButton) {
+        DispatchQueue.main.async {
+            self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
+                if let apiError = apiError {
+                    NSLog(apiError.localizedDescription)
+                }
+                else if let songContent = songContent as? SPTAppRemoteContentItem
+                {
+                    self.apiInstance.appRemote.playerAPI?.play(songContent)
+                    self.resumeSong(button: button)
+                }
+            })
+        }
+    }
+    
+    func didTapMediaPlayButton(button: UIButton) {
+        if (apiInstance.lastPlayerState?.isPaused == true){
+            //if already paused, play the song
+            resumeSong(button: button)
+        }
+        else{
+            //if already playing, pause the song
+            pauseSong(button: button)
+        }
+    }
+}

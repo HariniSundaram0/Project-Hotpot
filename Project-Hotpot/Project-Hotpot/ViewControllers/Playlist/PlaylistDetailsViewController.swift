@@ -7,12 +7,12 @@
 
 import UIKit
 
-class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, UITableViewDataSource {
     var currentPlaylist: PFPlaylist?
     var songArray: [PFSong]?
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var playlistName: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,14 @@ class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let currentSong = songArray?[indexPath.row] else {
+            NSLog("failed accessing song from indexPath")
+            return
+        }
+        let uri = currentSong.uri
+        self.playNewSong(uri: uri, button: self.playButton)
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "SongTableViewCell", for: indexPath) as? SongTableViewCell,
@@ -51,6 +59,11 @@ class PlaylistDetailsViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return songArray?.count ?? 0
+    }
+
+    
+    @IBAction func didTapPlayButton(_sender: UIButton) {
+        self.didTapMediaPlayButton(button: _sender)
     }
     
     

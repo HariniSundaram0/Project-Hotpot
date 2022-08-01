@@ -7,43 +7,30 @@
 
 import UIKit
 
-class HomeViewController: ViewController {
+class HomeViewController: MediaViewController {
     enum swipe{
         case left
         case right
     }
     
-    var api_instance = SpotifyManager.shared()
+    let api_instance = SpotifyManager.shared()
+    let songManager = SongManager()
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
-    
-    let songManager = SongManager()
-    let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
-    let playButtomImage = UIImage(systemName: "play.circle.fill")
-    
     @IBOutlet weak var songTitleLabel: UILabel!
+    
     override func viewDidLoad() {
         self.didSwipe(direction: swipe.left, completion: self.createClosure())
     }
     override func viewDidAppear(_ animated: Bool) {
         self.resetCard()
     }
+    
     // MARK: - Actions
-    
-    @IBAction func didTapButton(_ sender: UIButton) {
-        
-        if (api_instance.lastPlayerState?.isPaused == true){
-            //if already paused, play the song
-            playSong()
-        }
-        else{
-            //if already playing, pause the song
-            pauseSong()
-        }
+    @IBAction func didTapButton(_sender: UIButton) {
+        self.didTapMediaPlayButton(button: _sender)
     }
-    
-    
     
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
@@ -117,48 +104,37 @@ class HomeViewController: ViewController {
     // MARK: - helper functions
     func resetCard() {
         NSLog("resetting")
-        UIView.animate(withDuration: 0.2, animations: {
-            self.card.center = self.view.center
-            self.songTitleLabel.text = self.api_instance.currentSongLabel
-            if let track = self.api_instance.lastPlayerState?.track{
-                self.api_instance.fetchArtwork(for: track) { result in
-                    switch result {
-                    case .failure(let error):
-                        NSLog(error.localizedDescription)
-                        
-                    case .success(let image):
-                        DispatchQueue.main.async {
-                            self.songImage.image = image
+        DispatchQueue.main.async{
+            UIView.animate(withDuration: 0.2, animations: {
+                self.card.center = self.view.center
+                self.songTitleLabel.text = self.api_instance.currentSongLabel
+                if let track = self.api_instance.lastPlayerState?.track{
+                    self.api_instance.fetchArtwork(for: track) { result in
+                        switch result {
+                        case .failure(let error):
+                            NSLog(error.localizedDescription)
+                            
+                        case .success(let image):
+                            DispatchQueue.main.async {
+                                self.songImage.image = image
+                            }
                         }
                     }
                 }
-            }
-        })
-    }
-    
-    func playSong() {
-        //resume the audio
-        api_instance.appRemote.playerAPI?.resume()
-        //change the button image
-        DispatchQueue.main.async {
-            self.playButton.setImage(self.pauseButtonImage, for:.normal)
-        }
-    }
-    
-    func pauseSong() {
-        //pause the audio
-        api_instance.appRemote.playerAPI?.pause()
-        //change the button image
-        DispatchQueue.main.async {
-            self.playButton.setImage(self.playButtomImage, for:.normal)
+            })
         }
     }
     
     //TODO: add completion block -> have to manually move card a little to re-reset card.
     func resetSong(completion: @escaping (_ result: Result<Void, Error>) -> Void) {
         let algInstance = SongAlgorithm()
-        algInstance.playNewSong { result in
-            completion(result)
-        }
+        algInstance.getAlgorithmSong { result in
+            switch result {
+            case .success(let uri):
+                self.playNewSong(uri: uri, button: self.playButton)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }}
     }
 }

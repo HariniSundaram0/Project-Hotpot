@@ -78,9 +78,8 @@ class SongScoreManager: NSObject {
         }
         print("cache song scores: \(resultDictionary)")
         return resultDictionary
-        
-        
     }
+    
     func findMaxSongScore(songs: [SongDetails]) -> SongDetails? {
         let scoreDictionary = self.calculateSongScores(songs: songs)
         
@@ -91,7 +90,5 @@ class SongScoreManager: NSObject {
         }
         NSLog("choosing cache song \(maxElement?.key) with score \(maxElement?.value)")
         return maxElement?.key
-        
-        
     }
 }
