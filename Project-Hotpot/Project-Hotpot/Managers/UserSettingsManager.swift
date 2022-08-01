@@ -26,7 +26,8 @@ class UserSettingsManager: NSObject {
     //doing this way so that only 1 instance of settings should be created per user.
     override private init() {
         guard let savedUserGenres = defaults.object(forKey: "userGenres") as? [String],
-              let savedRemovedGenres = defaults.object(forKey: "removedGenres") as? [String]
+              let savedRemovedGenres = defaults.object(forKey: "removedGenres") as? [String],
+              savedUserGenres.isEmpty == false
         else {
             removedGenres = []
             userGenres = Set(SpotifyManager.shared().originalGenreSeeds)

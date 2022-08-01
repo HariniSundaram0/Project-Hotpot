@@ -98,7 +98,8 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                 NSLog("Error subscribing to player state:" + error.localizedDescription)
             }
             //initialize genre list, once accessToken has been validated
-            guard let originalGenres = UserDefaults.standard.object(forKey: "originalGenres") as? [String]
+            guard let originalGenres = UserDefaults.standard.object(forKey: "originalGenres") as? [String],
+                  originalGenres.isEmpty == false
             else {
                 self.fetchGenreSeeds{ result in
                     switch result{
