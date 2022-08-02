@@ -13,7 +13,6 @@ class HomeViewController: MediaViewController {
         case right
     }
     
-    let api_instance = SpotifyManager.shared()
     let songManager = SongManager()
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
@@ -21,7 +20,7 @@ class HomeViewController: MediaViewController {
     @IBOutlet weak var songTitleLabel: UILabel!
     
     override func viewDidLoad() {
-        self.didSwipe(direction: swipe.left, completion: self.createClosure())
+        self.refreshSong(direction: swipe.left, completion: self.createClosure())
     }
     override func viewDidAppear(_ animated: Bool) {
         self.resetCard()
@@ -31,7 +30,6 @@ class HomeViewController: MediaViewController {
     @IBAction func didTapButton(_sender: UIButton) {
         self.didTapMediaPlayButton(button: _sender)
     }
-    
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {
@@ -44,7 +42,7 @@ class HomeViewController: MediaViewController {
         if sender.state == UIGestureRecognizer.State.ended{
             if card.center.x < 75{
                 // move off to left
-                didSwipe(direction: swipe.left, completion: self.createClosure())
+                refreshSong(direction: swipe.left, completion: self.createClosure())
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
                 })
@@ -52,7 +50,7 @@ class HomeViewController: MediaViewController {
             }
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
-                didSwipe(direction: swipe.right, completion: self.createClosure())
+                refreshSong(direction: swipe.right, completion: self.createClosure())
                 presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
                 UIView.animate(withDuration: 1.0, animations:{
                     card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
@@ -79,8 +77,8 @@ class HomeViewController: MediaViewController {
         return resetSongAndCard
     }
     // an attempt to limit repetitive code
-    func didSwipe(direction: swipe, completion: @escaping (_ result: Result<Void, Error>) -> Void){
-        guard let track = api_instance.lastPlayerState?.track else {
+    func refreshSong(direction: swipe, completion: @escaping (_ result: Result<Void, Error>) -> Void){
+        guard let track = apiInstance.lastPlayerState?.track else {
             NSLog("Spotify is not playing any songs?")
             return completion(.failure(CustomError.nilSpotifyState))
         }
@@ -104,24 +102,22 @@ class HomeViewController: MediaViewController {
     // MARK: - helper functions
     func resetCard() {
         NSLog("resetting")
-        DispatchQueue.main.async{
-            UIView.animate(withDuration: 0.2, animations: {
-                self.card.center = self.view.center
-                self.songTitleLabel.text = self.api_instance.currentSongLabel
-                if let track = self.api_instance.lastPlayerState?.track{
-                    self.api_instance.fetchArtwork(for: track) { result in
-                        switch result {
-                        case .failure(let error):
-                            NSLog(error.localizedDescription)
-                            
-                        case .success(let image):
-                            DispatchQueue.main.async {
-                                self.songImage.image = image
-                            }
-                        }
+        if let track = self.apiInstance.lastPlayerState?.track{
+            self.apiInstance.fetchArtwork(for: track) { result in
+                switch result {
+                case .failure(let error):
+                    NSLog(error.localizedDescription)
+                    
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.2, animations: {
+                            self.card.center = self.view.center
+                            self.songTitleLabel.text = self.apiInstance.currentSongLabel
+                            self.songImage.image = image
+                        })
                     }
                 }
-            })
+            }
         }
     }
     
@@ -135,6 +131,7 @@ class HomeViewController: MediaViewController {
                 completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
-            }}
+            }
+        }
     }
 }

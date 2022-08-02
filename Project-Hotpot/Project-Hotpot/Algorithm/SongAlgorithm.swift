@@ -12,7 +12,7 @@ import AFNetworking
 class SongAlgorithm{
     var apiInstance = SpotifyManager.shared()
     var userPreferences = UserSettingsManager.shared()
-    var genreQueueManager = GenreQueueManager.shared()
+    var genreManager = GenreManager.shared()
     var cacheManager = CacheManager.shared()
     var scoreManager = SongScoreManager.shared()
     var songManager = SongManager()
@@ -41,9 +41,9 @@ class SongAlgorithm{
     }
     
     func getRandomGenre() -> String? {
-        //returns nil if the queue is empty
+        //returns nil if the queue somehow returns a nil object, which cannot happen
         //TODO: consider instead of returning nil, throw error instead?
-        guard let genre = genreQueueManager.getGenre() else {
+        guard let genre = genreManager.getGenre() else {
             return nil
         }
         if userPreferences.removedGenres.contains(genre.name) {

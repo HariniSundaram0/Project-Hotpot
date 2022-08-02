@@ -26,17 +26,13 @@ class SongScoreManager: NSObject {
      func calculateMovingAverages() {
         //TODO: Figure out less repetitive way to do this
         //iterate through each stored song detail
-        self.movingAverages["danceability"] = (self.lastKSongDetails.map {song in
-            song.danceability}).reduce(0, +)
+         self.movingAverages["danceability"] = (self.lastKSongDetails.map {$0.danceability}).reduce(0, +)
         
-        self.movingAverages["energy"] = (self.lastKSongDetails.map {song in
-            song.energy}).reduce(0, +)
+        self.movingAverages["energy"] = (self.lastKSongDetails.map {$0.energy}).reduce(0, +)
         
-        self.movingAverages["tempo"] = (self.lastKSongDetails.map {song in
-            song.tempo}).reduce(0, +)
+         self.movingAverages["tempo"] = (self.lastKSongDetails.map {$0.tempo}).reduce(0, +)
         
-        self.movingAverages["key"] = (self.lastKSongDetails.map {song in
-            song.tempo}).reduce(0, +)
+         self.movingAverages["key"] = (self.lastKSongDetails.map {$0.key}).reduce(0, +)
     }
     
     func removeOldestSongFromSongScores() {

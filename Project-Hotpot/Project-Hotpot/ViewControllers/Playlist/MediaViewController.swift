@@ -40,7 +40,8 @@ class MediaViewController: HotpotViewController {
                 else if let songContent = songContent as? SPTAppRemoteContentItem
                 {
                     self.apiInstance.appRemote.playerAPI?.play(songContent)
-                    self.resumeSong(button: button)
+                    button.setImage(self.pauseButtonImage, for:.normal)
+                    
                 }
             })
         }
