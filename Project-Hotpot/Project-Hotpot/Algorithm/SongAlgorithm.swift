@@ -12,40 +12,16 @@ import AFNetworking
 class SongAlgorithm{
     var apiInstance = SpotifyManager.shared()
     var userPreferences = UserSettingsManager.shared()
-    var genreQueueManager = GenreQueueManager.shared()
+    var genreManager = GenreManager.shared()
     var cacheManager = CacheManager.shared()
     var scoreManager = SongScoreManager.shared()
     var songManager = SongManager()
     
-    
-    func playNewSong(completion: @escaping (_ result: Result<Void, Error>) -> Void) {
-        getAlgorithmSong { result in
-            switch result {
-            case .success(let uri):
-            // Spotify API will crash if these 2 methods aren't called on main thread
-                DispatchQueue.main.async {
-                    self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
-                        if let apiError = apiError {
-                            completion(.failure(apiError))
-                        }
-                        else if let songContent = songContent as? SPTAppRemoteContentItem
-                        {
-                            self.apiInstance.appRemote.playerAPI?.play(songContent)
-                            completion(.success(()))
-                        }
-                    })
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 
     func getAlgorithmSong(completion: @escaping (_ result: Result<String, Error>) -> Void) {
         guard let genre = getRandomGenre() else {
             return completion(.failure(CustomError.invalidCacheKey))
         }
-        NSLog("genre: \(genre)")
         let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in
             switch result {
             case .success(let songs):
@@ -65,9 +41,9 @@ class SongAlgorithm{
     }
     
     func getRandomGenre() -> String? {
-        //returns nil if the queue is empty
+        //returns nil if the queue somehow returns a nil object, which cannot happen
         //TODO: consider instead of returning nil, throw error instead?
-        guard let genre = genreQueueManager.getGenre() else {
+        guard let genre = genreManager.getGenre() else {
             return nil
         }
         if userPreferences.removedGenres.contains(genre.name) {

@@ -8,4 +8,5 @@ target 'Project-Hotpot' do
   # Pods for Project-Hotpot
 	pod 'Parse'
 	pod 'AFNetworking'
+	pod 'RSSelectionMenu'
 end

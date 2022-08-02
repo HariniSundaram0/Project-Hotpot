@@ -15,6 +15,8 @@ class UserSettingsManager: NSObject {
     //used by algorithm
     var userGenres : Set <String>
     
+    let defaults = UserDefaults.standard
+    
     private static var userSettings: UserSettingsManager = {
         let settings = UserSettingsManager()
         return settings
@@ -23,10 +25,20 @@ class UserSettingsManager: NSObject {
     // MARK: - Initializers
     //doing this way so that only 1 instance of settings should be created per user.
     override private init() {
-        removedGenres = []
-        let originalGenres = SpotifyManager.shared().originalGenreSeeds
-        userGenres = Set(originalGenres)
-        NSLog("initialized Settings Manager")
+        guard let savedUserGenres = defaults.object(forKey: "userGenres") as? [String],
+              let savedRemovedGenres = defaults.object(forKey: "removedGenres") as? [String],
+              savedUserGenres.isEmpty == false
+        else {
+            removedGenres = []
+            userGenres = Set(SpotifyManager.shared().originalGenreSeeds)
+            super.init()
+            NSLog("initialized Settings Manager")
+            return
+        }
+        NSLog("initialized Settings Manager from previous sessions: removed genres :\(savedRemovedGenres)")
+        userGenres = Set(savedUserGenres)
+        removedGenres = Set(savedRemovedGenres)
+        super.init()
     }
     
     // MARK: - Accessors
@@ -60,6 +72,19 @@ class UserSettingsManager: NSObject {
         }
         removedGenres.insert(genre)
         userGenres.remove(genre)
-        
+    }
+    
+    func removeMultipleGenresFromPreferences(genres: Set<String>) {
+        genres.map{ genre in removeGenreFromPrefences(genre: genre)}
+    }
+    
+    func addMultipleGenresFromPreferences(genres: Set<String>) {
+        genres.map{ genre in addGenreToPreferences(genre: genre)}
+    }
+    
+    func savePreferences() {
+        defaults.set(Array(userGenres), forKey: "userGenres")
+        defaults.set(Array(self.removedGenres), forKey: "removedGenres")
+        NSLog("saved user preferences")
     }
 }

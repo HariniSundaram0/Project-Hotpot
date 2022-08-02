@@ -10,12 +10,12 @@ import Foundation
 class Cache: NSObject{
     //TODO: currently using dictionary, so can save to disk easily, but consider alternative implementations?
     var cache: [String: [SongDetails]] = [:]
+    let genreKeys: [String]
     
     init(genreKeys: [String]) {
-        for genreKey in genreKeys {
-            //manually initialize key to empty array
-            cache[genreKey] = []
-        }
+        self.genreKeys = genreKeys
+        super.init()
+        loadCache()
     }
     //TODO: add function to return songs based on key
     func retrieveSongs(genre:String) -> [SongDetails]? {
@@ -51,4 +51,25 @@ class Cache: NSObject{
             NSLog("couldn't find songs to evict at this genre")
         }
     }
+    
+    func saveCache(){
+        Storage.store(self.cache, to: Storage.Directory.documents, as: "cache.json")
+        NSLog("stored")
+    }
+    
+    func loadCache(){
+        if Storage.fileExists("cache.json", in: .documents) {
+            // we have a cache to retrieve
+            self.cache = Storage.retrieve("cache.json", from: .documents, as: [String: [SongDetails]].self)
+            print("loaded in cache: \(self.cache)" )
+        }
+        else{
+            for genreKey in genreKeys {
+                //manually initialize key to empty array
+                cache[genreKey] = []
+            }
+            NSLog("manually created new cache")
+        }
+    }
+        
 }

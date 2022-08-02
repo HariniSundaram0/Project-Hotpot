@@ -6,15 +6,55 @@
 //
 
 import UIKit
+import RSSelectionMenu
 
 class SettingsViewController: UIViewController {
-
+    
     @IBOutlet weak var genreButton: UIButton!
     
-    //for now removes a random genre for testing purposes
-    @IBAction func onClickRemoveRandomGenre(_ sender: Any) {
-        if let randomGenre = UserSettingsManager.shared().userGenres.randomElement(){
-            UserSettingsManager.shared().removeGenreFromPrefences(genre: randomGenre)
+    var genresToAdd: Set<String> = []
+    var genresToRemove: Set<String> = []
+    
+    let genreMenu = RSSelectionMenu(selectionStyle: .multiple, dataSource: Array(SpotifyManager.shared().originalGenreSeeds)) { (cell, genre, indexPath) in
+        cell.textLabel?.text = genre
+    }
+    override func viewDidLoad() {
+        setGenreMenu()
+    }
+    
+    func setGenreMenu() {
+        //sets the values that will be already selected once menu is shown
+        genreMenu.setSelectedItems(items: Array(UserSettingsManager.shared().removedGenres)) { (genre, index, isSelected, selectedItems) in
+            guard let genre = genre else{
+                NSLog("genre is nil")
+                return
+            }
+            if isSelected {
+                self.genresToRemove.insert(genre)
+            }
+            else {
+                self.genresToAdd.insert(genre)
+            }
         }
+        
+        genreMenu.onDismiss = { [weak self] selectedItems in
+            guard let removeGenres = self?.genresToRemove,
+                  let addGenres = self?.genresToAdd
+            else {
+                NSLog("returning, unable to access temporary arrays")
+                return
+            }
+            let removeDifference = removeGenres.subtracting(addGenres)
+            let addDifference = addGenres.subtracting(removeGenres)
+            UserSettingsManager.shared().removeMultipleGenresFromPreferences(genres: removeDifference)
+            UserSettingsManager.shared().addMultipleGenresFromPreferences(genres: addDifference)
+            //reset temporary arrays
+            self?.genresToAdd = []
+            self?.genresToRemove = []
+        }
+    }
+    
+    @IBAction func onClickShowDropDown(_ sender: Any) {
+        genreMenu.show(style: .present, from: self)
     }
 }

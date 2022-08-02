@@ -3,7 +3,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    var api_instance = SpotifyManager.shared()
+    var apiInstance = SpotifyManager.shared()
     lazy var rootViewController = ConnectViewController()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -21,30 +21,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = URLContexts.first?.url else {
             return
         }
-        let parameters = api_instance.appRemote.authorizationParameters(from: url)
+        let parameters = apiInstance.appRemote.authorizationParameters(from: url)
         if let code = parameters?["code"] {
-            api_instance.responseCode = code
+            apiInstance.responseCode = code
         } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
-            api_instance.accessToken = access_token
+            apiInstance.accessToken = access_token
         } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
             NSLog("No access token error =", error_description)
         }
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
-        if let accessToken = api_instance.appRemote.connectionParameters.accessToken {
-            api_instance.appRemote.connectionParameters.accessToken = accessToken
-            api_instance.appRemote.connect()
+        if let accessToken = apiInstance.appRemote.connectionParameters.accessToken {
+            apiInstance.appRemote.connectionParameters.accessToken = accessToken
+            apiInstance.appRemote.connect()
             
-        } else if let accessToken = api_instance.accessToken {
-            api_instance.appRemote.connectionParameters.accessToken = accessToken
-            api_instance.appRemote.connect()
+        } else if let accessToken = apiInstance.accessToken {
+            apiInstance.appRemote.connectionParameters.accessToken = accessToken
+            apiInstance.appRemote.connect()
         }
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
-        if api_instance.appRemote.isConnected {
-            api_instance.appRemote.disconnect()
+        if apiInstance.appRemote.isConnected {
+            apiInstance.appRemote.disconnect()
         }
     }
 }

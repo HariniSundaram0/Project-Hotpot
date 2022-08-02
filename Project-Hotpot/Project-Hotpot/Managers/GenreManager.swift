@@ -1,5 +1,5 @@
 //
-//  GenreQueueManager.swift
+//  GenreManager.swift
 //  Project-Hotpot
 //
 //  Created by Harini Sundaram on 7/26/22.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-class GenreQueueManager: NSObject {
+class GenreManager: NSObject {
     //using sets to make checking existance more efficient
     //will be used primarily by UI
     var genreQueue : GenreQueue = GenreQueue()
     
-    private static var genreQueueManager: GenreQueueManager = {
-        return GenreQueueManager()
+    private static var genreManagerInstance: GenreManager = {
+        return GenreManager()
     }()
     
     // MARK: - Initializers
@@ -24,14 +24,13 @@ class GenreQueueManager: NSObject {
     }
     
     // MARK: - Accessors
-    class func shared() -> GenreQueueManager {
-        return genreQueueManager
+    class func shared() -> GenreManager {
+        return genreManagerInstance
     }
     
     func reinitializeQueue () {
-        if(self.genreQueue.isEmpty) {
-            let userGenres = UserSettingsManager.shared().userGenres
-            self.genreQueue.enqueueFromList(genres: Array(userGenres).shuffled())
+        if (self.genreQueue.isEmpty) {
+            self.genreQueue.enqueueFromList(genres: Array(UserSettingsManager.shared().userGenres).shuffled())
         }
     }
     

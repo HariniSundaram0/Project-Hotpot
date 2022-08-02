@@ -35,6 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    
+    func applicationWillTerminate(_ application: UIApplication) {
+        //save all user data
+        UserSettingsManager.shared().savePreferences()
+        SpotifyManager.shared().saveGenres()
+        CacheManager.shared().saveCache()
+        
+    }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 import Parse
 
-class LoginViewController: ViewController {
+class LoginViewController: HotpotViewController {
     
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var usernameField: UITextField!

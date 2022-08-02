@@ -98,16 +98,24 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                 NSLog("Error subscribing to player state:" + error.localizedDescription)
             }
             //initialize genre list, once accessToken has been validated
-            self.fetchGenreSeeds { result in
-                switch result{
-                case .success(let genreArray):
-                    if let newGenreArray = genreArray["genres"] as? [String]{
-                        self.originalGenreSeeds = newGenreArray
+            guard let originalGenres = UserDefaults.standard.object(forKey: "originalGenres") as? [String],
+                  originalGenres.isEmpty == false
+            else {
+                self.fetchGenreSeeds{ result in
+                    switch result{
+                    case .success(let genreArray):
+                        if let newGenreArray = genreArray["genres"] as? [String] {
+                            self.originalGenreSeeds = newGenreArray
+                            NSLog("success fetching genres")
+                        }
+                    case .failure(let error):
+                        NSLog(error.localizedDescription)
                     }
-                case .failure(let error):
-                    NSLog(error.localizedDescription)
                 }
+                return self.fetchPlayerState()
             }
+            self.originalGenreSeeds = originalGenres
+            NSLog("updated genres from disk")
         })
         fetchPlayerState()
     }
@@ -162,7 +170,7 @@ extension SpotifyManager {
                 //if the error is nil, then technically another error could have happened
                 return completion(.failure(CustomError.unexpected))
             }
-            if let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+            if let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                 completion(.success(responseObject))
             }
             else {
@@ -263,4 +271,9 @@ extension SpotifyManager {
     }
 }
 
-
+extension SpotifyManager{
+    //MARK: Saving data
+    func saveGenres() {
+        UserDefaults.standard.set(originalGenreSeeds, forKey: "originalGenres")
+    }
+}

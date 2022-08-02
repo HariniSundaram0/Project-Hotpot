@@ -7,7 +7,7 @@
 
 import UIKit
 //for keeping general functions to be accessed by all view controllers
-class ViewController: UIViewController {
+class HotpotViewController: UIViewController {
     func presentAlert(title: String, message: String, buttonTitle: String) {
         DispatchQueue.main.async {
             let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -16,5 +16,4 @@ class ViewController: UIViewController {
             self.present(controller, animated: true)
         }
     }
-
 }

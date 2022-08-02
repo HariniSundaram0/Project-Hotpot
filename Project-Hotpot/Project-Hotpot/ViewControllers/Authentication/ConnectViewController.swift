@@ -13,7 +13,7 @@ class ConnectViewController: UIViewController {
     let connectLabel = UILabel()
     let connectButton = UIButton(type: .system)
     
-    var api_instance = SpotifyManager.shared()
+    var apiInstance = SpotifyManager.shared()
     
     // MARK: App Life Cycle
     override func viewDidLoad() {
@@ -24,7 +24,7 @@ class ConnectViewController: UIViewController {
     }
     
     @objc func didTapConnect(_ button: UIButton) {
-        guard let sessionManager = api_instance.sessionManager else {
+        guard let sessionManager = apiInstance.sessionManager else {
             return
         }
         sessionManager.initiateSession(with: scopes, options: .clientOnly)
@@ -33,8 +33,6 @@ class ConnectViewController: UIViewController {
         self.view.window?.rootViewController = nextViewController
         
     }
-    
-    
 }
 extension ConnectViewController {
     func style() {

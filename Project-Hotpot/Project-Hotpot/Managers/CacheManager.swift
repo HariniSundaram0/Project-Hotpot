@@ -48,7 +48,7 @@ class CacheManager: NSObject {
                 }
             }
             else {
-                NSLog("Cache Hit")
+                NSLog("Cache Hit for \(genre)")
                 completion(.success(songDetailsArray))
             }
         }
@@ -68,7 +68,7 @@ class CacheManager: NSObject {
                     NSLog("failed parsing random song dictionary response")
                     return completion(.failure(CustomError.failedResponseParsing))
                 }
-                let trackIDs : [String] = items.compactMap{ item in item?["id"] as? String }
+                let trackIDs : [String] = items.compactMap{ $0?["id"] as? String}
                 self.spotifyIdToSongDetails(ids: trackIDs) { result in
                     switch result{
                     case .success(let songDetailsArray):
@@ -82,7 +82,7 @@ class CacheManager: NSObject {
         }
     }
     //TODO: Should the cache Manager be parsing? Consider moving to Spotify Manager?
-    func spotifyIdToSongDetails(ids: [String], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
+    private func spotifyIdToSongDetails(ids: [String], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
         SpotifyManager.shared().fetchAudioFeaturesFromTracks(for: ids) { result in
             switch result{
             case .success(let dictionary):
@@ -103,7 +103,7 @@ class CacheManager: NSObject {
                         //throws error later on
                         return nil
                     }
-                    return SongDetails(uri: uri, id: id, danceability: danceability, energy: energy, tempo: tempo, key: key)
+                    return SongDetails(uri: uri, id: id, danceability: Float(danceability), energy: Float(energy), tempo: Float(tempo), key: Float(key))
                 }
                 
                 guard let songDetailsArray = songDetailsArray else {
@@ -118,9 +118,15 @@ class CacheManager: NSObject {
         }
     }
     
-    func fetchNSongs (limit: Int, genre: String, completion: @escaping (_ result: Result<[String:Any], Error>) -> Void) {
+    private func fetchNSongs (limit: Int, genre: String, completion: @escaping (_ result: Result<[String:Any], Error>) -> Void) {
         let randomOffset = Int.random(in: 1..<800)
         NSLog("requesting randomOffset: \(randomOffset), genre: \(genre)")
         SpotifyManager.shared().fetchNSongsFromGenre(limit: limit, genre: genre, offset: randomOffset, completion: completion)
     }
+
+    func saveCache() {
+        self.cache.saveCache()
+    }
 }
+    
+
