@@ -46,7 +46,7 @@ class HomeViewController: MediaViewController {
         let width = view.frame.width
         let xFromCenter = card.center.x - view.center.x
         //create 45 degree angle once swiped
-        let DIVISOR: CGFloat = (view.frame.width / 2) / (0.61)
+        let DIVISOR: CGFloat = (view.frame.width / 2) / (0.33)
         card.transform = CGAffineTransform(rotationAngle: xFromCenter / DIVISOR)
         //when swiped, tranform the thumbsUp/down image
         if xFromCenter > 0 {
@@ -64,7 +64,7 @@ class HomeViewController: MediaViewController {
             if card.center.x < 75{
                 // move off to left
                 UIView.animate(withDuration: 0.3, animations:{
-                    card.center = CGPoint(x: card.center.x - width/2, y: card.center.y + 75)
+                    card.center = CGPoint(x: card.center.x - width/2, y: card.center.y + 50)
                     card.alpha = 0
                 })
                 refreshSong(direction: swipe.left)
@@ -74,12 +74,12 @@ class HomeViewController: MediaViewController {
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
                 UIView.animate(withDuration: 0.3, animations:{
-                    card.center = CGPoint(x: card.center.x + width/2, y: card.center.y + 75)
+                    card.center = CGPoint(x: card.center.x + width/2, y: card.center.y + 50)
                     card.alpha = 0
                 })
                 refreshSong(direction: swipe.right)
                 self.resetSong()
-                presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
+                //TODO: presenting the alert causes animation for right swipe to be weird. 
                 return
             }
             self.resetCard()
@@ -116,7 +116,6 @@ class HomeViewController: MediaViewController {
                 NSLog("failed resetting card")
                 NSLog(error.localizedDescription)
                 self.resetCard()
-                
             case .success(let image):
                 self.resetCard()
                 self.songImage.image = image
@@ -125,13 +124,15 @@ class HomeViewController: MediaViewController {
     }
     
     func resetCard() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.thumbsImage.alpha = 0
-            self.card.transform = CGAffineTransform.identity
-            self.card.center = self.view.center
-            self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
-            self.card.alpha = 1
-        })
+        DispatchQueue.main.async{
+            UIView.animate(withDuration: 0.2, animations: {
+                self.thumbsImage.alpha = 0
+                self.card.transform = CGAffineTransform.identity
+                self.card.center = self.view.center
+                self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
+                self.card.alpha = 1
+            })
+        }
     }
     
     func resetSong() {
@@ -142,6 +143,7 @@ class HomeViewController: MediaViewController {
                 self.playNewSong(uri: uri, button: self.playButton)
             case .failure(let error):
                 NSLog("\(error)")
+                self.resetCard()
             }
         }
     }
