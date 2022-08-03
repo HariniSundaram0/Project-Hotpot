@@ -12,18 +12,24 @@ class HomeViewController: MediaViewController {
         case left
         case right
     }
-    
     let songManager = SongManager()
+    @IBOutlet weak var thumbsImage: UIImageView!
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     
     override func viewDidLoad() {
-        self.refreshSong(direction: swipe.left, completion: self.createClosure())
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        self.resetCard()
+        //set up notifation reveiver
+        NotificationCenter.default.addObserver(forName: Notification.Name("HotpotSongUpdateIdentifier"), object: nil, queue: .main) { notif in
+            guard let state = notif.object as? SPTAppRemotePlayerState else {
+                NSLog("couldn't cast notification message")
+                return
+            }
+            //if song has changed, update the UI View
+            self.updateCard(track: state.track)
+        }
+        self.resetSong()
     }
     
     // MARK: - Actions
@@ -38,49 +44,53 @@ class HomeViewController: MediaViewController {
         let point = sender.translation(in: view)
         card.center = CGPoint(x:view.center.x + point.x, y:view.center.y + point.y)
         let width = view.frame.width
+        let xFromCenter = card.center.x - view.center.x
+        //create 45 degree angle once swiped
+        let DIVISOR: CGFloat = (view.frame.width / 2) / (0.61)
+        card.transform = CGAffineTransform(rotationAngle: xFromCenter / DIVISOR)
+        //when swiped, tranform the thumbsUp/down image
+        if xFromCenter > 0 {
+            self.thumbsImage.image = UIImage(named: "ThumbsUp")
+            self.thumbsImage.tintColor = UIColor.green
+        }
+        else{
+            self.thumbsImage.image = UIImage(named: "ThumbsDown")
+            self.thumbsImage.tintColor = UIColor.red
+        }
+        //the more extreme the swipe, the more visible the icon
+        thumbsImage.alpha = abs(xFromCenter) / view.center.x
         
         if sender.state == UIGestureRecognizer.State.ended{
             if card.center.x < 75{
                 // move off to left
-                refreshSong(direction: swipe.left, completion: self.createClosure())
-                UIView.animate(withDuration: 1.0, animations:{
-                    card.center = CGPoint(x: card.center.x - width/2, y: card.center.y)
+                UIView.animate(withDuration: 0.3, animations:{
+                    card.center = CGPoint(x: card.center.x - width/2, y: card.center.y + 75)
+                    card.alpha = 0
                 })
+                refreshSong(direction: swipe.left)
+                self.resetSong()
                 return
             }
             else if card.center.x > (width - 75) {
                 //add to history, get PFObject that was created
-                refreshSong(direction: swipe.right, completion: self.createClosure())
-                presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
-                UIView.animate(withDuration: 1.0, animations:{
-                    card.center = CGPoint(x: card.center.x + width/2, y: card.center.y)
+                UIView.animate(withDuration: 0.3, animations:{
+                    card.center = CGPoint(x: card.center.x + width/2, y: card.center.y + 75)
+                    card.alpha = 0
                 })
+                refreshSong(direction: swipe.right)
+                self.resetSong()
+                presentAlert(title: "Liked Song", message: "Added to Playlist", buttonTitle: "Ok")
                 return
             }
             self.resetCard()
         }
     }
     
-    func createClosure() -> ((Result<Void, Error>) -> Void) {
-        let resetSongAndCard: (Result<Void, Error>) -> Void = { result in
-            self.resetSong { result in
-                switch result {
-                case .success(_):
-                    self.resetCard()
-                case.failure(let error):
-                    NSLog("error: \(error)")
-                    //I want it to keep showing despite error
-                    self.resetCard()
-                }
-            }
-        }
-        return resetSongAndCard
-    }
     // an attempt to limit repetitive code
-    func refreshSong(direction: swipe, completion: @escaping (_ result: Result<Void, Error>) -> Void){
+    func refreshSong(direction: swipe){
         guard let track = apiInstance.lastPlayerState?.track else {
             NSLog("Spotify is not playing any songs?")
-            return completion(.failure(CustomError.nilSpotifyState))
+            return
         }
         songManager.addSpotifySongToHistory(spotifySong: track) { result in
             switch result {
@@ -88,49 +98,49 @@ class HomeViewController: MediaViewController {
                 NSLog("added to history")
                 switch direction {
                 case .left:
-                    completion(.success(()))
+                    return
                 case .right:
                     PFPlaylist.addPFSongToLastPlaylist(song: song)
-                    completion(.success(()))
                 }
             case .failure(let error):
                 NSLog("error occured: \(error)")
-                completion(.failure(error))
-            }
-        }
-    }
-    // MARK: - helper functions
-    func resetCard() {
-        NSLog("resetting")
-        if let track = self.apiInstance.lastPlayerState?.track{
-            self.apiInstance.fetchArtwork(for: track) { result in
-                switch result {
-                case .failure(let error):
-                    NSLog(error.localizedDescription)
-                    
-                case .success(let image):
-                    DispatchQueue.main.async {
-                        UIView.animate(withDuration: 0.2, animations: {
-                            self.card.center = self.view.center
-                            self.songTitleLabel.text = self.apiInstance.currentSongLabel
-                            self.songImage.image = image
-                        })
-                    }
-                }
             }
         }
     }
     
-    //TODO: add completion block -> have to manually move card a little to re-reset card.
-    func resetSong(completion: @escaping (_ result: Result<Void, Error>) -> Void) {
+    // MARK: - helper functions
+    func updateCard(track : SPTAppRemoteTrack) {
+        self.apiInstance.fetchArtwork(for: track) { result in
+            switch result {
+            case .failure(let error):
+                NSLog("failed resetting card")
+                NSLog(error.localizedDescription)
+                
+            case .success(let image):
+                self.resetCard()
+                self.songImage.image = image
+            }
+        }
+    }
+    
+    func resetCard() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.thumbsImage.alpha = 0
+            self.card.transform = CGAffineTransform.identity
+            self.card.center = self.view.center
+            self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
+            self.card.alpha = 1
+        })
+    }
+    
+    func resetSong() {
         let algInstance = SongAlgorithm()
         algInstance.getAlgorithmSong { result in
             switch result {
             case .success(let uri):
                 self.playNewSong(uri: uri, button: self.playButton)
-                completion(.success(()))
             case .failure(let error):
-                completion(.failure(error))
+                NSLog("\(error)")
             }
         }
     }

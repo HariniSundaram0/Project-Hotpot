@@ -103,6 +103,10 @@
                                         <rect key="frame" x="1" y="1" width="279" height="353"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="ThumbsDown" translatesAutoresizingMaskIntoConstraints="NO" id="Kvu-ZL-he5">
+                                        <rect key="frame" x="-166" y="-89" width="612" height="532"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="secondaryLabelColor"/>
                                 <gestureRecognizers/>
@@ -137,6 +141,7 @@
                         <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
                         <outlet property="songImage" destination="hWu-ky-VCG" id="pcy-rR-HYX"/>
                         <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>
+                        <outlet property="thumbsImage" destination="Kvu-ZL-he5" id="UvQ-pe-omJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nVQ-Hc-ipT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -412,6 +417,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ThumbsDown" width="612" height="532"/>
         <image name="books.vertical.fill" catalog="system" width="128" height="109"/>
         <image name="gearshape.fill" catalog="system" width="128" height="121"/>
         <image name="globe.americas.fill" catalog="system" width="128" height="121"/>

@@ -41,7 +41,6 @@ class MediaViewController: HotpotViewController {
                 {
                     self.apiInstance.appRemote.playerAPI?.play(songContent)
                     button.setImage(self.pauseButtonImage, for:.normal)
-                    
                 }
             })
         }

@@ -86,6 +86,8 @@ class SpotifyManager: NSObject {
     func update(playerState: SPTAppRemotePlayerState) {
         self.lastPlayerState = playerState
         self.currentSongLabel = playerState.track.name
+        //fire off notification with player state
+        NotificationCenter.default.post(name: Notification.Name("HotpotSongUpdateIdentifier"), object: playerState)
     }
 }
 
@@ -112,12 +114,13 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                         NSLog(error.localizedDescription)
                     }
                 }
-                return self.fetchPlayerState()
+                self.fetchPlayerState()
+                return
             }
             self.originalGenreSeeds = originalGenres
             NSLog("updated genres from disk")
         })
-        fetchPlayerState()
+        self.fetchPlayerState()
     }
     
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
@@ -265,7 +268,6 @@ extension SpotifyManager {
                 NSLog("Error getting player state:" + error.localizedDescription)
             } else if let playerState = playerState as? SPTAppRemotePlayerState {
                 self?.update(playerState: playerState)
-                
             }
         })
     }
