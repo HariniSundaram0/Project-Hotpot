@@ -43,39 +43,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yGy-0s-geY">
-                                <rect key="frame" x="76" y="283" width="263" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zCI-zl-iUp">
-                                <rect key="frame" x="76" y="344" width="263" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWk-Xx-77t">
-                                <rect key="frame" x="211" y="423" width="175" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWk-Xx-77t">
+                                <rect key="frame" x="125" y="492" width="164" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="aWk-Xx-77t" secondAttribute="height" multiplier="175:33" id="wBp-p3-amS"/>
+                                </constraints>
+                                <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Login"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Login" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" red="0.94901961089999998" green="0.94901961089999998" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="strokeColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </backgroundConfiguration>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="didTapLogin:" destination="wcu-yi-MMK" eventType="touchUpInside" id="RQJ-8Z-8iX"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7e-G4-z3x">
-                                <rect key="frame" x="28" y="423" width="175" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7e-G4-z3x">
+                                <rect key="frame" x="125" y="546" width="164" height="33"/>
+                                <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Register"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Sign Up" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                        <color key="strokeColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </backgroundConfiguration>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="didTapRegister:" destination="wcu-yi-MMK" eventType="touchUpInside" id="TkS-xH-THO"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" placeholder="username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yGy-0s-geY">
+                                <rect key="frame" x="75.5" y="331" width="263" height="34"/>
+                                <color key="backgroundColor" red="0.85415599009999998" green="0.85071325070000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="yGy-0s-geY" secondAttribute="height" multiplier="263:34" id="SdJ-ae-N00"/>
+                                </constraints>
+                                <attributedString key="attributedText"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" borderStyle="roundedRect" placeholder="password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zCI-zl-iUp">
+                                <rect key="frame" x="75.5" y="392" width="263" height="34"/>
+                                <color key="backgroundColor" red="0.85415599009999998" green="0.85071325070000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <attributedString key="attributedText"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pt8-gT-Qk2"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="1" green="0.84866660279999995" blue="0.85593876749999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="yGy-0s-geY" firstAttribute="top" secondItem="pt8-gT-Qk2" secondAttribute="top" constant="243" id="5Am-GL-mOd"/>
+                            <constraint firstItem="zCI-zl-iUp" firstAttribute="trailing" secondItem="yGy-0s-geY" secondAttribute="trailing" id="IJp-3A-Kt6"/>
+                            <constraint firstItem="yGy-0s-geY" firstAttribute="centerX" secondItem="pt8-gT-Qk2" secondAttribute="centerX" id="Mg1-4B-mvD"/>
+                            <constraint firstItem="J7e-G4-z3x" firstAttribute="leading" secondItem="aWk-Xx-77t" secondAttribute="leading" id="Njn-UA-QE9"/>
+                            <constraint firstItem="aWk-Xx-77t" firstAttribute="centerX" secondItem="pt8-gT-Qk2" secondAttribute="centerX" id="XrK-dn-RmK"/>
+                            <constraint firstItem="aWk-Xx-77t" firstAttribute="top" secondItem="zCI-zl-iUp" secondAttribute="bottom" constant="66" id="ZwD-UP-Uc3"/>
+                            <constraint firstItem="zCI-zl-iUp" firstAttribute="top" secondItem="yGy-0s-geY" secondAttribute="bottom" constant="27" id="a97-bG-hxz"/>
+                            <constraint firstItem="J7e-G4-z3x" firstAttribute="trailing" secondItem="aWk-Xx-77t" secondAttribute="trailing" id="lBQ-cu-0Ar"/>
+                            <constraint firstItem="zCI-zl-iUp" firstAttribute="leading" secondItem="yGy-0s-geY" secondAttribute="leading" id="pQd-NU-OI1"/>
+                            <constraint firstItem="J7e-G4-z3x" firstAttribute="top" secondItem="aWk-Xx-77t" secondAttribute="bottom" constant="23" id="q98-JD-Udr"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Gsv-lF-6QR"/>
                     <connections>
@@ -438,6 +468,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
