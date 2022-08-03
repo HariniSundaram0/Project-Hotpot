@@ -115,6 +115,7 @@ class HomeViewController: MediaViewController {
             case .failure(let error):
                 NSLog("failed resetting card")
                 NSLog(error.localizedDescription)
+                self.resetCard()
                 
             case .success(let image):
                 self.resetCard()
