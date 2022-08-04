@@ -8,11 +8,13 @@
 import UIKit
 import Parse
 
-class LoginViewController: HotpotViewController {
+class LoginViewController: HotpotViewController, UITextFieldDelegate {
     
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     override func viewDidLoad() {
+        self.passwordField.delegate = self
+        self.usernameField.delegate = self
         super.viewDidLoad()
     }
     
@@ -61,5 +63,10 @@ class LoginViewController: HotpotViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as UIViewController
         self.view.window?.rootViewController = nextViewController
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 }

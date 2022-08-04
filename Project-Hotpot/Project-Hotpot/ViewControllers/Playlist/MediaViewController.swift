@@ -14,18 +14,20 @@ class MediaViewController: HotpotViewController {
     
     func resumeSong(button: UIButton) {
         //resume the audio
-        apiInstance.appRemote.playerAPI?.resume()
-        //change the button image
         DispatchQueue.main.async {
+        NSLog("trying to resume song")
+            self.apiInstance.appRemote.playerAPI?.resume()
+        //change the button image
             button.setImage(self.pauseButtonImage, for:.normal)
         }
     }
     
     func pauseSong(button: UIButton) {
         //pause the audio
-        apiInstance.appRemote.playerAPI?.pause()
-        //change the button image
         DispatchQueue.main.async {
+            self.apiInstance.appRemote.playerAPI?.pause()
+        //change the button image
+            NSLog("paused song")
             button.setImage(self.playButtomImage, for:.normal)
         }
     }
@@ -41,7 +43,6 @@ class MediaViewController: HotpotViewController {
                 {
                     self.apiInstance.appRemote.playerAPI?.play(songContent)
                     button.setImage(self.pauseButtonImage, for:.normal)
-                    
                 }
             })
         }
