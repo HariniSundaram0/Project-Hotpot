@@ -89,7 +89,7 @@
                                 <color key="backgroundColor" red="0.85415599009999998" green="0.85071325070000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <attributedString key="attributedText"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="continue" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pt8-gT-Qk2"/>
@@ -136,11 +136,11 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="okj-WR-fQN">
-                                        <rect key="frame" x="20" y="340" width="300" height="20"/>
+                                        <rect key="frame" x="20" y="340" width="300" height="24.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="SONG TITLE">
                                                 <attributes>
-                                                    <font key="NSFont" metaFont="system" size="18"/>
+                                                    <font key="NSFont" metaFont="system" size="22"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -215,7 +215,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3489.8550724637685" y="130.58035714285714"/>
+            <point key="canvasLocation" x="2080" y="1679"/>
         </scene>
         <!--Settings-->
         <scene sceneID="hdG-cL-3VP">
@@ -396,68 +396,99 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xOz-H5-Plm">
-                                <rect key="frame" x="0.0" y="79" width="414" height="571"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xOz-H5-Plm">
+                                <rect key="frame" x="0.0" y="133.5" width="414" height="599.5"/>
+                                <color key="backgroundColor" red="0.86666667460000002" green="0.9098039269" blue="0.99215686319999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="separatorColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="sectionIndexColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="sectionIndexBackgroundColor" red="0.69411766529999996" green="0.72941178080000002" blue="0.79215681550000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongTableViewCell" rowHeight="84" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="84"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="15" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="84"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
-                                                    <rect key="frame" x="35" y="21" width="374" height="42"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
+                                                    <rect key="frame" x="60" y="5" width="294" height="33.5"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <accessibilityTraits key="traits" none="YES"/>
+                                                    </accessibility>
                                                     <attributedString key="attributedText">
                                                         <fragment content="Song Title">
                                                             <attributes>
-                                                                <font key="NSFont" metaFont="system" size="20"/>
+                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                <font key="NSFont" metaFont="system" size="30"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacingBefore="6" tighteningFactorForTruncation="0.0"/>
                                                             </attributes>
                                                         </fragment>
                                                     </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zu-qk-vCC">
+                                                    <rect key="frame" x="10" y="11" width="45" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <gestureRecognizers/>
                                             <constraints>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="trailing" secondItem="dbe-qf-Wt9" secondAttribute="trailingMargin" constant="15" id="DdZ-xg-BbD"/>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="top" secondItem="dbe-qf-Wt9" secondAttribute="topMargin" constant="10" id="Uic-GA-mWd"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="nwj-ug-CXp" secondAttribute="bottom" constant="10" id="Xqs-Lx-RVM"/>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="leading" secondItem="dbe-qf-Wt9" secondAttribute="leadingMargin" constant="15" id="e9p-w8-0ee"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="leading" secondItem="9zu-qk-vCC" secondAttribute="trailing" constant="5" id="8BM-GL-0q8"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="centerY" secondItem="dbe-qf-Wt9" secondAttribute="centerY" id="GVH-vE-Jm4"/>
+                                                <constraint firstItem="9zu-qk-vCC" firstAttribute="top" secondItem="dbe-qf-Wt9" secondAttribute="top" constant="11" id="QwI-s8-4Db"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="nwj-ug-CXp" secondAttribute="trailing" constant="40" id="cbg-n8-OEM"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="centerX" secondItem="dbe-qf-Wt9" secondAttribute="centerX" id="tSk-Er-V8h"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <gestureRecognizers/>
+                                        <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         <connections>
                                             <outlet property="songTitleLabel" destination="nwj-ug-CXp" id="3t4-ms-uJw"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Myn-be-xWh">
-                                <rect key="frame" x="183" y="715" width="48" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Myn-be-xWh">
+                                <rect key="frame" x="166" y="753" width="82" height="59"/>
+                                <color key="tintColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" image="play.circle.fill" catalog="system"/>
+                                <buttonConfiguration key="configuration" style="plain" image="play.circle.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="38"/>
+                                    <color key="baseForegroundColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="didTapPlayButtonWith_sender:" destination="sbZ-Hm-2bj" eventType="touchUpInside" id="3D2-jN-Epy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Playlist Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzk-1E-VLG">
-                                <rect key="frame" x="20" y="20" width="380" height="51"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="43"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzk-1E-VLG">
+                                <rect key="frame" x="20" y="64" width="374" height="44.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Playlist Name">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="40"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RZk-7M-Cmb"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="Bzk-1E-VLG" secondAttribute="trailing" constant="14" id="8sL-OH-GAM"/>
-                            <constraint firstItem="Bzk-1E-VLG" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="Eec-2D-9iY"/>
-                            <constraint firstItem="xOz-H5-Plm" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="Gcr-jV-wQG"/>
-                            <constraint firstItem="xOz-H5-Plm" firstAttribute="trailing" secondItem="RZk-7M-Cmb" secondAttribute="trailing" constant="20" id="W9n-49-Zro"/>
-                            <constraint firstItem="xOz-H5-Plm" firstAttribute="top" secondItem="Bzk-1E-VLG" secondAttribute="bottom" constant="20" id="lSk-Qz-iPz"/>
+                            <constraint firstItem="Bzk-1E-VLG" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="F5p-Hu-LlO"/>
+                            <constraint firstItem="Bzk-1E-VLG" firstAttribute="top" secondItem="RZk-7M-Cmb" secondAttribute="top" constant="20" id="Irb-3H-vJF"/>
+                            <constraint firstItem="Myn-be-xWh" firstAttribute="top" secondItem="xOz-H5-Plm" secondAttribute="bottom" constant="20" id="N4C-FP-rqu"/>
+                            <constraint firstItem="Myn-be-xWh" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="SU3-zH-jw8"/>
+                            <constraint firstItem="Bzk-1E-VLG" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="XhV-xC-8bG"/>
+                            <constraint firstItem="RZk-7M-Cmb" firstAttribute="bottom" secondItem="Myn-be-xWh" secondAttribute="bottom" constant="30" id="YVa-lM-4G2"/>
+                            <constraint firstItem="xOz-H5-Plm" firstAttribute="trailing" secondItem="RZk-7M-Cmb" secondAttribute="trailing" id="eaF-b2-pnq"/>
+                            <constraint firstItem="xOz-H5-Plm" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" id="tkh-Fp-MvL"/>
+                            <constraint firstItem="xOz-H5-Plm" firstAttribute="top" secondItem="Bzk-1E-VLG" secondAttribute="bottom" constant="25" id="vam-sr-dKW"/>
+                            <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="Bzk-1E-VLG" secondAttribute="trailing" constant="20" id="vno-me-wxL"/>
                         </constraints>
                     </view>
                     <connections>
@@ -468,7 +499,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HA7-ht-2kn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1158" y="1680"/>
+            <point key="canvasLocation" x="1157.9710144927537" y="1679.4642857142856"/>
         </scene>
         <!--Create Playlist View Controller-->
         <scene sceneID="YT0-h1-JDk">
