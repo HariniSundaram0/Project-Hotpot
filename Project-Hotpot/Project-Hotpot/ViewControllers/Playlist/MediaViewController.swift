@@ -35,7 +35,6 @@ class MediaViewController: HotpotViewController {
     //TODO: add completion handler
     func playNewSong(uri: String, button: UIButton) {
         DispatchQueue.main.async {
-            NSLog("tryna play new song from media controller")
             self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
                 if let apiError = apiError {
                     NSLog(apiError.localizedDescription)

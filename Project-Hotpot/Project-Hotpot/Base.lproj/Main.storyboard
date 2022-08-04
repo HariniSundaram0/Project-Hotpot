@@ -89,7 +89,7 @@
                                 <color key="backgroundColor" red="0.85415599009999998" green="0.85071325070000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <attributedString key="attributedText"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="continue" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="continue" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pt8-gT-Qk2"/>
@@ -135,7 +135,7 @@
                                             <constraint firstAttribute="width" constant="300" id="wyx-co-fSP"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="okj-WR-fQN">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="okj-WR-fQN">
                                         <rect key="frame" x="20" y="340" width="300" height="24.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="SONG TITLE">
@@ -147,7 +147,13 @@
                                         </attributedString>
                                         <color key="highlightedColor" red="0.94901961089999998" green="0.94901961089999998" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="ThumbsDown" translatesAutoresizingMaskIntoConstraints="NO" id="Kvu-ZL-he5">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ARTIST NAME" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYZ-zN-xOA">
+                                        <rect key="frame" x="20" y="374.5" width="300" height="35.5"/>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                        <color key="textColor" systemColor="opaqueSeparatorColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" image="ThumbsDown" translatesAutoresizingMaskIntoConstraints="NO" id="Kvu-ZL-he5">
                                         <rect key="frame" x="-130" y="-90" width="600" height="600"/>
                                         <color key="tintColor" red="0.8937883512" green="0.87208114699999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
@@ -159,13 +165,17 @@
                                 <color key="backgroundColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstItem="zYZ-zN-xOA" firstAttribute="top" secondItem="okj-WR-fQN" secondAttribute="bottom" constant="10" id="3D6-0j-aWN"/>
                                     <constraint firstAttribute="trailing" secondItem="okj-WR-fQN" secondAttribute="trailing" constant="20" id="5w7-Uh-TtI"/>
                                     <constraint firstItem="Kvu-ZL-he5" firstAttribute="centerX" secondItem="ZDN-Af-VMX" secondAttribute="centerX" id="CP6-wd-bQA"/>
                                     <constraint firstItem="hWu-ky-VCG" firstAttribute="leading" secondItem="ZDN-Af-VMX" secondAttribute="leading" constant="20" id="Kzs-MZ-5s4"/>
+                                    <constraint firstAttribute="bottom" secondItem="zYZ-zN-xOA" secondAttribute="bottom" constant="10" id="OMl-vN-hPQ"/>
                                     <constraint firstItem="Kvu-ZL-he5" firstAttribute="centerY" secondItem="ZDN-Af-VMX" secondAttribute="centerY" id="RxO-vK-eSa"/>
+                                    <constraint firstItem="zYZ-zN-xOA" firstAttribute="leading" secondItem="ZDN-Af-VMX" secondAttribute="leading" constant="20" symbolic="YES" id="Y1l-Vj-J1l"/>
                                     <constraint firstAttribute="width" constant="340" id="Yxu-Rc-Qfd"/>
                                     <constraint firstItem="hWu-ky-VCG" firstAttribute="top" secondItem="ZDN-Af-VMX" secondAttribute="top" constant="20" id="fRy-DK-IRz"/>
                                     <constraint firstAttribute="height" constant="420" id="lFC-FQ-Vu4"/>
+                                    <constraint firstAttribute="trailing" secondItem="zYZ-zN-xOA" secondAttribute="trailing" constant="20" symbolic="YES" id="mG8-zJ-cWq"/>
                                     <constraint firstItem="okj-WR-fQN" firstAttribute="leading" secondItem="ZDN-Af-VMX" secondAttribute="leading" constant="20" id="nvS-JP-inY"/>
                                     <constraint firstItem="okj-WR-fQN" firstAttribute="top" secondItem="hWu-ky-VCG" secondAttribute="bottom" constant="20" id="qhJ-h0-Teq"/>
                                     <constraint firstAttribute="trailing" secondItem="hWu-ky-VCG" secondAttribute="trailing" constant="20" id="vUa-br-gVb"/>
@@ -201,6 +211,7 @@
                     </tabBarItem>
                     <navigationItem key="navigationItem" id="Ygn-HO-gJa"/>
                     <connections>
+                        <outlet property="artistNameLabel" destination="zYZ-zN-xOA" id="p3D-gV-c3S"/>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
                         <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
                         <outlet property="songImage" destination="hWu-ky-VCG" id="pcy-rR-HYX"/>
@@ -215,7 +226,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2080" y="1679"/>
+            <point key="canvasLocation" x="2079.7101449275365" y="1678.7946428571429"/>
         </scene>
         <!--Settings-->
         <scene sceneID="hdG-cL-3VP">
@@ -588,6 +599,9 @@
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

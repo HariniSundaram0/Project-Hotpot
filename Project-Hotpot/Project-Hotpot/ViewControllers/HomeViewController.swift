@@ -18,6 +18,7 @@ class HomeViewController: MediaViewController {
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
+    @IBOutlet weak var artistNameLabel: UILabel!
     
     override func viewDidLoad() {
         //set up notifation reveiver
@@ -79,7 +80,7 @@ class HomeViewController: MediaViewController {
                 })
                 refreshSong(direction: swipe.right)
                 self.resetSong()
-                //TODO: presenting the alert causes animation for right swipe to be weird. 
+                //TODO: presenting the alert causes animation for right swipe to be weird.
                 return
             }
             self.resetCard()
@@ -125,11 +126,12 @@ class HomeViewController: MediaViewController {
     
     func resetCard() {
         DispatchQueue.main.async{
+            self.thumbsImage.alpha = 0
             UIView.animate(withDuration: 0.2, animations: {
-                self.thumbsImage.alpha = 0
                 self.card.transform = CGAffineTransform.identity
                 self.card.center = self.view.center
                 self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
+                self.artistNameLabel.text = self.apiInstance.lastPlayerState?.track.artist.name
                 self.card.alpha = 1
             })
         }
