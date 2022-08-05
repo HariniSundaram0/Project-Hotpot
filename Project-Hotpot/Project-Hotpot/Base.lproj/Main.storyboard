@@ -12,7 +12,7 @@
         <!--Connect View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ConnectViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConnectViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ConnectViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -270,9 +270,21 @@
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsI-U1-F63">
                                 <rect key="frame" x="104" y="179" width="210" height="37"/>
                                 <color key="tintColor" systemColor="labelColor"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Remove Genres From Feed"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Remove Genres From Feed" cornerStyle="capsule"/>
                                 <connections>
                                     <action selector="onClickShowDropDown:" destination="FHg-TL-gIb" eventType="touchUpInside" id="RK2-de-jQA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YoY-Tt-ilM">
+                                <rect key="frame" x="102" y="246" width="210" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Logout" cornerStyle="capsule">
+                                    <color key="baseBackgroundColor" red="0.62352943419999995" green="0.62745100259999997" blue="0.75294119120000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didTapLogout:" destination="FHg-TL-gIb" eventType="touchUpInside" id="qtH-YV-HhU"/>
+                                    <action selector="onClickShowDropDown:" destination="FHg-TL-gIb" eventType="touchUpInside" id="8e9-tO-fUI"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -287,6 +299,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" image="gearshape.fill" catalog="system" id="cPI-tu-JlV"/>
                     <connections>
+                        <outlet property="LogoutButton" destination="YoY-Tt-ilM" id="5Gp-qt-bIc"/>
                         <outlet property="genreButton" destination="jsI-U1-F63" id="Fbg-v5-4uv"/>
                     </connections>
                 </viewController>
