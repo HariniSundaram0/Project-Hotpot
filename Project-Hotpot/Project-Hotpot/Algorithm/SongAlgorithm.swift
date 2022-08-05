@@ -17,10 +17,25 @@ class SongAlgorithm{
     var scoreManager = SongScoreManager.shared()
     var songManager = SongManager()
     
-    
-    //give specific song
-    //retrieve from cache
-    //find Min score
+    func getSimilarSong(genre: String, completion: @escaping (_ result: Result<(String, String), Error>) -> Void) {
+       
+        let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in
+            switch result {
+            case .success(let songs):
+                //TODO: next iteration switch to scoring metric
+                guard let song = self.scoreManager.findMinSong(songs:songs) else {
+                    completion(.failure(CustomError.failedResponseParsing))
+                    return
+                }
+                //remove played song from cache to prevent repeat songs
+                self.cacheManager.removeSongFromCache(genre: genre, song: song)
+                completion(.success((song.uri, genre)))
+            case .failure(let error):
+                NSLog("error retreiving: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
     
     func getAlgorithmSong(completion: @escaping (_ result: Result<(String, String), Error>) -> Void) {
         guard let genre = getRandomGenre() else {
