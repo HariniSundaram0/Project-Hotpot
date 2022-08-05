@@ -40,7 +40,16 @@ class CacheManager: NSObject {
                 refillCache(genre:genre) { result in
                     switch result {
                     case .success(let newSongDetailsArray):
-                        NSLog("refilled cache successfully")
+                        self.filterRepeatSongs(genre: genre, songs: newSongDetailsArray) { filterResult in
+                            switch filterResult {
+                            case .success(let filterArray):
+                                NSLog("filtered successfully")
+                                completion(.success(filterArray))
+                                
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
+                        }
                         completion(.success(newSongDetailsArray))
                     case .failure(let error):
                         completion(.failure(error))
@@ -53,6 +62,34 @@ class CacheManager: NSObject {
             }
         }
     }
+
+    func filterRepeatSongs(genre:String, songs: [SongDetails], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
+        NSLog("filter iteration")
+        let  filteredSongs : [SongDetails] = songs.filter { song in
+            if SongManager.shared().historySet.contains(song.uri) {
+                removeSongFromCache(genre: genre, song: song)
+                return false
+            }
+            else {
+                return true
+            }
+        }
+        //recursive strategy, which in practice is very unlikely
+           if filteredSongs.isEmpty {
+               refillCache(genre: genre) { result in
+                   switch result {
+                   case .success(let newSongs):
+                       return self.filterRepeatSongs(genre: genre, songs: newSongs, completion: completion)
+                   case .failure(let error):
+                       completion(.failure(error))
+                   }
+               }
+           }
+               else {
+                   return completion(.success(filteredSongs))
+               }
+           }
+
     func removeSongFromCache(genre: String, song: SongDetails) {
         cache.evictFromCache(genre: genre, evictSong: song)
     }

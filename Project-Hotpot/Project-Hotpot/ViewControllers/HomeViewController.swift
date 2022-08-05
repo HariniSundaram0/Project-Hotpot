@@ -12,7 +12,7 @@ class HomeViewController: MediaViewController {
         case left
         case right
     }
-    let songManager = SongManager()
+    let songManager = SongManager.shared()
     var currentGenre: String?
     var playRandomSongs : Bool = true
     @IBOutlet weak var thumbsImage: UIImageView!

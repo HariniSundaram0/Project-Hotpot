@@ -9,7 +9,31 @@ import Foundation
 import Parse
 
 class SongManager : NSObject {
-
+    var historySet: Set<String> = []
+    
+     override private init(){
+        //we don't want to be working with multiple instances, otherwise unnecessary network calls
+        super.init()
+        if let currentUser = PFUser.current() {
+            PFHistory.getHistoryInBackground(user: currentUser) { result in
+                switch result {
+                case .success(let items):
+                    let trackIDs: [String] = items.compactMap {$0.uri}
+                    self.historySet = Set(trackIDs)
+                case .failure(let error):
+                    NSLog(error.localizedDescription)
+                }
+            }
+        }
+    }
+    private static var sharedSongManager: SongManager = {
+        return SongManager()
+    }()
+    
+    class func shared() -> SongManager {
+        return sharedSongManager
+    }
+    
     //returns PFSong object via completion block to prevent unneccessary object creation
     func addSpotifySongToHistory(spotifySong: SPTAppRemoteTrack, completion:  @escaping (_ result: Result<PFSong, Error>) -> Void){
         self.getParseSongObject(spotifySong: spotifySong) { result in
@@ -27,6 +51,7 @@ class SongManager : NSObject {
                 return completion(.failure(error))
             }
         }
+        self.historySet.insert(spotifySong.uri)
     }
     
     func getParseSongObject (spotifySong: SPTAppRemoteTrack, completion:  @escaping (_ result: Result<PFSong, Error>) -> Void) {
