@@ -125,6 +125,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="genre" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qY6-NH-G0Z">
+                                <rect key="frame" x="37" y="194.5" width="340" height="39.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDN-Af-VMX" userLabel="card">
                                 <rect key="frame" x="37" y="234" width="340" height="420"/>
                                 <subviews>
@@ -200,7 +206,10 @@
                         <color key="backgroundColor" red="0.8937883512" green="0.87208114699999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="tintColor" red="0.89972299629999997" green="0.84602888409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="trailing" secondItem="qY6-NH-G0Z" secondAttribute="trailing" constant="37" id="9H4-jy-Wkv"/>
+                            <constraint firstItem="qY6-NH-G0Z" firstAttribute="leading" secondItem="Xzl-hM-i8m" secondAttribute="leading" constant="37" id="CW1-re-N3D"/>
                             <constraint firstItem="ZDN-Af-VMX" firstAttribute="centerX" secondItem="Xzl-hM-i8m" secondAttribute="centerX" id="GeJ-R2-UYx"/>
+                            <constraint firstItem="Kvu-ZL-he5" firstAttribute="top" secondItem="qY6-NH-G0Z" secondAttribute="bottom" constant="-90" id="LJR-ng-blF"/>
                             <constraint firstItem="TgE-gM-IcB" firstAttribute="centerX" secondItem="Xzl-hM-i8m" secondAttribute="centerX" id="kPl-Br-ZD5"/>
                             <constraint firstItem="TgE-gM-IcB" firstAttribute="top" secondItem="ZDN-Af-VMX" secondAttribute="bottom" constant="74" id="qVw-gx-ckT"/>
                             <constraint firstItem="Xzl-hM-i8m" firstAttribute="bottom" secondItem="TgE-gM-IcB" secondAttribute="bottom" constant="10" id="xjU-ny-7mj"/>
@@ -213,6 +222,7 @@
                     <connections>
                         <outlet property="artistNameLabel" destination="zYZ-zN-xOA" id="p3D-gV-c3S"/>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
+                        <outlet property="genreLabel" destination="qY6-NH-G0Z" id="XpZ-G8-KGj"/>
                         <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
                         <outlet property="songImage" destination="hWu-ky-VCG" id="pcy-rR-HYX"/>
                         <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>

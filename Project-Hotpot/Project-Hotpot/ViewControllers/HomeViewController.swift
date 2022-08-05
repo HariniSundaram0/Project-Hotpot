@@ -13,12 +13,14 @@ class HomeViewController: MediaViewController {
         case right
     }
     let songManager = SongManager()
+    var currentGenre: String?
     @IBOutlet weak var thumbsImage: UIImageView!
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
+    @IBOutlet weak var genreLabel: UILabel!
     
     override func viewDidLoad() {
         //set up notifation reveiver
@@ -133,6 +135,7 @@ class HomeViewController: MediaViewController {
                 self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
                 self.artistNameLabel.text = self.apiInstance.lastPlayerState?.track.artist.name
                 self.card.alpha = 1
+                self.genreLabel.text = self.currentGenre
             })
         }
     }
@@ -141,8 +144,10 @@ class HomeViewController: MediaViewController {
         let algInstance = SongAlgorithm()
         algInstance.getAlgorithmSong { result in
             switch result {
-            case .success(let uri):
+            case .success(let (uri, genre)):
                 self.playNewSong(uri: uri, button: self.playButton)
+                self.currentGenre = genre
+
             case .failure(let error):
                 NSLog("\(error)")
                 self.resetCard()

@@ -17,8 +17,12 @@ class SongAlgorithm{
     var scoreManager = SongScoreManager.shared()
     var songManager = SongManager()
     
-
-    func getAlgorithmSong(completion: @escaping (_ result: Result<String, Error>) -> Void) {
+    
+    //give specific song
+    //retrieve from cache
+    //find Min score
+    
+    func getAlgorithmSong(completion: @escaping (_ result: Result<(String, String), Error>) -> Void) {
         guard let genre = getRandomGenre() else {
             return completion(.failure(CustomError.invalidCacheKey))
         }
@@ -32,7 +36,7 @@ class SongAlgorithm{
                 }
                 //remove played song from cache to prevent repeat songs
                 self.cacheManager.removeSongFromCache(genre: genre, song: song)
-                completion(.success(song.uri))
+                completion(.success((song.uri, genre)))
             case .failure(let error):
                 NSLog("error retreiving: \(error)")
                 completion(.failure(error))
