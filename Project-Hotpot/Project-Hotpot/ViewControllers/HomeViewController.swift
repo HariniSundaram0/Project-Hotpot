@@ -13,14 +13,19 @@ class HomeViewController: MediaViewController {
         case right
     }
     let songManager = SongManager()
+    var currentGenre: String?
+    var playRandomSongs : Bool = true
     @IBOutlet weak var thumbsImage: UIImageView!
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var findSimilarSongButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
+    @IBOutlet weak var genreLabel: UILabel!
     
     override func viewDidLoad() {
+        playRandomSongs = true
         //set up notifation reveiver
         NotificationCenter.default.addObserver(forName: Notification.Name("HotpotSongUpdateIdentifier"), object: nil, queue: .main) { notif in
             guard let state = notif.object as? SPTAppRemotePlayerState else {
@@ -29,6 +34,7 @@ class HomeViewController: MediaViewController {
             }
             //if song has changed, update the UI View
             self.updateCard(track: state.track)
+            
         }
         self.resetSong()
     }
@@ -36,6 +42,18 @@ class HomeViewController: MediaViewController {
     // MARK: - Actions
     @IBAction func didTapButton(_sender: UIButton) {
         self.didTapMediaPlayButton(button: _sender)
+    }
+    
+    @IBAction func didTapSimilarSongButton(_ sender: UIButton) {
+        NSLog("tapped")
+        if self.playRandomSongs{
+            self.playRandomSongs = false
+            self.findSimilarSongButton.setTitle("Return to Explore Mode", for: .normal)
+        }
+        else {
+            self.playRandomSongs = true
+            self.findSimilarSongButton.setTitle("Enter Radio Mode", for: .normal)
+        }
     }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
@@ -133,20 +151,31 @@ class HomeViewController: MediaViewController {
                 self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
                 self.artistNameLabel.text = self.apiInstance.lastPlayerState?.track.artist.name
                 self.card.alpha = 1
+                self.genreLabel.text = self.currentGenre
             })
         }
     }
     
     func resetSong() {
         let algInstance = SongAlgorithm()
-        algInstance.getAlgorithmSong { result in
+        let completion: (Result<(String, String), Error>) -> Void = { result in
             switch result {
-            case .success(let uri):
+            case .success(let (uri, genre)):
                 self.playNewSong(uri: uri, button: self.playButton)
+                self.currentGenre = genre
+
             case .failure(let error):
                 NSLog("\(error)")
                 self.resetCard()
             }
+        }
+        if self.playRandomSongs{
+            NSLog("random alg called")
+            algInstance.getAlgorithmSong(completion: completion)
+        }
+        else if let currentGenre = self.currentGenre as? String {
+            NSLog("radio alg called")
+            algInstance.getSimilarSong(genre: currentGenre, completion: completion)
         }
     }
 }

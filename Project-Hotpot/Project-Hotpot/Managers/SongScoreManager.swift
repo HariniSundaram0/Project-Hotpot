@@ -78,13 +78,24 @@ class SongScoreManager: NSObject {
     
     func findMaxSongScore(songs: [SongDetails]) -> SongDetails? {
         let scoreDictionary = self.calculateSongScores(songs: songs)
-        
         let maxElement = scoreDictionary.max { $0.value <= $1.value }
         
         if let newSong = maxElement?.key {
             self.addSongToLastKSongDetails(newSong: newSong)
         }
-        NSLog("choosing cache song \(maxElement?.key) with score \(maxElement?.value)")
+        NSLog("choosing cache song \(maxElement?.key) with maximum score \(maxElement?.value)")
         return maxElement?.key
+    }
+    
+    func findMinSong(songs: [SongDetails]) -> SongDetails? {
+        let scoreDictionary = self.calculateSongScores(songs: songs)
+        let minElement = scoreDictionary.min { $0.value <= $1.value }
+        
+        if let newSong = minElement?.key {
+            self.addSongToLastKSongDetails(newSong: newSong)
+        }
+        NSLog("choosing cache song \(minElement?.key) with minimum score \(minElement?.value)")
+        return minElement?.key
+        
     }
 }
