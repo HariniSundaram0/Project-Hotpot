@@ -10,8 +10,14 @@ import Foundation
 struct SongDetails: Codable, Hashable {
     var uri: String
     var id: String
-    var danceability: Float
-    var energy: Float
-    var tempo: Float
-    var key: Float
+    var acousticness: Double
+    var danceability: Double
+    var energy: Double
+    var instrumentalness: Double
+    var liveness: Double
+    var loudness: Double
+    var speechiness: Double
+    var tempo: Double
+    var key: Double
+    var valence: Double
 }

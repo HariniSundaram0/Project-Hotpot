@@ -199,12 +199,54 @@ extension SpotifyManager {
         
     }
     
-    func fetchAudioFeaturesFromTracks (for trackIDs: [String], completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {
+    func fetchAudioFeaturesFromTracks (for trackIDs: [String], completion: @escaping (_ result: Result<[String:Any], Error>) -> Void) {
         let trackIdsString = trackIDs.joined(separator: ",")
         guard let url = URL(string: "https://api.spotify.com/v1/audio-features?ids=" + trackIdsString) else {
             return completion(.failure(CustomError.invalidURL))
         }
         createRequest(url: url, completion: completion)
+    }
+    
+     func spotifyIdToSongDetails(ids: [String], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
+        self.fetchAudioFeaturesFromTracks(for: ids) { result in
+            switch result{
+            case .success(let dictionary):
+                guard let features = dictionary["audio_features"] as? [[String:Any]]
+                else {
+                    return completion(.failure(CustomError.failedResponseParsing))
+                }
+                let songDetailsArray:[SongDetails]? = features.compactMap { feature in
+                    guard let featureDictionary = feature as? [String: Any],
+                          let uri = featureDictionary["uri"] as? String,
+                          let id = featureDictionary["id"] as? String,
+                          let danceability = featureDictionary["danceability"] as? NSNumber,
+                          let energy = featureDictionary["energy"] as? NSNumber,
+                          let tempo = featureDictionary["tempo"] as? NSNumber,
+                          let key = featureDictionary["key"] as? NSNumber,
+                          let acousticness = featureDictionary["acousticness"] as? NSNumber,
+                          let instrumentalness = featureDictionary["instrumentalness"] as? NSNumber,
+                          let liveness = featureDictionary["liveness"] as? NSNumber,
+                          let loudness = featureDictionary["loudness"] as? NSNumber,
+                          let speechiness = featureDictionary["speechiness"] as? NSNumber,
+                          let valence = featureDictionary["valence"] as? NSNumber
+                    else {
+                        NSLog("failed parse of audio feature dictionary")
+                        //throws error later on
+                        return nil
+                    }
+                    return SongDetails(uri: uri, id: id, acousticness: Double(acousticness), danceability: Double(danceability), energy: Double(energy), instrumentalness: Double(instrumentalness), liveness: Double(liveness), loudness: Double(loudness), speechiness: Double(speechiness), tempo: Double(tempo), key: Double(key), valence: Double(valence))
+                }
+
+                guard let songDetailsArray = songDetailsArray else {
+                    return completion(.failure(CustomError.failedResponseParsing))
+                }
+                return completion(.success(songDetailsArray))
+
+            case .failure(let error):
+                NSLog("failed creating audio song details object: \(error)")
+                completion(.failure(error))
+            }
+        }
     }
     
     func fetchNSongsFromGenre(limit: Int, genre:String, offset: Int, completion: @escaping (_ result: Result<[String: Any], Error>) -> Void) {

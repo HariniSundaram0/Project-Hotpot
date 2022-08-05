@@ -9,13 +9,13 @@ import Foundation
 import Parse
 import AFNetworking
 
-class SongAlgorithm{
+class SongAlgorithm {
     var apiInstance = SpotifyManager.shared()
     var userPreferences = UserSettingsManager.shared()
     var genreManager = GenreManager.shared()
     var cacheManager = CacheManager.shared()
     var scoreManager = SongScoreManager.shared()
-    var songManager = SongManager()
+    var songManager = SongManager.shared()
     
     func getSimilarSong(genre: String, completion: @escaping (_ result: Result<(String, String), Error>) -> Void) {
        

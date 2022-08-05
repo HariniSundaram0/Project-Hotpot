@@ -40,7 +40,16 @@ class CacheManager: NSObject {
                 refillCache(genre:genre) { result in
                     switch result {
                     case .success(let newSongDetailsArray):
-                        NSLog("refilled cache successfully")
+                        self.filterRepeatSongs(genre: genre, songs: newSongDetailsArray) { filterResult in
+                            switch filterResult {
+                            case .success(let filterArray):
+                                NSLog("filtered successfully")
+                                completion(.success(filterArray))
+                                
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
+                        }
                         completion(.success(newSongDetailsArray))
                     case .failure(let error):
                         completion(.failure(error))
@@ -53,6 +62,34 @@ class CacheManager: NSObject {
             }
         }
     }
+
+    func filterRepeatSongs(genre:String, songs: [SongDetails], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
+        NSLog("filter iteration")
+        let  filteredSongs : [SongDetails] = songs.filter { song in
+            if SongManager.shared().historySet.contains(song.uri) {
+                removeSongFromCache(genre: genre, song: song)
+                return false
+            }
+            else {
+                return true
+            }
+        }
+        //recursive strategy, which in practice is very unlikely
+           if filteredSongs.isEmpty {
+               refillCache(genre: genre) { result in
+                   switch result {
+                   case .success(let newSongs):
+                       return self.filterRepeatSongs(genre: genre, songs: newSongs, completion: completion)
+                   case .failure(let error):
+                       completion(.failure(error))
+                   }
+               }
+           }
+               else {
+                   return completion(.success(filteredSongs))
+               }
+           }
+
     func removeSongFromCache(genre: String, song: SongDetails) {
         cache.evictFromCache(genre: genre, evictSong: song)
     }
@@ -69,7 +106,7 @@ class CacheManager: NSObject {
                     return completion(.failure(CustomError.failedResponseParsing))
                 }
                 let trackIDs : [String] = items.compactMap{ $0?["id"] as? String}
-                self.spotifyIdToSongDetails(ids: trackIDs) { result in
+                SpotifyManager.shared().spotifyIdToSongDetails(ids: trackIDs) { result in
                     switch result{
                     case .success(let songDetailsArray):
                         self.cache.addToCache(genre: genre, songs: songDetailsArray)
@@ -78,42 +115,6 @@ class CacheManager: NSObject {
                         completion(.failure(error))
                     }
                 }
-            }
-        }
-    }
-    //TODO: Should the cache Manager be parsing? Consider moving to Spotify Manager?
-    private func spotifyIdToSongDetails(ids: [String], completion: @escaping (_ result: Result<[SongDetails], Error>) -> Void) {
-        SpotifyManager.shared().fetchAudioFeaturesFromTracks(for: ids) { result in
-            switch result{
-            case .success(let dictionary):
-                guard let features = dictionary["audio_features"] as? [[String:Any]]
-                else {
-                    return completion(.failure(CustomError.failedResponseParsing))
-                }
-                let songDetailsArray:[SongDetails]? = features.compactMap { feature in
-                    guard let featureDictionary = feature as? [String: Any],
-                          let uri = featureDictionary["uri"] as? String,
-                          let id = featureDictionary["id"] as? String,
-                          let danceability = featureDictionary["danceability"] as? NSNumber,
-                          let energy = featureDictionary["energy"] as? NSNumber,
-                          let tempo = featureDictionary["tempo"] as? NSNumber,
-                          let key = featureDictionary["key"] as? NSNumber
-                    else {
-                        NSLog("failed parse of audio feature dictionary")
-                        //throws error later on
-                        return nil
-                    }
-                    return SongDetails(uri: uri, id: id, danceability: Float(danceability), energy: Float(energy), tempo: Float(tempo), key: Float(key))
-                }
-                
-                guard let songDetailsArray = songDetailsArray else {
-                    return completion(.failure(CustomError.failedResponseParsing))
-                }
-                return completion(.success(songDetailsArray))
-                
-            case .failure(let error):
-                NSLog("failed creating audio song details object: \(error)")
-                completion(.failure(error))
             }
         }
     }
