@@ -15,17 +15,22 @@ class HomeViewController: MediaViewController {
     let songManager = SongManager.shared()
     var currentGenre: String?
     var playRandomSongs : Bool = true
+    var timer = Timer()
+    let formatter = DateComponentsFormatter()
     @IBOutlet weak var thumbsImage: UIImageView!
     @IBOutlet weak var card: UIView!
     @IBOutlet weak var songImage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var findSimilarSongButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
+    @IBOutlet weak var progressBar: UIProgressView!
     
     override func viewDidLoad() {
         playRandomSongs = true
+        self.formatter.allowedUnits = [.hour, .minute, .second]
         //set up notifation reveiver
         NotificationCenter.default.addObserver(forName: Notification.Name("HotpotSongUpdateIdentifier"), object: nil, queue: .main) { notif in
             guard let state = notif.object as? SPTAppRemotePlayerState else {
@@ -34,10 +39,11 @@ class HomeViewController: MediaViewController {
             }
             //if song has changed, update the UI View
             self.updateCard(track: state.track)
-            
         }
         self.resetSong()
+        self.scheduledTimerWithTimeInterval()
     }
+    
     
     // MARK: - Actions
     @IBAction func didTapButton(_sender: UIButton) {
@@ -150,6 +156,11 @@ class HomeViewController: MediaViewController {
                 self.card.center = self.view.center
                 self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
                 self.artistNameLabel.text = self.apiInstance.lastPlayerState?.track.artist.name
+                //duration is extracted in milliseconds
+                let duration = Int(self.apiInstance.lastPlayerState?.track.duration ?? 1)
+                let formattedString = self.formatter.string(from: TimeInterval(duration/1000))
+                
+                self.durationLabel.text = formattedString
                 self.card.alpha = 1
                 self.genreLabel.text = self.currentGenre
             })
@@ -173,9 +184,27 @@ class HomeViewController: MediaViewController {
             NSLog("random alg called")
             algInstance.getAlgorithmSong(completion: completion)
         }
-        else if let currentGenre = self.currentGenre as? String {
+        else if let currentGenre = self.currentGenre {
             NSLog("radio alg called")
             algInstance.getSimilarSong(genre: currentGenre, completion: completion)
         }
+    }
+    
+    //MARK: Progress Bar
+    @objc func updateProgressBar() {
+        apiInstance.fetchPlayerState()
+        guard let duration = apiInstance.lastPlayerState?.track.duration,
+              let playbackPosition = apiInstance.lastPlayerState?.playbackPosition
+        else {
+            NSLog("failed to retreive time stamps")
+            return
+        }
+        let newValue = Float(playbackPosition) / Float(duration)
+        self.progressBar.setProgress(newValue, animated: true)
+    }
+    
+    func scheduledTimerWithTimeInterval() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
+       
     }
 }
