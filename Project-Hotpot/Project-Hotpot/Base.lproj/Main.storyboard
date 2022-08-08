@@ -122,18 +122,28 @@
                                 <attributedString key="attributedText"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project Hotpot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5im-PE-rgN">
+                                <rect key="frame" x="81" y="213" width="253" height="49"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="41"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pt8-gT-Qk2"/>
                         <color key="backgroundColor" red="1" green="0.84866660279999995" blue="0.85593876749999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="yGy-0s-geY" firstAttribute="top" secondItem="pt8-gT-Qk2" secondAttribute="top" constant="243" id="5Am-GL-mOd"/>
+                            <constraint firstItem="5im-PE-rgN" firstAttribute="leading" secondItem="pt8-gT-Qk2" secondAttribute="leading" constant="81" id="CpO-Xk-PuZ"/>
                             <constraint firstItem="zCI-zl-iUp" firstAttribute="trailing" secondItem="yGy-0s-geY" secondAttribute="trailing" id="IJp-3A-Kt6"/>
                             <constraint firstItem="yGy-0s-geY" firstAttribute="centerX" secondItem="pt8-gT-Qk2" secondAttribute="centerX" id="Mg1-4B-mvD"/>
                             <constraint firstItem="J7e-G4-z3x" firstAttribute="leading" secondItem="aWk-Xx-77t" secondAttribute="leading" id="Njn-UA-QE9"/>
+                            <constraint firstItem="yGy-0s-geY" firstAttribute="top" secondItem="5im-PE-rgN" secondAttribute="bottom" constant="69" id="TAU-wh-bkf"/>
                             <constraint firstItem="aWk-Xx-77t" firstAttribute="centerX" secondItem="pt8-gT-Qk2" secondAttribute="centerX" id="XrK-dn-RmK"/>
                             <constraint firstItem="aWk-Xx-77t" firstAttribute="top" secondItem="zCI-zl-iUp" secondAttribute="bottom" constant="66" id="ZwD-UP-Uc3"/>
                             <constraint firstItem="zCI-zl-iUp" firstAttribute="top" secondItem="yGy-0s-geY" secondAttribute="bottom" constant="27" id="a97-bG-hxz"/>
+                            <constraint firstItem="5im-PE-rgN" firstAttribute="top" secondItem="pt8-gT-Qk2" secondAttribute="top" constant="125" id="hR8-Tv-DSx"/>
                             <constraint firstItem="J7e-G4-z3x" firstAttribute="trailing" secondItem="aWk-Xx-77t" secondAttribute="trailing" id="lBQ-cu-0Ar"/>
+                            <constraint firstItem="pt8-gT-Qk2" firstAttribute="trailing" secondItem="5im-PE-rgN" secondAttribute="trailing" constant="80" id="nFB-6K-MYm"/>
                             <constraint firstItem="zCI-zl-iUp" firstAttribute="leading" secondItem="yGy-0s-geY" secondAttribute="leading" id="pQd-NU-OI1"/>
                             <constraint firstItem="J7e-G4-z3x" firstAttribute="top" secondItem="aWk-Xx-77t" secondAttribute="bottom" constant="23" id="q98-JD-Udr"/>
                         </constraints>
