@@ -4,7 +4,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var apiInstance = SpotifyManager.shared()
-    lazy var rootViewController = ConnectViewController()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else {
@@ -13,6 +12,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.makeKeyAndVisible()
         window!.windowScene = windowScene
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let rootViewController = storyBoard.instantiateViewController(withIdentifier: "ConnectViewController")
         window!.rootViewController = rootViewController
     }
     

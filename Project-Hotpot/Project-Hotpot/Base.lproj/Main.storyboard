@@ -12,24 +12,55 @@
         <!--Connect View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ConnectViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ConnectViewController" customModule="Project_Hotpot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ConnectViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ConnectViewController" customModule="Project_Hotpot" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1a-pr-5of">
-                                <rect key="frame" x="103" y="433" width="208" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="spotiLogo" translatesAutoresizingMaskIntoConstraints="NO" id="Rym-mv-XrW">
+                                <rect key="frame" x="64.5" y="310.5" width="285" height="285"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="285" id="Lt7-So-Ou8"/>
+                                    <constraint firstAttribute="height" constant="285" id="d5X-Bx-lsw"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1a-pr-5of">
+                                <rect key="frame" x="49.5" y="661" width="315" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="XvQ-ie-Lyk"/>
+                                    <constraint firstAttribute="width" constant="315" id="oL3-Js-AyM"/>
+                                </constraints>
+                                <color key="tintColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <size key="titleShadowOffset" width="3" height="0.0"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Connect Spotify"/>
+                                <buttonConfiguration key="configuration" style="filled" cornerStyle="capsule">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Connect Spotify Account">
+                                            <attributes>
+                                                <font key="NSFont" size="22" name="Helvetica"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
-                                    <action selector="didTapAuth:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ns0-E7-qlz"/>
+                                    <action selector="didTapConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="J3P-rF-Aa4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.72941178080000002" green="0.72156864399999998" blue="0.72156864399999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="Z1a-pr-5of" firstAttribute="top" secondItem="Rym-mv-XrW" secondAttribute="bottom" constant="65.5" id="6Nw-g0-Mrk"/>
+                            <constraint firstItem="Rym-mv-XrW" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="U5e-3E-IPq"/>
+                            <constraint firstItem="Rym-mv-XrW" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="nVG-ho-2Mb"/>
+                            <constraint firstItem="Z1a-pr-5of" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="xrz-FX-7sB"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="connectButton" destination="Z1a-pr-5of" id="HIR-ah-FkA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -267,17 +298,22 @@
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsI-U1-F63">
-                                <rect key="frame" x="104" y="179" width="210" height="37"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jsI-U1-F63">
+                                <rect key="frame" x="108" y="179" width="198.5" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="jsI-U1-F63" secondAttribute="height" multiplier="210:37" id="HDZ-NZ-K6a"/>
+                                </constraints>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Remove Genres From Feed" cornerStyle="capsule"/>
                                 <connections>
                                     <action selector="onClickShowDropDown:" destination="FHg-TL-gIb" eventType="touchUpInside" id="RK2-de-jQA"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YoY-Tt-ilM">
-                                <rect key="frame" x="102" y="246" width="210" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YoY-Tt-ilM">
+                                <rect key="frame" x="119" y="246" width="176" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="YoY-Tt-ilM" secondAttribute="height" multiplier="210:37" id="sJC-Yu-h1y"/>
+                                </constraints>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Logout" cornerStyle="capsule">
                                     <color key="baseBackgroundColor" red="0.62352943419999995" green="0.62745100259999997" blue="0.75294119120000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -291,10 +327,12 @@
                         <viewLayoutGuide key="safeArea" id="ke2-jq-FAJ"/>
                         <color key="backgroundColor" red="0.89410289984629521" green="0.88244880892251099" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="jsI-U1-F63" firstAttribute="centerX" secondItem="ke2-jq-FAJ" secondAttribute="centerX" id="3W1-kv-wId"/>
                             <constraint firstItem="yK1-RP-5hI" firstAttribute="top" secondItem="ke2-jq-FAJ" secondAttribute="top" constant="23" id="BeQ-yz-jY2"/>
-                            <constraint firstItem="jsI-U1-F63" firstAttribute="top" secondItem="yK1-RP-5hI" secondAttribute="bottom" constant="53" id="hSi-pY-DUB"/>
+                            <constraint firstItem="YoY-Tt-ilM" firstAttribute="top" secondItem="jsI-U1-F63" secondAttribute="bottom" constant="32" id="HPV-WD-mPE"/>
+                            <constraint firstItem="jsI-U1-F63" firstAttribute="top" secondItem="yK1-RP-5hI" secondAttribute="bottom" constant="53" id="Nk5-Nq-EdN"/>
+                            <constraint firstItem="jsI-U1-F63" firstAttribute="centerX" secondItem="ke2-jq-FAJ" secondAttribute="centerX" id="g1a-n3-b7z"/>
                             <constraint firstItem="yK1-RP-5hI" firstAttribute="centerX" secondItem="ke2-jq-FAJ" secondAttribute="centerX" id="l3Z-zk-XlE"/>
+                            <constraint firstItem="YoY-Tt-ilM" firstAttribute="centerX" secondItem="ke2-jq-FAJ" secondAttribute="centerX" id="oEA-9l-PpE"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" image="gearshape.fill" catalog="system" id="cPI-tu-JlV"/>
@@ -634,15 +672,13 @@
         <image name="pause.circle.fill" catalog="system" width="128" height="121"/>
         <image name="play.circle.fill" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="spotiLogo" width="1024" height="1024"/>
         <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
