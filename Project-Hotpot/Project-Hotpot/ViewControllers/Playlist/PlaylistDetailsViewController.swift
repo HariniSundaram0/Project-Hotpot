@@ -10,7 +10,6 @@ import UIKit
 class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, UITableViewDataSource {
     var currentPlaylist: PFPlaylist?
     var songArray: [PFSong]?
-    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var playlistName: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
@@ -54,7 +53,7 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
             return
         }
         let uri = currentSong.uri
-        self.playNewSong(uri: uri, button: self.playButton)
+        self.playNewSong(uri: uri)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,9 +69,5 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return songArray?.count ?? 0
-    }
-    
-    @IBAction func didTapPlayButton(_sender: UIButton) {
-        self.didTapMediaPlayButton(button: _sender)
     }
 }

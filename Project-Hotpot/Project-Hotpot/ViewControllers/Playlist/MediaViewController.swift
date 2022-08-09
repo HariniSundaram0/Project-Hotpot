@@ -11,30 +11,30 @@ class MediaViewController: HotpotViewController {
     let apiInstance = SpotifyManager.shared()
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
+    
+    @IBOutlet weak var playButton: UIButton!
     var timer:Timer = Timer()
     @IBOutlet weak var progressBar: UIProgressView!
-    func resumeSong(button: UIButton) {
+    
+    private func resumeSong() {
         //resume the audio
         DispatchQueue.main.async {
-            NSLog("trying to resume song")
             self.apiInstance.appRemote.playerAPI?.resume()
             //change the button image
-            button.setImage(self.pauseButtonImage, for:.normal)
+            self.playButton.setImage(self.pauseButtonImage, for:.normal)
         }
     }
     
-    func pauseSong(button: UIButton) {
+    private func pauseSong() {
         //pause the audio
         DispatchQueue.main.async {
             self.apiInstance.appRemote.playerAPI?.pause()
             //change the button image
-            NSLog("paused song")
-            button.setImage(self.playButtomImage, for:.normal)
+            self.playButton.setImage(self.playButtomImage, for:.normal)
         }
     }
     
-    //TODO: add completion handler
-    func playNewSong(uri: String, button: UIButton) {
+    func playNewSong(uri: String) {
         DispatchQueue.main.async {
             self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
                 if let apiError = apiError {
@@ -43,19 +43,21 @@ class MediaViewController: HotpotViewController {
                 else if let songContent = songContent as? SPTAppRemoteContentItem
                 {
                     self.apiInstance.appRemote.playerAPI?.play(songContent)
+                    
                 }
             })
         }
+        self.resumeSong()
     }
     
-    func didTapMediaPlayButton(button: UIButton) {
+    @IBAction func didTapPlayButton(_ sender: Any) {
         if (apiInstance.lastPlayerState?.isPaused == true){
             //if already paused, play the song
-            resumeSong(button: button)
+            self.resumeSong()
         }
         else{
             //if already playing, pause the song
-            pauseSong(button: button)
+            self.pauseSong()
         }
     }
     

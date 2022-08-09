@@ -12,9 +12,9 @@ class PFHistory: PFObject, PFSubclassing {
     @NSManaged var user : PFUser
     @NSManaged var song : PFSong
     @NSManaged var playTimeStamp : NSDate
+    //max query for history
+    static let LIMIT : Int = 100
     @NSManaged var uri : String
-    //TODO: add song id attribute for faster querying in the future
-    //in future will include audio analysis features such as 'liked', 'disliked', genre, tags, etc
     
     static func parseClassName() -> String {
         return "History"
@@ -40,6 +40,7 @@ class PFHistory: PFObject, PFSubclassing {
     class func getHistoryInBackground(user:PFUser, completion: @escaping (_ result: Result<[PFHistory], Error>) -> Void) {
         let query = PFQuery(className: PFHistory.parseClassName())
         query.includeKey("song")
+        query.limit = self.LIMIT
         query.whereKey("user", equalTo: user)
         query.order(byDescending: "playTimeStamp")
         
@@ -58,7 +59,6 @@ class PFHistory: PFObject, PFSubclassing {
     class func addPFSongToHistory(song:PFSong, completion:  @escaping (_ result: Result<Void, Error>) -> Void) {
         guard let currentUser = PFUser.current()
         else {
-            NSLog("Current User is nil")
             return completion(.failure(CustomError.nilPFUser))
         }
         PFHistory.addSongToHistoryInBackground(user: currentUser, song: song, completion: completion)
