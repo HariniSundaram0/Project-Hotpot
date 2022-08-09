@@ -70,4 +70,34 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return songArray?.count ?? 0
     }
+    
+    func removeSongFromPlaylist(song: PFSong) {
+        guard let currentPlaylist = self.currentPlaylist else {
+            return
+        }
+        PFPlaylist.removeSongFromPlaylistInBackground(song: song, playlist: currentPlaylist) { result in
+            switch result{
+            case .success(_):
+                NSLog("Successfully removed song")
+                self.retreiveSongs()
+            case .failure(let error):
+                NSLog(error.localizedDescription)
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard let currentSong = self.songArray?[indexPath.row] else {
+            NSLog("can't retrieve song")
+            return nil
+        }
+        let action = UIContextualAction(style: .normal,
+                                        title: "Remove") { [weak self] (action, view, completionHandler) in
+                                            self?.removeSongFromPlaylist(song: currentSong)
+                                            completionHandler(true)
+        }
+        action.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [action])
+    }
 }
