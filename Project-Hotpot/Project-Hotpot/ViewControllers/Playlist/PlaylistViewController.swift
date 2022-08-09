@@ -9,15 +9,19 @@ import UIKit
 
 class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
+    var refreshControl: UIRefreshControl?
     //used for table view of playlists
     var playlistArray: [PFPlaylist]?
     
     override func viewDidLoad() {
-        //TODO: add loading button when getting playlists from database
-        super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.retrievePlaylists()
+        super.viewDidLoad()
+        self.refreshControl = UIRefreshControl()
+        self.tableView.refreshControl = self.refreshControl
+        self.refreshControl?.addTarget(self, action:
+                                        #selector(retrievePlaylists),
+                                       for: .valueChanged)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -26,8 +30,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "PlaylistTableViewCell", for: indexPath) as? PlaylistTableViewCell,
-              let playlistArray = playlistArray
-        else{
+              let playlistArray = playlistArray else {
             return UITableViewCell()
         }
         let currentPlaylist = playlistArray[indexPath.row]
@@ -40,7 +43,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //retrieve playlist objects from parse
-    func retrievePlaylists() {
+    @objc func retrievePlaylists() {
         PFPlaylist.getLastNPlaylistsInBackground(limit: nil) { result in
             switch result {
             case .failure(let error):
@@ -49,6 +52,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                 self.playlistArray = playlists
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
                 }
             }
         }

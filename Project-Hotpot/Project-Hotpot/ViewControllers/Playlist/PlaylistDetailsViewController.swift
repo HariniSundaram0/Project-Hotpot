@@ -10,16 +10,25 @@ import UIKit
 class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, UITableViewDataSource {
     var currentPlaylist: PFPlaylist?
     var songArray: [PFSong]?
-    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var playlistName: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    var refreshControl: UIRefreshControl?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.refreshControl = UIRefreshControl()
+        self.tableView.refreshControl = self.refreshControl
+        self.refreshControl?.addTarget(self, action:
+                                        #selector(self.retreiveSongs),
+                                       for: .valueChanged)
         self.playlistName.text = currentPlaylist?.name
-        
+        self.retreiveSongs()
+        self.scheduledTimerWithTimeInterval()
+    }
+    
+    @objc func retreiveSongs() {
         guard let currentPlaylist = currentPlaylist else {
             NSLog("current playlist is nil")
             return
@@ -32,6 +41,7 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
                 self.songArray = songArray
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
                 }
             }
         }
@@ -43,7 +53,7 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
             return
         }
         let uri = currentSong.uri
-        self.playNewSong(uri: uri, button: self.playButton)
+        self.playNewSong(uri: uri)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,11 +70,4 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return songArray?.count ?? 0
     }
-
-    
-    @IBAction func didTapPlayButton(_sender: UIButton) {
-        self.didTapMediaPlayButton(button: _sender)
-    }
-    
-    
 }

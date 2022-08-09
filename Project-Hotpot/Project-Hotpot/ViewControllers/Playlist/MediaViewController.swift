@@ -12,28 +12,29 @@ class MediaViewController: HotpotViewController {
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
     
-    func resumeSong(button: UIButton) {
+    @IBOutlet weak var playButton: UIButton!
+    var timer:Timer = Timer()
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    private func resumeSong() {
         //resume the audio
         DispatchQueue.main.async {
-        NSLog("trying to resume song")
             self.apiInstance.appRemote.playerAPI?.resume()
-        //change the button image
-            button.setImage(self.pauseButtonImage, for:.normal)
+            //change the button image
+            self.playButton.setImage(self.pauseButtonImage, for:.normal)
         }
     }
     
-    func pauseSong(button: UIButton) {
+    private func pauseSong() {
         //pause the audio
         DispatchQueue.main.async {
             self.apiInstance.appRemote.playerAPI?.pause()
-        //change the button image
-            NSLog("paused song")
-            button.setImage(self.playButtomImage, for:.normal)
+            //change the button image
+            self.playButton.setImage(self.playButtomImage, for:.normal)
         }
     }
     
-    //TODO: add completion handler
-    func playNewSong(uri: String, button: UIButton) {
+    func playNewSong(uri: String) {
         DispatchQueue.main.async {
             self.apiInstance.appRemote.contentAPI?.fetchContentItem(forURI: uri, callback: { songContent, apiError in
                 if let apiError = apiError {
@@ -42,20 +43,37 @@ class MediaViewController: HotpotViewController {
                 else if let songContent = songContent as? SPTAppRemoteContentItem
                 {
                     self.apiInstance.appRemote.playerAPI?.play(songContent)
-                    button.setImage(self.pauseButtonImage, for:.normal)
+                    
                 }
             })
         }
+        self.resumeSong()
     }
     
-    func didTapMediaPlayButton(button: UIButton) {
+    @IBAction func didTapPlayButton(_ sender: Any) {
         if (apiInstance.lastPlayerState?.isPaused == true){
             //if already paused, play the song
-            resumeSong(button: button)
+            self.resumeSong()
         }
         else{
             //if already playing, pause the song
-            pauseSong(button: button)
+            self.pauseSong()
         }
+    }
+    
+    @objc func updateProgressBar() {
+        apiInstance.fetchPlayerState()
+        guard let duration = apiInstance.lastPlayerState?.track.duration,
+              let playbackPosition = apiInstance.lastPlayerState?.playbackPosition
+        else {
+            NSLog("failed to retreive time stamps")
+            return
+        }
+        let newValue = Float(playbackPosition) / Float(duration)
+        self.progressBar.setProgress(newValue, animated: true)
+    }
+    
+    func scheduledTimerWithTimeInterval() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
     }
 }
