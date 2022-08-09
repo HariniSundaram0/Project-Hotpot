@@ -9,8 +9,8 @@ import UIKit
 
 class RadioModeViewController: HomeViewController {
     //ensures correct algorithm is being used
+    var genre: String?
     override func viewDidAppear(_ animated: Bool) {
-        NSLog("entering Radio Mode")
         super.exploreMode = false
     }
     
@@ -19,5 +19,25 @@ class RadioModeViewController: HomeViewController {
         if isBeingDismissed {
             super.exploreMode = true
         }
+    }
+    
+    override func resetSong() {
+        let algInstance = SongAlgorithm()
+        let completion: (Result<(String, String), Error>) -> Void = { result in
+            switch result {
+            case .success(let (uri, genre)):
+                super.playNewSong(uri: uri)
+                super.currentGenre = genre
+                super.resetCard()
+                
+            case .failure(let error):
+                NSLog("\(error)")
+                super.resetCard()
+            }
+        }
+        guard let genre = genre else {
+            return
+        }
+        algInstance.getSimilarSong(genre: genre, completion: completion)
     }
 }

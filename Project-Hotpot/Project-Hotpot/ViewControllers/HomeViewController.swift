@@ -23,7 +23,7 @@ class HomeViewController: MediaViewController {
     @IBOutlet weak var findSimilarSongButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var genreLabel: UILabel!    
+    @IBOutlet weak var genreLabel: UILabel!
     
     override func viewDidLoad() {
         self.formatter.allowedUnits = [.hour, .minute, .second]
@@ -36,7 +36,7 @@ class HomeViewController: MediaViewController {
             //if song has changed, update the UI View
             self.updateCard(track: state.track)
         }
-        self.resetSong()
+        resetSong()
         self.scheduledTimerWithTimeInterval()
     }
     
@@ -44,7 +44,6 @@ class HomeViewController: MediaViewController {
         self.exploreMode = true
     }
     // MARK: - Actions
-    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {
             return
@@ -76,7 +75,7 @@ class HomeViewController: MediaViewController {
                     card.alpha = 0
                 })
                 refreshSong(direction: swipe.left)
-                self.resetSong()
+                resetSong()
                 return
             }
             else if card.center.x > (width - 75) {
@@ -86,7 +85,7 @@ class HomeViewController: MediaViewController {
                     card.alpha = 0
                 })
                 refreshSong(direction: swipe.right)
-                self.resetSong()
+                resetSong()
                 //TODO: presenting the alert causes animation for right swipe to be weird.
                 return
             }
@@ -164,19 +163,20 @@ class HomeViewController: MediaViewController {
                 self.playNewSong(uri: uri)
                 self.currentGenre = genre
                 self.resetCard()
-
+                
             case .failure(let error):
                 NSLog("\(error)")
                 self.resetCard()
             }
         }
-        if self.exploreMode{
-            NSLog("random alg called")
-            algInstance.getAlgorithmSong(completion: completion)
+        algInstance.getAlgorithmSong(completion: completion)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let radioController = segue.destination as? RadioModeViewController else {
+            return
         }
-        else if let currentGenre = self.currentGenre {
-            NSLog("radio alg called")
-            algInstance.getSimilarSong(genre: currentGenre, completion: completion)
-        }
+        //prevents genre from switching (bug fix)
+        radioController.genre = self.currentGenre
     }
 }

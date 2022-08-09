@@ -254,7 +254,7 @@
                                     <color key="baseBackgroundColor" red="0.69411766529999996" green="0.72941178080000002" blue="0.79215681550000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="yuB-3w-J4t" kind="presentation" id="hkz-As-PmT"/>
+                                    <segue destination="yuB-3w-J4t" kind="presentation" identifier="enterRadioMode" id="hkz-As-PmT"/>
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hFH-Ix-YvK">
