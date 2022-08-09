@@ -26,7 +26,7 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
                                        for: .valueChanged)
         self.playlistName.text = currentPlaylist?.name
         self.retreiveSongs()
-        
+        self.scheduledTimerWithTimeInterval()
     }
     
     @objc func retreiveSongs() {

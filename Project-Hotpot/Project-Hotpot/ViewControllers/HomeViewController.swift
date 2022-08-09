@@ -15,7 +15,6 @@ class HomeViewController: MediaViewController {
     let songManager = SongManager.shared()
     var currentGenre: String?
     var playRandomSongs : Bool = true
-    var timer = Timer()
     let formatter = DateComponentsFormatter()
     @IBOutlet weak var thumbsImage: UIImageView!
     @IBOutlet weak var card: UIView!
@@ -25,9 +24,7 @@ class HomeViewController: MediaViewController {
     @IBOutlet weak var findSimilarSongButton: UIButton!
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var genreLabel: UILabel!
-    @IBOutlet weak var progressBar: UIProgressView!
-    
+    @IBOutlet weak var genreLabel: UILabel!    
     override func viewDidLoad() {
         playRandomSongs = true
         self.formatter.allowedUnits = [.hour, .minute, .second]
@@ -188,23 +185,5 @@ class HomeViewController: MediaViewController {
             NSLog("radio alg called")
             algInstance.getSimilarSong(genre: currentGenre, completion: completion)
         }
-    }
-    
-    //MARK: Progress Bar
-    @objc func updateProgressBar() {
-        apiInstance.fetchPlayerState()
-        guard let duration = apiInstance.lastPlayerState?.track.duration,
-              let playbackPosition = apiInstance.lastPlayerState?.playbackPosition
-        else {
-            NSLog("failed to retreive time stamps")
-            return
-        }
-        let newValue = Float(playbackPosition) / Float(duration)
-        self.progressBar.setProgress(newValue, animated: true)
-    }
-    
-    func scheduledTimerWithTimeInterval() {
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
-       
     }
 }

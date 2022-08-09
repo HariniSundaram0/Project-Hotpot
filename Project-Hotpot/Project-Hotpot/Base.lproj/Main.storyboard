@@ -297,7 +297,7 @@
                         <outlet property="findSimilarSongButton" destination="nuo-fe-8cB" id="ChX-Mh-fEd"/>
                         <outlet property="genreLabel" destination="qY6-NH-G0Z" id="XpZ-G8-KGj"/>
                         <outlet property="playButton" destination="TgE-gM-IcB" id="fFi-b3-N4Y"/>
-                        <outlet property="progressBar" destination="hFH-Ix-YvK" id="5Pu-2s-T5K"/>
+                        <outlet property="progressBar" destination="hFH-Ix-YvK" id="uWB-TB-aD4"/>
                         <outlet property="songImage" destination="hWu-ky-VCG" id="pcy-rR-HYX"/>
                         <outlet property="songTitleLabel" destination="okj-WR-fQN" id="uge-Ce-zVD"/>
                         <outlet property="thumbsImage" destination="Kvu-ZL-he5" id="UvQ-pe-omJ"/>
@@ -512,21 +512,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xOz-H5-Plm">
-                                <rect key="frame" x="0.0" y="133.5" width="414" height="599.5"/>
+                                <rect key="frame" x="0.0" y="133.5" width="414" height="554.5"/>
                                 <color key="backgroundColor" red="0.86666667460000002" green="0.9098039269" blue="0.99215686319999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="separatorColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="sectionIndexColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="sectionIndexBackgroundColor" red="0.69411766529999996" green="0.72941178080000002" blue="0.79215681550000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="15" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                    <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="15" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
-                                                    <rect key="frame" x="60" y="5" width="294" height="33.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
+                                                    <rect key="frame" x="20" y="4" width="358" height="34"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" none="YES"/>
                                                     </accessibility>
@@ -541,21 +542,8 @@
                                                     </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zu-qk-vCC">
-                                                    <rect key="frame" x="10" y="11" width="45" height="22"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <gestureRecognizers/>
-                                            <constraints>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="leading" secondItem="9zu-qk-vCC" secondAttribute="trailing" constant="5" id="8BM-GL-0q8"/>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="centerY" secondItem="dbe-qf-Wt9" secondAttribute="centerY" id="GVH-vE-Jm4"/>
-                                                <constraint firstItem="9zu-qk-vCC" firstAttribute="top" secondItem="dbe-qf-Wt9" secondAttribute="top" constant="11" id="QwI-s8-4Db"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="nwj-ug-CXp" secondAttribute="trailing" constant="40" id="cbg-n8-OEM"/>
-                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="centerX" secondItem="dbe-qf-Wt9" secondAttribute="centerX" id="tSk-Er-V8h"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <gestureRecognizers/>
@@ -590,16 +578,22 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YGF-VW-JrW">
+                                <rect key="frame" x="20" y="721" width="374" height="4"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RZk-7M-Cmb"/>
                         <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="YGF-VW-JrW" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="1Wd-IH-anf"/>
+                            <constraint firstItem="Myn-be-xWh" firstAttribute="top" secondItem="YGF-VW-JrW" secondAttribute="bottom" constant="28" id="Ats-B2-1Go"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="F5p-Hu-LlO"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="top" secondItem="RZk-7M-Cmb" secondAttribute="top" constant="20" id="Irb-3H-vJF"/>
-                            <constraint firstItem="Myn-be-xWh" firstAttribute="top" secondItem="xOz-H5-Plm" secondAttribute="bottom" constant="20" id="N4C-FP-rqu"/>
                             <constraint firstItem="Myn-be-xWh" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="SU3-zH-jw8"/>
+                            <constraint firstItem="YGF-VW-JrW" firstAttribute="top" secondItem="xOz-H5-Plm" secondAttribute="bottom" constant="33" id="Vid-NV-5Oj"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="XhV-xC-8bG"/>
                             <constraint firstItem="RZk-7M-Cmb" firstAttribute="bottom" secondItem="Myn-be-xWh" secondAttribute="bottom" constant="30" id="YVa-lM-4G2"/>
+                            <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="YGF-VW-JrW" secondAttribute="trailing" constant="20" id="eLj-UP-gQT"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="trailing" secondItem="RZk-7M-Cmb" secondAttribute="trailing" id="eaF-b2-pnq"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" id="tkh-Fp-MvL"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="top" secondItem="Bzk-1E-VLG" secondAttribute="bottom" constant="25" id="vam-sr-dKW"/>
@@ -609,6 +603,7 @@
                     <connections>
                         <outlet property="playButton" destination="Myn-be-xWh" id="Y3I-Of-Bn2"/>
                         <outlet property="playlistName" destination="Bzk-1E-VLG" id="rJ8-p9-u6S"/>
+                        <outlet property="progressBar" destination="YGF-VW-JrW" id="KWK-K6-5kL"/>
                         <outlet property="tableView" destination="xOz-H5-Plm" id="Eo6-8d-1Xe"/>
                     </connections>
                 </viewController>

@@ -11,7 +11,8 @@ class MediaViewController: HotpotViewController {
     let apiInstance = SpotifyManager.shared()
     let pauseButtonImage = UIImage(systemName: "pause.circle.fill")
     let playButtomImage = UIImage(systemName: "play.circle.fill")
-    
+    var timer:Timer = Timer()
+    @IBOutlet weak var progressBar: UIProgressView!
     func resumeSong(button: UIButton) {
         //resume the audio
         DispatchQueue.main.async {
@@ -56,5 +57,21 @@ class MediaViewController: HotpotViewController {
             //if already playing, pause the song
             pauseSong(button: button)
         }
+    }
+    
+    @objc func updateProgressBar() {
+        apiInstance.fetchPlayerState()
+        guard let duration = apiInstance.lastPlayerState?.track.duration,
+              let playbackPosition = apiInstance.lastPlayerState?.playbackPosition
+        else {
+            NSLog("failed to retreive time stamps")
+            return
+        }
+        let newValue = Float(playbackPosition) / Float(duration)
+        self.progressBar.setProgress(newValue, animated: true)
+    }
+    
+    func scheduledTimerWithTimeInterval() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgressBar), userInfo: nil, repeats: true)
     }
 }
