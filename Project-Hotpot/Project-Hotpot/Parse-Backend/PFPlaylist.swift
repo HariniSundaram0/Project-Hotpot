@@ -92,7 +92,6 @@ class PFPlaylist: PFObject, PFSubclassing {
                 completion(.failure(error))
                 return
             }
-            //TODO: is there a more efficient way to do this? similar to O(n) efficiency.
             else if let objects = objects {
                 let songArray : [PFSong] = objects.compactMap{ obj in obj.object(forKey: "song") as? PFSong }
                 return completion(.success(songArray))
@@ -119,6 +118,42 @@ class PFPlaylist: PFObject, PFSubclassing {
                 completion(.failure(error))
             }
         })
+    }
+    
+    class func getSongPlaylistObject(song: PFSong, playlist: PFPlaylist, completion: @escaping (_ result: Result<PFObject, Error>) -> Void) {
+        let query = PFQuery(className: "SongJoinTable")
+        query.whereKey("playlist", equalTo: playlist)
+        query.whereKey("song", equalTo: song)
+        
+        query.getFirstObjectInBackground { relation, error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            else if let relation = relation {
+                completion(.success(relation))
+            }
+        }
+    }
+    
+    
+    class func removeSongFromPlaylistInBackground(song: PFSong, playlist: PFPlaylist, completion: @escaping (_ result: Result<Void, Error>) -> Void) {
+        // create an entry in the Follow table
+        
+        getSongPlaylistObject(song: song, playlist: playlist) { result in
+            switch result {
+            case .success(let songRelation):
+                songRelation.deleteInBackground {isSuccessful, error in
+                    if let error = error {
+                        completion(.failure(error))
+                    }
+                    else{
+                        completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 
