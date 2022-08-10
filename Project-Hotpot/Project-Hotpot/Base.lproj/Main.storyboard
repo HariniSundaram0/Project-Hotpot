@@ -752,7 +752,7 @@
                                 <rect key="frame" x="20" y="721" width="374" height="4"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shn-AH-WrW">
-                                <rect key="frame" x="279" y="756" width="85" height="52"/>
+                                <rect key="frame" x="279" y="756.5" width="85" height="52"/>
                                 <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="forward.fill" catalog="system">
@@ -762,11 +762,23 @@
                                     <action selector="didTapNextSong:" destination="sbZ-Hm-2bj" eventType="touchUpInside" id="JPa-2P-Ire"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukY-26-GxQ">
+                                <rect key="frame" x="50" y="756" width="85" height="52"/>
+                                <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="backward.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="32"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didTapPrevSong:" destination="sbZ-Hm-2bj" eventType="touchUpInside" id="B1c-Gg-lky"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RZk-7M-Cmb"/>
                         <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="YGF-VW-JrW" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="1Wd-IH-anf"/>
+                            <constraint firstItem="ukY-26-GxQ" firstAttribute="centerY" secondItem="Myn-be-xWh" secondAttribute="centerY" id="9ZX-gH-d4s"/>
                             <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="shn-AH-WrW" secondAttribute="trailing" constant="50" id="Ako-BB-Ykg"/>
                             <constraint firstItem="Myn-be-xWh" firstAttribute="top" secondItem="YGF-VW-JrW" secondAttribute="bottom" constant="28" id="Ats-B2-1Go"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="F5p-Hu-LlO"/>
@@ -779,6 +791,7 @@
                             <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="YGF-VW-JrW" secondAttribute="trailing" constant="20" id="eLj-UP-gQT"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="trailing" secondItem="RZk-7M-Cmb" secondAttribute="trailing" id="eaF-b2-pnq"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" id="tkh-Fp-MvL"/>
+                            <constraint firstItem="ukY-26-GxQ" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="50" id="ueX-qS-9KG"/>
                             <constraint firstItem="xOz-H5-Plm" firstAttribute="top" secondItem="Bzk-1E-VLG" secondAttribute="bottom" constant="25" id="vam-sr-dKW"/>
                             <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="Bzk-1E-VLG" secondAttribute="trailing" constant="20" id="vno-me-wxL"/>
                         </constraints>
@@ -872,6 +885,7 @@
     </scenes>
     <resources>
         <image name="ThumbsDown" width="612" height="532"/>
+        <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="books.vertical.fill" catalog="system" width="128" height="109"/>
         <image name="forward.fill" catalog="system" width="128" height="79"/>
         <image name="gearshape.fill" catalog="system" width="128" height="121"/>

@@ -61,6 +61,22 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
         self.songIndex = index
         self.tableView(self.tableView, didSelectRowAt: IndexPath(row: index, section: 0))
     }
+    
+    @IBAction func didTapPrevSong(_ sender: Any) {
+        guard var index = self.songIndex,
+              let length = self.songArray?.count else {
+            return
+        }
+        if (index - 1) < 0 {
+            index = length - 1
+        } else {
+            index -= 1
+        }
+        self.songIndex = index
+        self.tableView(self.tableView, didSelectRowAt: IndexPath(row: index, section: 0))
+    }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let currentSong = songArray?[indexPath.row] else {
             NSLog("failed accessing song from indexPath")
