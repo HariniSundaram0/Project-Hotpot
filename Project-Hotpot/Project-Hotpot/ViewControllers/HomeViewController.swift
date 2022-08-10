@@ -141,6 +141,7 @@ class HomeViewController: MediaViewController {
     //WRAP ONTO MAIN QUEUE!
     func updateInfo() {
         self.songTitleLabel.text = self.apiInstance.lastPlayerState?.track.name
+        NSLog("updated song with \(self.apiInstance.lastPlayerState?.track.name)")
         self.artistNameLabel.text = self.apiInstance.lastPlayerState?.track.artist.name
         self.genreLabel.text = self.currentGenre
         //duration is extracted in milliseconds
