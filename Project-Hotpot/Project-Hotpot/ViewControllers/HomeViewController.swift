@@ -14,6 +14,8 @@ class HomeViewController: MediaViewController {
     }
     let songManager = SongManager.shared()
     var currentGenre: String?
+    @IBOutlet weak var currentPlaylistButton: UIButton!
+    var currentPlaylist: PFPlaylist?
     var exploreMode : Bool = true
     let formatter = DateComponentsFormatter()
     @IBOutlet weak var thumbsImage: UIImageView!
@@ -107,7 +109,12 @@ class HomeViewController: MediaViewController {
                 case .left:
                     return
                 case .right:
-                    PFPlaylist.addPFSongToLastPlaylist(song: song)
+                    if let currentPlaylist = self.currentPlaylist {
+                        PFPlaylist.addPFSongToPlaylist(song: song, currPlaylist: currentPlaylist)
+                    }
+                    else {
+                        PFPlaylist.addPFSongToLastPlaylist(song: song)
+                    }
                 }
             case .failure(let error):
                 NSLog("error occured: \(error)")
@@ -169,6 +176,32 @@ class HomeViewController: MediaViewController {
             }
         }
         algInstance.getAlgorithmSong(completion: completion)
+    }
+    
+    @IBAction func didTapActionSheet(_ sender: Any) {
+        
+        let actionSheet = UIAlertController.init(title: "Playlists: ", message: "Choose a Playlist to add liked Songs To", preferredStyle: .actionSheet)
+        
+        PFPlaylist.getLastNPlaylistsInBackground(limit: nil) { result in
+            switch result {
+            case .success(let playlists):
+                for playlist in playlists {
+                    let newAction = UIAlertAction(title: playlist.name, style: .destructive) { action in
+                        self.currentPlaylist = playlist
+                        DispatchQueue.main.async {
+                            let name = playlist.name
+                            self.currentPlaylistButton.setTitle(name, for: .normal)
+                        }
+                    }
+                    actionSheet.addAction(newAction)
+                }
+            case .failure(let error):
+                NSLog(error.localizedDescription)
+                //we don't want to show an empty action sheet
+                return
+            }
+        }
+        self.present(actionSheet, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

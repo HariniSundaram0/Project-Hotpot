@@ -167,7 +167,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDN-Af-VMX" userLabel="card">
-                                <rect key="frame" x="37" y="234" width="340" height="420"/>
+                                <rect key="frame" x="37" y="227.5" width="340" height="420"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="genre" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qY6-NH-G0Z">
                                         <rect key="frame" x="0.0" y="-54" width="340" height="39.5"/>
@@ -233,7 +233,11 @@
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgE-gM-IcB">
-                                <rect key="frame" x="157.5" y="728" width="99.5" height="75"/>
+                                <rect key="frame" x="157.5" y="693" width="99.5" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="gjK-G7-hJz"/>
+                                    <constraint firstAttribute="width" constant="99.5" id="vet-m2-Psa"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="pause.circle.fill" catalog="system" title="" imagePadding="0.0" buttonSize="large">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="38" scale="large" weight="bold"/>
@@ -243,13 +247,16 @@
                                     <action selector="didTapPlayButton:" destination="Dhf-U1-TWR" eventType="touchUpInside" id="08f-Oc-72n"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuo-fe-8cB">
-                                <rect key="frame" x="211" y="73" width="165" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuo-fe-8cB">
+                                <rect key="frame" x="180" y="140" width="193" height="31"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="nuo-fe-8cB" secondAttribute="height" multiplier="165:31" id="EcS-ny-Ees"/>
+                                    <constraint firstAttribute="height" constant="31" id="SuP-fz-LDz"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Enter Radio Mode" cornerStyle="capsule">
+                                <buttonConfiguration key="configuration" style="gray" cornerStyle="capsule">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Enter Radio Mode"/>
+                                    </attributedString>
                                     <color key="baseForegroundColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <color key="baseBackgroundColor" red="0.69411766529999996" green="0.72941178080000002" blue="0.79215681550000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
@@ -258,11 +265,24 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hFH-Ix-YvK">
-                                <rect key="frame" x="37" y="701" width="340" height="4"/>
+                                <rect key="frame" x="37" y="667.5" width="340" height="4"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uyl-DN-c7I">
+                                <rect key="frame" x="41" y="83" width="332" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="XIo-vo-chy"/>
+                                    <constraint firstAttribute="width" constant="332" id="gBM-ts-kJv"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Adding to Playlist: "/>
+                                <connections>
+                                    <action selector="didTapActionSheet:" destination="Dhf-U1-TWR" eventType="touchUpInside" id="VhW-Rb-akl"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSi-QV-OiV">
-                                <rect key="frame" x="335.5" y="728" width="41.5" height="21"/>
+                                <rect key="frame" x="335.5" y="686.5" width="41.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -272,18 +292,23 @@
                         <color key="backgroundColor" red="0.8937883512" green="0.87208114699999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="tintColor" red="0.89972299629999997" green="0.84602888409999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="trailing" secondItem="nuo-fe-8cB" secondAttribute="trailing" constant="38" id="2Z5-Xa-oMx"/>
+                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="bottom" secondItem="TgE-gM-IcB" secondAttribute="bottom" constant="45" id="9RX-f6-Jg7"/>
                             <constraint firstItem="ZDN-Af-VMX" firstAttribute="centerX" secondItem="Xzl-hM-i8m" secondAttribute="centerX" id="GeJ-R2-UYx"/>
-                            <constraint firstItem="TgE-gM-IcB" firstAttribute="top" secondItem="hFH-Ix-YvK" secondAttribute="bottom" constant="23" id="JX6-3C-4wd"/>
-                            <constraint firstItem="nuo-fe-8cB" firstAttribute="top" secondItem="Xzl-hM-i8m" secondAttribute="top" constant="29" id="LVM-pz-7Gj"/>
+                            <constraint firstItem="WSi-QV-OiV" firstAttribute="top" secondItem="hFH-Ix-YvK" secondAttribute="bottom" constant="15" id="IJa-kK-4Ze"/>
+                            <constraint firstItem="ZDN-Af-VMX" firstAttribute="top" secondItem="nuo-fe-8cB" secondAttribute="bottom" constant="56.5" id="N8f-Ba-7UF"/>
                             <constraint firstItem="WSi-QV-OiV" firstAttribute="trailing" secondItem="hFH-Ix-YvK" secondAttribute="trailing" id="OZb-OD-Qcf"/>
                             <constraint firstItem="hFH-Ix-YvK" firstAttribute="leading" secondItem="Xzl-hM-i8m" secondAttribute="leading" constant="37" id="Qof-PZ-k2h"/>
+                            <constraint firstItem="nuo-fe-8cB" firstAttribute="leading" secondItem="Xzl-hM-i8m" secondAttribute="leading" constant="180" id="Stu-1X-T8K"/>
+                            <constraint firstItem="Uyl-DN-c7I" firstAttribute="leading" secondItem="Xzl-hM-i8m" secondAttribute="leading" constant="41" id="YyQ-ui-atU"/>
+                            <constraint firstItem="Uyl-DN-c7I" firstAttribute="top" secondItem="Xzl-hM-i8m" secondAttribute="top" constant="39" id="aOk-ge-yrH"/>
                             <constraint firstItem="hFH-Ix-YvK" firstAttribute="width" secondItem="ZDN-Af-VMX" secondAttribute="width" id="bNV-Kj-fYL"/>
+                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="trailing" secondItem="nuo-fe-8cB" secondAttribute="trailing" constant="41" id="gTf-YJ-kWK"/>
+                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="trailing" secondItem="Uyl-DN-c7I" secondAttribute="trailing" constant="41" id="h1E-ln-XW4"/>
+                            <constraint firstItem="TgE-gM-IcB" firstAttribute="top" secondItem="ZDN-Af-VMX" secondAttribute="bottom" constant="45.5" id="hc9-Db-rr7"/>
                             <constraint firstItem="TgE-gM-IcB" firstAttribute="centerX" secondItem="Xzl-hM-i8m" secondAttribute="centerX" id="kPl-Br-ZD5"/>
+                            <constraint firstItem="nuo-fe-8cB" firstAttribute="top" secondItem="Uyl-DN-c7I" secondAttribute="bottom" constant="26" id="kgb-qE-42e"/>
                             <constraint firstItem="Xzl-hM-i8m" firstAttribute="trailing" secondItem="hFH-Ix-YvK" secondAttribute="trailing" constant="37" id="mcY-mY-T7b"/>
-                            <constraint firstItem="TgE-gM-IcB" firstAttribute="top" secondItem="ZDN-Af-VMX" secondAttribute="bottom" constant="74" id="qVw-gx-ckT"/>
-                            <constraint firstItem="WSi-QV-OiV" firstAttribute="top" secondItem="hFH-Ix-YvK" secondAttribute="bottom" constant="23" id="stp-4V-8bC"/>
-                            <constraint firstItem="Xzl-hM-i8m" firstAttribute="bottom" secondItem="TgE-gM-IcB" secondAttribute="bottom" constant="10" id="xjU-ny-7mj"/>
+                            <constraint firstItem="hFH-Ix-YvK" firstAttribute="top" secondItem="ZDN-Af-VMX" secondAttribute="bottom" constant="20" id="nCg-fR-oTY"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Explore" image="globe.americas.fill" catalog="system" id="JT9-CQ-8xo">
@@ -293,6 +318,7 @@
                     <connections>
                         <outlet property="artistNameLabel" destination="zYZ-zN-xOA" id="p3D-gV-c3S"/>
                         <outlet property="card" destination="ZDN-Af-VMX" id="HPI-MI-XVu"/>
+                        <outlet property="currentPlaylistButton" destination="Uyl-DN-c7I" id="7ke-B4-kfQ"/>
                         <outlet property="durationLabel" destination="WSi-QV-OiV" id="tmk-dl-F68"/>
                         <outlet property="findSimilarSongButton" destination="nuo-fe-8cB" id="ChX-Mh-fEd"/>
                         <outlet property="genreLabel" destination="qY6-NH-G0Z" id="XpZ-G8-KGj"/>
