@@ -94,8 +94,8 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
         }
         let action = UIContextualAction(style: .normal,
                                         title: "Remove") { [weak self] (action, view, completionHandler) in
-                                            self?.removeSongFromPlaylist(song: currentSong)
-                                            completionHandler(true)
+            self?.removeSongFromPlaylist(song: currentSong)
+            completionHandler(true)
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])
