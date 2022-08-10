@@ -10,6 +10,7 @@ import UIKit
 class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, UITableViewDataSource {
     var currentPlaylist: PFPlaylist?
     var songArray: [PFSong]?
+    var songIndex: Int?
     @IBOutlet weak var playlistName: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
@@ -47,11 +48,26 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
         }
     }
     
+    @IBAction func didTapNextSong(_ sender: Any) {
+        guard var index = self.songIndex,
+              let length = self.songArray?.count else {
+            return
+        }
+        if (index + 1) >= length {
+            index = 0
+        } else {
+            index += 1
+        }
+        self.songIndex = index
+        self.tableView(self.tableView, didSelectRowAt: IndexPath(row: index, section: 0))
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let currentSong = songArray?[indexPath.row] else {
             NSLog("failed accessing song from indexPath")
             return
         }
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        self.songIndex = indexPath.row
         let uri = currentSong.uri
         self.playNewSong(uri: uri)
     }

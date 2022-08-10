@@ -751,14 +751,27 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YGF-VW-JrW">
                                 <rect key="frame" x="20" y="721" width="374" height="4"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shn-AH-WrW">
+                                <rect key="frame" x="279" y="756" width="85" height="52"/>
+                                <color key="tintColor" red="0.52549022440000004" green="0.41176474089999998" blue="0.4941176176" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="forward.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="32"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didTapNextSong:" destination="sbZ-Hm-2bj" eventType="touchUpInside" id="JPa-2P-Ire"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RZk-7M-Cmb"/>
                         <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="YGF-VW-JrW" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="1Wd-IH-anf"/>
+                            <constraint firstItem="RZk-7M-Cmb" firstAttribute="trailing" secondItem="shn-AH-WrW" secondAttribute="trailing" constant="50" id="Ako-BB-Ykg"/>
                             <constraint firstItem="Myn-be-xWh" firstAttribute="top" secondItem="YGF-VW-JrW" secondAttribute="bottom" constant="28" id="Ats-B2-1Go"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="F5p-Hu-LlO"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="top" secondItem="RZk-7M-Cmb" secondAttribute="top" constant="20" id="Irb-3H-vJF"/>
+                            <constraint firstItem="shn-AH-WrW" firstAttribute="centerY" secondItem="Myn-be-xWh" secondAttribute="centerY" id="Pqw-RH-vGj"/>
                             <constraint firstItem="Myn-be-xWh" firstAttribute="centerX" secondItem="RZk-7M-Cmb" secondAttribute="centerX" id="SU3-zH-jw8"/>
                             <constraint firstItem="YGF-VW-JrW" firstAttribute="top" secondItem="xOz-H5-Plm" secondAttribute="bottom" constant="33" id="Vid-NV-5Oj"/>
                             <constraint firstItem="Bzk-1E-VLG" firstAttribute="leading" secondItem="RZk-7M-Cmb" secondAttribute="leading" constant="20" id="XhV-xC-8bG"/>
@@ -860,6 +873,7 @@
     <resources>
         <image name="ThumbsDown" width="612" height="532"/>
         <image name="books.vertical.fill" catalog="system" width="128" height="109"/>
+        <image name="forward.fill" catalog="system" width="128" height="79"/>
         <image name="gearshape.fill" catalog="system" width="128" height="121"/>
         <image name="globe.americas.fill" catalog="system" width="128" height="121"/>
         <image name="pause.circle.fill" catalog="system" width="128" height="121"/>
