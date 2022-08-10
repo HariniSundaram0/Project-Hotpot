@@ -122,7 +122,6 @@ class HomeViewController: MediaViewController {
             case .failure(let error):
                 NSLog("failed resetting card")
                 NSLog(error.localizedDescription)
-                self.resetCard()
             case .success(let image):
                 DispatchQueue.main.async {
                     self.songImage.image = image
@@ -145,8 +144,8 @@ class HomeViewController: MediaViewController {
     
     func resetCard() {
         DispatchQueue.main.async{
-            self.thumbsImage.alpha = 0
             self.updateInfo()
+            self.thumbsImage.alpha = 0
             UIView.animate(withDuration: 0.4, animations: {
                 self.card.transform = CGAffineTransform.identity
                 self.card.center = self.view.center

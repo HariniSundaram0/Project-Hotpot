@@ -68,8 +68,6 @@ class PFPlaylist: PFObject, PFSubclassing {
         }
     }
     
-    
-    
     class func addPFSongToPlaylist(song: PFSong, currPlaylist:PFPlaylist) {
         PFPlaylist.addSongtoPlaylistInBackground(song: song, playlist: currPlaylist) { result in
             switch result{
@@ -152,6 +150,39 @@ class PFPlaylist: PFObject, PFSubclassing {
                 }
             case .failure(let error):
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    class func removePlaylistInBackground(playlist:PFPlaylist, completion: @escaping (_ result: Result<Void, Error>) -> Void) {
+        
+        //get all songs from given playlist
+        getAllSongsFromPlaylist(playlist: playlist) { result in
+            switch result {
+            case .success(let songArray):
+                for song in songArray {
+                    //deletes song from join table
+                    removeSongFromPlaylistInBackground(song: song, playlist: playlist) { result in
+                        switch result {
+                        case .success(_):
+                            NSLog("Deleted song successfully")
+                            
+                        case .failure(let error):
+                            NSLog("error deleting song from playlist: \(error)")
+                            return completion(.failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+            playlist.deleteInBackground { isSuccessful, error in
+                if let error = error {
+                    return completion(.failure(error))
+                }
+                else {
+                    return completion(.success(()))
+                }
             }
         }
     }
