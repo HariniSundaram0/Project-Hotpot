@@ -66,7 +66,7 @@
 		5E2FA6EE2891F93C00EE769D /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		5E2FA6F12892E15A00EE769D /* SongScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScoreManager.swift; sourceTree = "<group>"; };
 		5E2FA6F328945F9D00EE769D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		5E2FA6F928984BAC00EE769D /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MediaViewController.swift; path = Playlist/MediaViewController.swift; sourceTree = "<group>"; };
+		5E2FA6F928984BAC00EE769D /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		5E2FA6FB28A2BB5800EE769D /* RadioModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioModeViewController.swift; sourceTree = "<group>"; };
 		5EAAC8D32885D9FD00BD2064 /* PFPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PFPlaylist.swift; sourceTree = "<group>"; };
 		5EAAC8D52885F4EF00BD2064 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +126,15 @@
 			path = "Data Structures";
 			sourceTree = "<group>";
 		};
+		5E2FA6FD28A2DBDF00EE769D /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				5E2FA6F928984BAC00EE769D /* MediaViewController.swift */,
+				5E2FA6FB28A2BB5800EE769D /* RadioModeViewController.swift */,
+			);
+			path = Explore;
+			sourceTree = "<group>";
+		};
 		5EAAC8E72888C45700BD2064 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,9 +175,8 @@
 		5EAD879428809A28008497D0 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5E2FA6FB28A2BB5800EE769D /* RadioModeViewController.swift */,
-				5E2FA6F928984BAC00EE769D /* MediaViewController.swift */,
 				5EAAC8F02890905400BD2064 /* HotpotViewController.swift */,
+				5E2FA6FD28A2DBDF00EE769D /* Explore */,
 				5EAD877F2876412A008497D0 /* HomeViewController.swift */,
 				5EAAC8F3289093F300BD2064 /* SettingsViewController.swift */,
 				5EAAC8F22890928B00BD2064 /* Authentication */,
@@ -553,6 +561,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Project-Hotpot/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Whiplash;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -590,6 +599,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Project-Hotpot/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Whiplash;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

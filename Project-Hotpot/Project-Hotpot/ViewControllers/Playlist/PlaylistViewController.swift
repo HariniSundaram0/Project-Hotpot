@@ -58,6 +58,33 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    func removePlaylist(playlist: PFPlaylist) {
+        PFPlaylist.removePlaylistInBackground(playlist: playlist) { result in
+            switch result{
+            case .success(_):
+                NSLog("Successfully removed song")
+                self.retrievePlaylists()
+            case .failure(let error):
+                NSLog(error.localizedDescription)
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard let currentPlaylist = self.playlistArray?[indexPath.row] else {
+            NSLog("can't retrieve song")
+            return nil
+        }
+        let action = UIContextualAction(style: .normal,
+                                        title: "Remove") { [weak self] (action, view, completionHandler) in
+            self?.removePlaylist(playlist: currentPlaylist)
+            completionHandler(true)
+        }
+        action.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let newSender = sender as? UITableViewCell,
               let indexPath = self.tableView.indexPath(for: newSender),
@@ -68,4 +95,5 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         let playlistToPass = playlistArray[indexPath.row]
         nextController.currentPlaylist = playlistToPass
     }
+    
 }
