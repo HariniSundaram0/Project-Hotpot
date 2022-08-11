@@ -67,6 +67,7 @@ class SettingsViewController: UIViewController {
         //disconnect from spotify
         SpotifyManager.shared().appRemote.disconnect()
         //move view to original
+        PFUser.logOut()
         self.view.window?.rootViewController = nextViewController
     }
 }

@@ -14,14 +14,20 @@ class ConnectViewController: UIViewController {
     
     // MARK: App Life Cycle
     @IBAction func didTapConnect(_ sender: Any) {
-        guard let sessionManager = apiInstance.sessionManager else {
-            return
+        apiInstance.sessionManager?.initiateSession(with: scopes, options: .clientOnly)
+    }
+    
+    override func viewDidLoad() {
+        NotificationCenter.default.addObserver(forName: Notification.Name("AppRemoteConnected"), object: nil, queue: .main) { _ in
+            self.displayLoginController()
         }
-        sessionManager.initiateSession(with: scopes, options: .clientOnly)
+    }
+    
+    func displayLoginController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "LoginViewController")
         self.view.window?.rootViewController = nextViewController
     }
-    
 }
+
 

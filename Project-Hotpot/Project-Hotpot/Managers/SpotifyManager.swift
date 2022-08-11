@@ -26,6 +26,7 @@ class SpotifyManager: NSObject {
                         self.appRemote.connectionParameters.accessToken = accessToken
                         self.appRemote.connect()
                     }
+                    NotificationCenter.default.post(name: Notification.Name("AppRemoteConnected"), object: nil)
                     
                 case .failure(let error):
                     NSLog("Fetching token request error \(error)")

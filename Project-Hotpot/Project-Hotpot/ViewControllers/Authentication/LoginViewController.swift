@@ -18,6 +18,16 @@ class LoginViewController: HotpotViewController, UITextFieldDelegate {
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        NSLog("in view did appear")
+        if SpotifyManager.shared().appRemote.isConnected{
+            NSLog("appear check")
+            if (PFUser.current() != nil) {
+                self.displayNextViewController()
+            }
+        }
+    }
+    
     @IBAction func didTapRegister(_ sender: Any) {
         registerUser()
     }

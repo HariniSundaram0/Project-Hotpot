@@ -11,7 +11,7 @@ import Parse
 class SongManager : NSObject {
     var historySet: Set<String> = []
     
-     override private init(){
+     override private init() {
         //we don't want to be working with multiple instances, otherwise unnecessary network calls
         super.init()
         if let currentUser = PFUser.current() {

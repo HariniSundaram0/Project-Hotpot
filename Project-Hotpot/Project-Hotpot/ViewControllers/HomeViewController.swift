@@ -196,6 +196,7 @@ class HomeViewController: MediaViewController {
                     }
                     actionSheet.addAction(newAction)
                 }
+                actionSheet.addAction(UIAlertAction(title: "Close", style: .cancel))
             case .failure(let error):
                 NSLog(error.localizedDescription)
                 //we don't want to show an empty action sheet
