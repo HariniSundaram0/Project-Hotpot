@@ -9,4 +9,5 @@ target 'Project-Hotpot' do
 	pod 'Parse'
 	pod 'AFNetworking'
 	pod 'RSSelectionMenu'
+	pod 'Parse/UI'
 end

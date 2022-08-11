@@ -19,11 +19,14 @@ PODS:
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
     - Bolts/Tasks (= 1.9.1)
+  - Parse/UI (1.19.3):
+    - Parse/Core
   - RSSelectionMenu (7.1.3)
 
 DEPENDENCIES:
   - AFNetworking
   - Parse
+  - Parse/UI
   - RSSelectionMenu
 
 SPEC REPOS:
@@ -39,6 +42,6 @@ SPEC CHECKSUMS:
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
   RSSelectionMenu: 873d62ebbaef138519f6cf3f073412c2b5d94c2c
 
-PODFILE CHECKSUM: 052f43e0484686099a9bbfdba5811b8386f5574c
+PODFILE CHECKSUM: 918ff5eff3c02314cc7af6008075ddb88e2bd5a9
 
 COCOAPODS: 1.11.3
