@@ -684,16 +684,22 @@
                                 <color key="sectionIndexColor" red="0.62555335570000004" green="0.48678221220000001" blue="0.59086056980000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="sectionIndexBackgroundColor" red="0.69411766529999996" green="0.72941178080000002" blue="0.79215681550000006" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
-                                    <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="15" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                    <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="15" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SongTableViewCell" id="lUD-1R-Lmm" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="100.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9" customClass="SongTableViewCell" customModule="Project_Hotpot" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" tableViewCell="lUD-1R-Lmm" id="dbe-qf-Wt9">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="100.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
-                                                    <rect key="frame" x="20" y="4" width="358" height="34"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="t7h-fT-8Yf" customClass="PFImageView">
+                                                    <rect key="frame" x="10" y="10" width="80" height="80.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="80" id="Rls-17-vVj"/>
+                                                        <constraint firstAttribute="height" constant="80" id="zAA-eh-YkV"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwj-ug-CXp">
+                                                    <rect key="frame" x="117" y="34" width="277" height="34"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" none="YES"/>
                                                     </accessibility>
@@ -710,11 +716,20 @@
                                                 </label>
                                             </subviews>
                                             <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="nwj-ug-CXp" secondAttribute="trailing" constant="20" symbolic="YES" id="Mme-Fi-7Bw"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="centerY" secondItem="dbe-qf-Wt9" secondAttribute="centerY" id="PCn-rD-Gne"/>
+                                                <constraint firstItem="nwj-ug-CXp" firstAttribute="leading" secondItem="t7h-fT-8Yf" secondAttribute="trailing" constant="27" id="ccy-rY-Xnh"/>
+                                                <constraint firstAttribute="bottom" secondItem="t7h-fT-8Yf" secondAttribute="bottom" constant="10" id="kW6-jS-Avm"/>
+                                                <constraint firstItem="t7h-fT-8Yf" firstAttribute="top" secondItem="dbe-qf-Wt9" secondAttribute="top" constant="10" id="uFH-Mj-DKS"/>
+                                                <constraint firstItem="t7h-fT-8Yf" firstAttribute="leading" secondItem="dbe-qf-Wt9" secondAttribute="leading" constant="10" id="yjt-YP-WJ1"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.86971349190000002" green="0.9095557111" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <gestureRecognizers/>
                                         <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                         <connections>
+                                            <outlet property="songImage" destination="t7h-fT-8Yf" id="k4p-id-z9f"/>
                                             <outlet property="songTitleLabel" destination="nwj-ug-CXp" id="3t4-ms-uJw"/>
                                         </connections>
                                     </tableViewCell>
