@@ -19,13 +19,13 @@ class ConnectViewController: UIViewController {
     
     override func viewDidLoad() {
         NotificationCenter.default.addObserver(forName: Notification.Name("AppRemoteConnected"), object: nil, queue: .main) { _ in
-            self.displayLoginController()
+            self.displayNextController()
         }
     }
     
-    func displayLoginController() {
+    func displayNextController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "LoginViewController")
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController")
         self.view.window?.rootViewController = nextViewController
     }
 }

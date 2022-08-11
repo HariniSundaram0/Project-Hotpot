@@ -69,9 +69,12 @@ class LoginViewController: HotpotViewController, UITextFieldDelegate {
             }
         }
     }
-    func displayNextViewController(){
+    func displayNextViewController() {
+        //first clear all text fields
+        self.usernameField.text = ""
+        self.passwordField.text = ""
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "tabBarController") as UIViewController
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ConnectViewController") as UIViewController
         self.view.window?.rootViewController = nextViewController
     }
     

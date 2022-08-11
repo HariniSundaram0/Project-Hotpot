@@ -59,15 +59,12 @@ class SettingsViewController: UIViewController {
         genreMenu.show(style: .present, from: self)
     }
     @IBAction func didTapLogout(_ sender: Any) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ConnectViewController")
         //if music is playing pause it
         SpotifyManager.shared().appRemote.playerAPI?.pause()
         //disconnect from spotify
         SpotifyManager.shared().appRemote.disconnect()
         //move view to original
         PFUser.logOut()
-        self.view.window?.rootViewController = nextViewController
+        self.view.window?.rootViewController = SceneDelegate.rootViewController
     }
 }
