@@ -61,14 +61,20 @@ class SongManager : NSObject {
             case .success(let parseSong):
                 completion(.success(parseSong))
             case .failure(_):
-                //else create a new parse object
-                PFSong.createPFSongInBackground(song: spotifySong) { result in
+                SpotifyManager.shared().fetchArtwork(for: spotifySong) { result in
                     switch result {
-                    case .success(let parseSong):
-                        return completion(.success(parseSong))
+                    case .success(let image):
+                        PFSong.createPFSongInBackground(song: spotifySong, image: image) { result in
+                            switch result {
+                            case .success(let parseSong):
+                                return completion(.success(parseSong))
+                            case .failure(let error):
+                                completion(.failure(error))
+                                return
+                            }
+                        }
                     case .failure(let error):
                         completion(.failure(error))
-                        return
                     }
                 }
             }

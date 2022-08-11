@@ -96,6 +96,10 @@ class PlaylistDetailsViewController: MediaViewController, UITableViewDelegate, U
         }
         let currentSong = songArray[indexPath.row]
         cell.songTitleLabel.text = currentSong.name
+        
+        cell.songImage.file = currentSong.image
+        cell.songImage.loadInBackground()
+        
         return cell
     }
     
