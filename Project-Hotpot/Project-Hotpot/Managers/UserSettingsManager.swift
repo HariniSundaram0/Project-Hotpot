@@ -27,12 +27,15 @@ class UserSettingsManager: NSObject {
     override private init() {
         guard let savedUserGenres = defaults.object(forKey: "userGenres") as? [String],
               let savedRemovedGenres = defaults.object(forKey: "removedGenres") as? [String],
+              let genres = SpotifyManager.shared().originalGenreSeeds as? [String],
+              genres.isEmpty == false,
               savedUserGenres.isEmpty == false
         else {
             removedGenres = []
-            userGenres = Set(SpotifyManager.shared().originalGenreSeeds)
+            userGenres = Set(backupGenres)
             super.init()
             NSLog("initialized Settings Manager")
+            print(userGenres)
             return
         }
         NSLog("initialized Settings Manager from previous sessions: removed genres :\(savedRemovedGenres)")

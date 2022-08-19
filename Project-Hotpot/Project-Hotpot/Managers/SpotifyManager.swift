@@ -36,6 +36,7 @@ class SpotifyManager: NSObject {
         }
     }
     
+    
     lazy var appRemote: SPTAppRemote = {
         let appRemote = SPTAppRemote(configuration: configuration, logLevel: .debug)
         appRemote.connectionParameters.accessToken = self.accessToken
@@ -74,7 +75,7 @@ class SpotifyManager: NSObject {
     // MARK: - Initializers
     //doing this way so that only 1 instance can be created
     override private init() {
-        self.originalGenreSeeds = []
+        self.originalGenreSeeds = backupGenres
         NSLog("API Manager Initialized")
     }
     
@@ -119,6 +120,7 @@ extension SpotifyManager: SPTAppRemoteDelegate {
                 return
             }
             self.originalGenreSeeds = originalGenres
+            print("seeds: ", self.originalGenreSeeds)
             NSLog("updated genres from disk")
         })
         self.fetchPlayerState()

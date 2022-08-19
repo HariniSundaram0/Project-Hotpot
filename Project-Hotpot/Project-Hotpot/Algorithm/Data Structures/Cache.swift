@@ -63,7 +63,8 @@ class Cache: NSObject{
             self.cache = Storage.retrieve("cache.json", from: .documents, as: [String: [SongDetails]].self)
             print("loaded in cache: \(self.cache)" )
         }
-        else{
+        
+        if self.cache.isEmpty {
             for genreKey in genreKeys {
                 //manually initialize key to empty array
                 cache[genreKey] = []

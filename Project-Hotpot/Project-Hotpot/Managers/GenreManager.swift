@@ -19,6 +19,7 @@ class GenreManager: NSObject {
     // MARK: - Initializers
     //doing this way so that only 1 instance of settings should be created per user.
     override private init() {
+        NSLog("genre manager Initialized")
         super.init()
         reinitializeQueue()
     }
@@ -36,8 +37,10 @@ class GenreManager: NSObject {
     
     func getGenre() -> Genre?{
         if self.genreQueue.isEmpty{
+            NSLog("is empty, reinitializing")
             self.reinitializeQueue()
         }
+        NSLog("dequeing")
         return self.genreQueue.dequeue()
     }
 }

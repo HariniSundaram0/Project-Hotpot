@@ -16,25 +16,22 @@ class SettingsViewController: UIViewController {
     var genresToAdd: Set<String> = []
     var genresToRemove: Set<String> = []
     
-    let genreMenu = RSSelectionMenu(selectionStyle: .multiple, dataSource: Array(SpotifyManager.shared().originalGenreSeeds)) { (cell, genre, indexPath) in
-        cell.textLabel?.text = genre
-    }
-    override func viewDidLoad() {
-        setGenreMenu()
-    }
     
-    func setGenreMenu() {
+    func setGenreMenu() -> RSSelectionMenu<String> {
+        let genreMenu = RSSelectionMenu(selectionStyle: .multiple, dataSource: SpotifyManager.shared().originalGenreSeeds) { (cell, genre, indexPath) in
+            cell.textLabel?.text = genre
+        }
         //sets the values that will be already selected once menu is shown
-        genreMenu.setSelectedItems(items: Array(UserSettingsManager.shared().removedGenres)) { (genre, index, isSelected, selectedItems) in
+        genreMenu.setSelectedItems(items: Array(UserSettingsManager.shared().userGenres)) { (genre, index, isSelected, selectedItems) in
             guard let genre = genre else{
                 NSLog("genre is nil")
                 return
             }
             if isSelected {
-                self.genresToRemove.insert(genre)
+                self.genresToAdd.insert(genre)
             }
             else {
-                self.genresToAdd.insert(genre)
+                self.genresToRemove.insert(genre)
             }
         }
         
@@ -53,9 +50,12 @@ class SettingsViewController: UIViewController {
             self?.genresToAdd = []
             self?.genresToRemove = []
         }
+        return genreMenu
     }
     
     @IBAction func onClickShowDropDown(_ sender: Any) {
+        print(SpotifyManager.shared().originalGenreSeeds)
+        let genreMenu = setGenreMenu()
         genreMenu.show(style: .present, from: self)
     }
     @IBAction func didTapLogout(_ sender: Any) {

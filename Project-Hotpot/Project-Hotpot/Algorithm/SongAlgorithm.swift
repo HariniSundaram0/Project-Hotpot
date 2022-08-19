@@ -11,6 +11,7 @@ import AFNetworking
 
 class SongAlgorithm {
     var apiInstance = SpotifyManager.shared()
+    var smth = NSLog("in song alg")
     var userPreferences = UserSettingsManager.shared()
     var genreManager = GenreManager.shared()
     var cacheManager = CacheManager.shared()
@@ -39,6 +40,7 @@ class SongAlgorithm {
     
     func getAlgorithmSong(completion: @escaping (_ result: Result<(String, String), Error>) -> Void) {
         guard let genre = getRandomGenre() else {
+            NSLog("unable to get random genre")
             return completion(.failure(CustomError.invalidCacheKey))
         }
         let songs = cacheManager.retrieveSongsFromCache(genre:genre) { result in

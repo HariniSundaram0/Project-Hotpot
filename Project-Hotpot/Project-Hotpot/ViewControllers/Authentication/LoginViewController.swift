@@ -19,14 +19,13 @@ class LoginViewController: HotpotViewController, UITextFieldDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        NSLog("in view did appear")
-        if SpotifyManager.shared().appRemote.isConnected{
-            NSLog("appear check")
-            if (PFUser.current() != nil) {
-                self.displayNextViewController()
-            }
+        NSLog("in view did load")
+        if (PFUser.current() != nil) {
+            NSLog("yes")
+            self.displayNextViewController()
         }
     }
+
     
     @IBAction func didTapRegister(_ sender: Any) {
         registerUser()
@@ -71,11 +70,12 @@ class LoginViewController: HotpotViewController, UITextFieldDelegate {
     }
     func displayNextViewController() {
         //first clear all text fields
+        NSLog("should change")
         self.usernameField.text = ""
         self.passwordField.text = ""
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ConnectViewController") as UIViewController
-        self.view.window?.rootViewController = nextViewController
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ConnectViewController")
+        self.performSegue(withIdentifier: "segue", sender: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
